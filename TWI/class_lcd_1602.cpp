@@ -57,22 +57,16 @@ void cLCD1602::begin()
 }
 
 void cLCD1602::clear()
-{	
-	set_Cursor(0, 1);
-	uint8_t i;
-	for(i = 0; i < 50; i++)
-	{	
-
-		write(' ');
-	}
-	set_Cursor(0,1);
+{
+	command(LCD_CLEARDISPLAY);
+	_delay_ms(64);
 }
 
 
 void cLCD1602::home()
 {
 	command(LCD_RETURNHOME);
-	//_delay_ms(64);
+	_delay_ms(64);
 }
 
 void cLCD1602::display()
@@ -95,7 +89,7 @@ void cLCD1602::cursor()
 
 void cLCD1602::no_Cursor()
 {
-	
+
 	command(LCD_DISPLAYCONTROL & ~LCD_CURSORON);
 	_delay_ms(200);
 }
@@ -162,7 +156,7 @@ void cLCD1602::write(uint8_t data)
 
 
 void cLCD1602::write_String(const char * string){
-	
+
 		while(*string != '\0'){
 			write(*string);
 			string++;
@@ -172,29 +166,29 @@ void cLCD1602::write_String(const char * string){
 void cLCD1602::set_Cursor( uint8_t x, uint8_t y )
 {
     uint8_t data = 0;
- 
+
     switch (y)
     {
         case 1:    // 1. Zeile
             data = LCD_SET_DDADR + LCD_DDADR_LINE1 + x;
             break;
- 
+
         case 2:    // 2. Zeile
             data = LCD_SET_DDADR + LCD_DDADR_LINE2 + x;
             break;
- 
+
         case 3:    // 3. Zeile
             data = LCD_SET_DDADR + LCD_DDADR_LINE3 + x;
             break;
- 
+
         case 4:    // 4. Zeile
             data = LCD_SET_DDADR + LCD_DDADR_LINE4 + x;
             break;
- 
+
         default:
             return;                                   // für den Fall einer falschen Zeile
     }
- 
+
     command(data);
 }
 
