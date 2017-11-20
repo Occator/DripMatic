@@ -161,7 +161,7 @@ void cLCD1602::write(uint8_t data)
 }
 
 
-void cLCD1602::write_String(char * string){
+void cLCD1602::write_String(const char * string){
 	
 		while(*string != '\0'){
 			write(*string);

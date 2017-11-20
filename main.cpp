@@ -15,9 +15,12 @@ int main(){
 	cLCD1602 lcdTWI(&twiIOexpander);
 	lcdTWI.init();
 
-	lcdTWI.write_String_XY(0, 1, "hey pat");
+
+	lcdTWI.set_Cursor(0, 1);
+	lcdTWI.write_String("hey pat");
 	_delay_ms(2000);
-	lcdTWI.write_String_XY(0, 2, "start while-loop");
+	lcdTWI.set_Cursor(0, 2);
+	lcdTWI.write_String("ich bin es");
 
 	for(;;);
 }
