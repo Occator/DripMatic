@@ -21,7 +21,7 @@ int main(){
 	_delay_ms(2000);
 	lcdTWI.set_Cursor(0, 2);
 	lcdTWI.write_String("ich bin es");
+	lcdTWI.clear();
 
 	for(;;);
 }
-
