@@ -152,7 +152,8 @@ void cLCD1602::write(uint8_t data)
 }
 
 
-void cLCD1602::write_String(const char * string){
+void cLCD1602::write_String(const char * string)
+{
 
 		while(*string != '\0'){
 			write(*string);
@@ -189,12 +190,15 @@ void cLCD1602::set_Cursor(uint8_t x, uint8_t y )
     command(data);
 }
 
-void cLCD1602::write_String_XY(uint8_t x, uint8_t y, const char * string) {
+void cLCD1602::write_String_XY(uint8_t x, uint8_t y, const char * string)
+{
     set_Cursor(x, y);
     write_String(string);
 }
 
-void cLCD1602::write_Int_XY(uint8_t x, uint8_t y, int data){
+void cLCD1602::write_Int_XY(uint8_t x, uint8_t y, int data)
+{
+	set_Cursor(x, y);
 	char buffer[5];
 	itoa(data, buffer, 10);
 	write_String(buffer);
