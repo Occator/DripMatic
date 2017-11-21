@@ -1,7 +1,7 @@
 // tested and worked at 2017/09/21 15:45
 
-#ifndef CLASS_RTC_3W_COPY_H
-#define CLASS_RTC_3W_COPY_H
+#ifndef CLASS_RTC_3W__H
+#define CLASS_RTC_3W__H
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -18,11 +18,11 @@ public:
 	uint16_t year;
 };
 
-class cDeviceRTCcopy{
+class cDeviceRTC{
 public:
 
 	enum eRegister{
-		sec = 0, min, hour, date, month, dow, year, write_protect 
+		sec = 0, min, hour, date, month, dow, year, write_protect
 	};
 
 	struct cTime{
@@ -35,16 +35,16 @@ public:
 		uint16_t year;
 
 	}rtcTime;
-	
-	cDeviceRTCcopy(cIOPin *cePin, cIOPin *ioPin, cIOPin *sclkPin);
-	~cDeviceRTCcopy();
+
+	cDeviceRTC(cIOPin *cePin, cIOPin *ioPin, cIOPin *sclkPin);
+	~cDeviceRTC();
 	// not yet implemented propper nor debugged
 	void set_RTC(uint16_t year, uint8_t date, uint8_t month, uint8_t hour, uint8_t minute, uint8_t second);
 	void write_RTC_Reg(uint8_t value, eRegister _reg);
 	uint8_t read_RTC_Reg(eRegister _reg);
 
 	void update_rtcTime();
-	
+
 	void write_CommByte(uint8_t reg);
 	void write_Byte(uint8_t data);
 	uint8_t read_Byte();
