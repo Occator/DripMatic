@@ -72,41 +72,40 @@ void cLCD1602::home()
 void cLCD1602::display()
 {
 	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON);
-	_delay_ms(200);
+	_delay_ms(20);
 }
 
 void cLCD1602::no_Display()
 {
 	command(LCD_DISPLAYCONTROL | LCD_DISPLAYOFF);
-	_delay_ms(200);
+	_delay_ms(20);
 }
 
 void cLCD1602::cursor()
 {
-	command(LCD_DISPLAYCONTROL | LCD_CURSORON);
-	_delay_ms(200);
+	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_CURSORON);
+	_delay_ms(20);
 }
 
 void cLCD1602::no_Cursor()
 {
 
-	command(LCD_DISPLAYCONTROL & ~LCD_CURSORON);
-	_delay_ms(200);
+	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_CURSOROFF);
+	_delay_ms(20);
 }
 
 
 
 void cLCD1602::blink()
 {
-	command(0x0F);
-	_delay_ms(200);
+	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_BLINKON);
+	_delay_ms(20);
 }
 
 void cLCD1602::no_Blink()
 {
-	command(0xE);
-	_delay_ms(200);
-	_twiLCD->transmit(LCD_BACKLIGHT);
+	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_BLINKOFF);
+	_delay_ms(20);
 }
 
 void cLCD1602::backlight()
@@ -197,7 +196,7 @@ void cLCD1602::write_String_XY(uint8_t x, uint8_t y, char * string) {
     write_String(string);
 }
 
-void cLCD1602::write_Int_XY(uint8_t x, uint8_t y, int data){
+void cLCD1602::write_Int(int data){
 	char buffer[5];
 	itoa(data, buffer, 10);
 	write_String(buffer);
