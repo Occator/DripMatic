@@ -39,7 +39,7 @@ public:
 	cDeviceRTC(cIOPin *cePin, cIOPin *ioPin, cIOPin *sclkPin);
 	~cDeviceRTC();
 	// not yet implemented propper nor debugged
-	void set_RTC(uint16_t year, uint8_t date, uint8_t month, uint8_t hour, uint8_t minute, uint8_t second);
+	void set_RTC(uint16_t year, uint8_t month, uint8_t date, uint8_t hour, uint8_t minute, uint8_t second);
 	void write_RTC_Reg(uint8_t value, eRegister _reg);
 	uint8_t read_RTC_Reg(eRegister _reg);
 
