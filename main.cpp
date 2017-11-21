@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include "TWI/class_TWI.hpp"
 #include "TWI/class_lcd_1602.hpp"
-#include "MCU/class_adc_pin.hpp"
+#include "ADC/class_adc_pin.hpp"
 
 
 int main(){
@@ -34,6 +34,6 @@ int main(){
 		auto adcValue = LDR.read();
 		lcdTWI.set_Cursor(7, 2);
 		lcdTWI.write_Int(adcValue);
-		_delay_ms(1000);
+		_delay_ms(500);
 	}
 }
