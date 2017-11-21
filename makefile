@@ -36,8 +36,8 @@ handsOn.elf: $(OBJECTS)
 main.o: main.cpp
 	$(CC) $(CFLAGS) -g -Wall -c main.cpp
 
-class_adc_pin.o: MCU/class_adc_pin.cpp MCU/class_adc_pin.hpp
-	$(CC) $(CFLAGS) -g -Wall -c MCU/class_adc_pin.cpp
+class_adc_pin.o: ADC/class_adc_pin.cpp ADC/class_adc_pin.hpp
+	$(CC) $(CFLAGS) -g -Wall -c ADC/class_adc_pin.cpp
 
 class_TWI.o: TWI/class_TWI.cpp TWI/class_TWI.hpp
 	$(CC) $(CFLAGS) -g -Wall -c TWI/class_TWI.cpp
