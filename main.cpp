@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include "TWI/class_TWI.hpp"
 #include "TWI/class_lcd_1602.hpp"
+#include "MCU/class_rtc_3w.hpp"
 
 
 int main(){
