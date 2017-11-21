@@ -75,11 +75,11 @@ public:
 	void write_String(const char * string);
 	void set_Cursor(uint8_t x, uint8_t y);
 	void write_String_XY(uint8_t x, uint8_t y, char * string);
-	void write_Int_XY(uint8_t x, uint8_t y, int data);
+	void write_Int(int data);
 
 
 private:
-	
+
 	void _init_Priv();
 	void _send(uint8_t, uint8_t);
 	void _write4Bits(uint8_t value);
