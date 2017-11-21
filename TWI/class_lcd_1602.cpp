@@ -122,7 +122,7 @@ void cLCD1602::no_Backlight()
 void cLCD1602::command(uint8_t value)
 {
 	_send(value, 0);
-	_delay_ms(50);
+	_delay_ms(5);
 }
 
 void cLCD1602::_send(uint8_t value, uint8_t mode)
