@@ -46,8 +46,7 @@ class_lcd_1602.o: TWI/class_lcd_1602.cpp TWI/class_lcd_1602.hpp
 	$(CC) $(CFLAGS) -g -Wall -c TWI/class_lcd_1602.cpp
 
 install: handsOn.hex
-	avrdude -F -V -v -v -c arduino -p atmega328p -P $(PORT) -b 115200 -e -U
-	flash:w:handsOn.hex
+	avrdude -F -V -v -v -c arduino -p atmega328p -P $(PORT) -b 115200 -e -U flash:w:handsOn.hex
 
 clean:
 	rm $(OBJECTS) handsOn.elf handsOn.hex
