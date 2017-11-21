@@ -74,8 +74,13 @@ public:
 	void write(uint8_t data);
 	void write_String(const char * string);
 	void set_Cursor(uint8_t x, uint8_t y);
+<<<<<<< HEAD
 	void write_String_XY(uint8_t x, uint8_t y, const char * string);
 	void write_Int_XY(uint8_t x, uint8_t y, int data);
+=======
+	void write_String_XY(uint8_t x, uint8_t y, char * string);
+	void write_Int(int data);
+>>>>>>> exp/RTC
 
 
 private:

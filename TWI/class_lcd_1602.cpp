@@ -71,41 +71,70 @@ void cLCD1602::home()
 
 void cLCD1602::display()
 {
+<<<<<<< HEAD
 	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON| LCD_BLINKON | LCD_CURSORON);
+=======
+	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON);
+	_delay_ms(20);
+>>>>>>> exp/RTC
 }
 
 void cLCD1602::no_Display()
 {
 	command(LCD_DISPLAYCONTROL | LCD_DISPLAYOFF);
+<<<<<<< HEAD
 
+=======
+	_delay_ms(20);
+>>>>>>> exp/RTC
 }
 
 void cLCD1602::cursor()
 {
+<<<<<<< HEAD
 	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_BLINKON | LCD_CURSORON);
 	_delay_ms(200);
+=======
+	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_CURSORON);
+	_delay_ms(20);
+>>>>>>> exp/RTC
 }
 
 void cLCD1602::no_Cursor()
 {
 
+<<<<<<< HEAD
 	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_BLINKON | LCD_CURSOROFF);
 	_delay_ms(200);
+=======
+	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_CURSOROFF);
+	_delay_ms(20);
+>>>>>>> exp/RTC
 }
 
 
 
 void cLCD1602::blink()
 {
+<<<<<<< HEAD
 	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_BLINKON | LCD_CURSOROFF);
 	_delay_ms(200);
+=======
+	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_BLINKON);
+	_delay_ms(20);
+>>>>>>> exp/RTC
 }
 
 void cLCD1602::no_Blink()
 {
+<<<<<<< HEAD
 	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_BLINKOFF | LCD_CURSORON);
 	_delay_ms(200);
 	_twiLCD->transmit(LCD_BACKLIGHT);
+=======
+	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_BLINKOFF);
+	_delay_ms(20);
+>>>>>>> exp/RTC
 }
 
 void cLCD1602::backlight()
@@ -196,9 +225,13 @@ void cLCD1602::write_String_XY(uint8_t x, uint8_t y, const char * string)
     write_String(string);
 }
 
+<<<<<<< HEAD
 void cLCD1602::write_Int_XY(uint8_t x, uint8_t y, int data)
 {
 	set_Cursor(x, y);
+=======
+void cLCD1602::write_Int(int data){
+>>>>>>> exp/RTC
 	char buffer[5];
 	itoa(data, buffer, 10);
 	write_String(buffer);

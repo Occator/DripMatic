@@ -9,7 +9,7 @@
 
 # Project
 TARGET = handsOn
-OBJECTS = main.o class_TWI.o class_lcd_1602.o
+OBJECTS = main.o class_pin_io.o class_rtc_3w.o class_TWI.o class_lcd_1602.o
 
 # chip and project specific global definitons
 MCU = atmega328p
@@ -34,7 +34,14 @@ handsOn.elf: $(OBJECTS)
 	$(CC) $(CFLAGS) -g -Wall -o handsOn.elf $(OBJECTS)
 
 main.o: main.cpp
-	$(CC) $(CFLAGS) -g -Wall -c main.cpp 
+	$(CC) $(CFLAGS) -g -Wall -c main.cpp
+
+class_pin_io.o: MCU/class_pin_io.cpp MCU/class_pin_io.hpp
+	$(CC) $(CFLAGS) -g -Wall -c MCU/class_pin_io.cpp
+
+class_rtc_3w.o: MCU/class_rtc_3w.cpp MCU/class_rtc_3w.hpp
+	$(CC) $(CFLAGS) -g -Wall -c MCU/class_rtc_3w.cpp
+## need to change back to external_io_devices/ but didn't worked last time
 
 class_TWI.o: TWI/class_TWI.cpp TWI/class_TWI.hpp
 	$(CC) $(CFLAGS) -g -Wall -c TWI/class_TWI.cpp
@@ -43,9 +50,7 @@ class_lcd_1602.o: TWI/class_lcd_1602.cpp TWI/class_lcd_1602.hpp
 	$(CC) $(CFLAGS) -g -Wall -c TWI/class_lcd_1602.cpp
 
 install: handsOn.hex
-	avrdude -F -V -v -v -c arduino -p atmega328p -P $(PORT) -b 115200 -e -U flash:w:handsOn.hex 
+	avrdude -F -V -v -v -c arduino -p atmega328p -P $(PORT) -b 115200 -e -U flash:w:handsOn.hex
 
 clean:
 	rm $(OBJECTS) handsOn.elf handsOn.hex
-
-
