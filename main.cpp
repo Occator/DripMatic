@@ -64,7 +64,7 @@ int main(){
 			lcdTWI.write_Int(ds1302.rtcTime.date);
 		}
 
-		_delay_ms(4000);
+		_delay_ms(2000);
 
 		// display time
 
@@ -100,6 +100,6 @@ int main(){
 			{
 			lcdTWI.write_Int(ds1302.rtcTime.seconds);
 			}
-		_delay_ms(4000);
+		_delay_ms(2000);
 	}
 }
