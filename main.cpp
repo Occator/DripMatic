@@ -22,7 +22,7 @@ int main(){
 	cIOPin rtcSCLK(&PORTD, 4, cIOPin::output);
 
 	cDeviceRTC ds1302(&rtcCE, &rtcIO, &rtcSCLK);
-	ds1302.set_RTC(2017, 21, 11, 17, 22, 0);
+	ds1302.set_RTC(2017, 25, 11, 14, 13, 0);
 
 
 	lcdTWI.init();
@@ -31,7 +31,7 @@ int main(){
 	lcdTWI.write_String("testing RTC");
 	_delay_ms(3000);
 
-<<<<<<< HEAD
+
 	lcdTWI.set_Cursor(0, 1);
 	lcdTWI.write_String("hey pat");
 	_delay_ms(2000);
@@ -59,12 +59,6 @@ int main(){
 	_delay_ms(2000);
 	lcdTWI.clear();
 	lcdTWI.write_Int_XY(6, 2, 1300);
-
-
-	for(;;);
-=======
-	lcdTWI.no_Blink();
-	lcdTWI.no_Cursor();
 
 	for(;;)
 	{
@@ -96,7 +90,7 @@ int main(){
 			lcdTWI.write_Int(ds1302.rtcTime.date);
 		}
 
-		_delay_ms(4000);
+		_delay_ms(2000);
 
 		// display time
 
@@ -132,7 +126,6 @@ int main(){
 			{
 			lcdTWI.write_Int(ds1302.rtcTime.seconds);
 			}
-		_delay_ms(4000);
+		_delay_ms(2000);
 	}
->>>>>>> exp/RTC
 }
