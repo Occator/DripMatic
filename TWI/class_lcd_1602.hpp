@@ -17,7 +17,7 @@
 #define LCD_ENTRYNOSHIFT 0x00
 #define LCD_ENTRYSHIFT 0x01
 
-// flags for display on/off 
+// flags for display on/off
 #define LCD_DISPLAYON 0x04
 #define LCD_DISPLAYOFF 0x00
 #define LCD_CURSORON 0x02
@@ -54,10 +54,10 @@
 
 class cLCD1602{
 public:
-	
+
 	cLCD1602(cTWI *twiDevice);
 	~cLCD1602();
-	
+
 	void begin();
 	void init();
 	void clear();
@@ -74,9 +74,9 @@ public:
 	void write(uint8_t data);
 	void write_String(const char * string);
 	void set_Cursor(uint8_t x, uint8_t y);
-	void write_String_XY(uint8_t x, uint8_t y, char * string);
+	void write_String_XY(uint8_t x, uint8_t y, const char * string);
+	void write_Int_XY(uint8_t x, uint8_t y, int data);
 	void write_Int(int data);
-
 
 private:
 
