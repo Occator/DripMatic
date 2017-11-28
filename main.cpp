@@ -30,7 +30,7 @@ int main(){
 	for(;;)
 	{
 		lcdTWI.clear();
-		lcdTWI.write_String_XY(4, 1,"ADC-Value");
+		lcdTWI.write_String_XY(4, 1, "ADC-Value");
 		auto adcValue = LDR.read();
 		lcdTWI.set_Cursor(7, 2);
 		lcdTWI.write_Int(adcValue);
