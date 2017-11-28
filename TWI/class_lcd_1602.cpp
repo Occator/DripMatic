@@ -191,7 +191,7 @@ void cLCD1602::set_Cursor( uint8_t x, uint8_t y )
     command(data);
 }
 
-void cLCD1602::write_String_XY(uint8_t x, uint8_t y, char * string) {
+void cLCD1602::write_String_XY(uint8_t x, uint8_t y, const char * string) {
     set_Cursor(x, y);
     write_String(string);
 }
