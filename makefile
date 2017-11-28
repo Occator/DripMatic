@@ -9,7 +9,7 @@
 
 # Project
 TARGET = handsOn
-OBJECTS = main.o class_adc_pin.o class_TWI.o class_lcd_1602.o
+OBJECTS = main.o class_adc_pin.o class_TWI.o class_lcd_1602.o class_pin_io.o
 
 # chip and project specific global definitons
 MCU = atmega328p
@@ -42,8 +42,9 @@ class_adc_pin.o: ADC/class_adc_pin.cpp ADC/class_adc_pin.hpp
 class_TWI.o: TWI/class_TWI.cpp TWI/class_TWI.hpp
 	$(CC) $(CFLAGS) -g -Wall -c TWI/class_TWI.cpp
 
-class_lcd_1602.o: TWI/class_lcd_1602.cpp TWI/class_lcd_1602.hpp
-	$(CC) $(CFLAGS) -g -Wall -c TWI/class_lcd_1602.cpp
+
+class_pin_io.o: MCU/class_pin_io.cpp MCU/class_pin_io.hpp
+	$(CC) $(CFLAGS) -g -Wall -c MCU/class_pin_io.cpp
 
 install: handsOn.hex
 	avrdude -F -V -v -v -c arduino -p atmega328p -P $(PORT) -b 115200 -e -U flash:w:handsOn.hex
