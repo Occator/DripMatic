@@ -71,6 +71,8 @@ void cLCD1602::home()
 
 void cLCD1602::display()
 {
+
+	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON| LCD_BLINKON | LCD_CURSORON);
 	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON);
 	_delay_ms(20);
 }
@@ -83,13 +85,16 @@ void cLCD1602::no_Display()
 
 void cLCD1602::cursor()
 {
+	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_BLINKON | LCD_CURSORON);
+	_delay_ms(200);
 	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_CURSORON);
 	_delay_ms(20);
 }
 
 void cLCD1602::no_Cursor()
 {
-
+	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_BLINKON | LCD_CURSOROFF);
+	_delay_ms(200);
 	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_CURSOROFF);
 	_delay_ms(20);
 }
@@ -98,12 +103,17 @@ void cLCD1602::no_Cursor()
 
 void cLCD1602::blink()
 {
+	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_BLINKON | LCD_CURSOROFF);
+	_delay_ms(200);
 	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_BLINKON);
 	_delay_ms(20);
 }
 
 void cLCD1602::no_Blink()
 {
+	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_BLINKOFF | LCD_CURSORON);
+	_delay_ms(200);
+	_twiLCD->transmit(LCD_BACKLIGHT);
 	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_BLINKOFF);
 	_delay_ms(20);
 }
@@ -111,7 +121,6 @@ void cLCD1602::no_Blink()
 void cLCD1602::backlight()
 {
 	_twiLCD->transmit(LCD_BACKLIGHT);
-	_delay_ms(10);
 }
 
 void cLCD1602::no_Backlight()
@@ -154,7 +163,8 @@ void cLCD1602::write(uint8_t data)
 }
 
 
-void cLCD1602::write_String(const char * string){
+void cLCD1602::write_String(const char * string)
+{
 
 		while(*string != '\0'){
 			write(*string);
@@ -162,7 +172,7 @@ void cLCD1602::write_String(const char * string){
 		}
 }
 
-void cLCD1602::set_Cursor( uint8_t x, uint8_t y )
+void cLCD1602::set_Cursor(uint8_t x, uint8_t y )
 {
     uint8_t data = 0;
 
@@ -191,12 +201,22 @@ void cLCD1602::set_Cursor( uint8_t x, uint8_t y )
     command(data);
 }
 
-void cLCD1602::write_String_XY(uint8_t x, uint8_t y, const char * string) {
+void cLCD1602::write_String_XY(uint8_t x, uint8_t y, const char * string)
+{
     set_Cursor(x, y);
     write_String(string);
 }
 
-void cLCD1602::write_Int(int data){
+void cLCD1602::write_Int_XY(uint8_t x, uint8_t y, int data)
+{
+	set_Cursor(x,y);
+	char buffer[5];
+	itoa(data, buffer, 10);
+	write_String(buffer);
+}
+
+void cLCD1602::write_Int(int data)
+{
 	char buffer[5];
 	itoa(data, buffer, 10);
 	write_String(buffer);
