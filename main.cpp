@@ -33,6 +33,7 @@ int main(){
 
 
 	lcdTWI.set_Cursor(0, 1);
+	lcdTWI.clear();
 	lcdTWI.write_String("hey pat");
 	_delay_ms(2000);
 	lcdTWI.set_Cursor(0, 2);
