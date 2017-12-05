@@ -1,2 +1,0 @@
-bliblablup
-motor treiber
