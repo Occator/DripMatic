@@ -33,7 +33,7 @@ build/autspir.elf: $(OBJECTS)
 	$(CC) $(CFLAGS) -g -Wall -o $@ $(OBJECTS)
 
 build/main.o: src/main.cpp
-	$(CC) $(CFLAGS) -g -Wall -c src/main.cpp
+	$(CC) $(CFLAGS) -g -Wall -c src/main.cpp -o $@
 
 build/class_adc_pin.o: src/class_adc_pin.cpp include/class_adc_pin.hpp
 	$(CC) $(CFLAGS) -g -Wall -c src/class_adc_pin.cpp
