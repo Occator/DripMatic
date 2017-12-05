@@ -3,3 +3,4 @@
 3) implement adc interrupt
    change adc read from polling to interrupt driven
    implement in flowchart
+4) implement SPI interface to store data to sd-card
