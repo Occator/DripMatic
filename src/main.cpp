@@ -17,11 +17,9 @@ int main(){
 
 
 	cIOPin redLED(&PORTB, 4, cIOPin::output);
-	redLED.set_Pin(1);
 	cIOPin yellowLED(&PORTB, 3, cIOPin::output);
-	redLED.set_Pin(1);
 	cIOPin greenLED(&PORTB, 2, cIOPin::output);
-	redLED.set_Pin(1);
+
 
 	// define RTC control pins
 	cIOPin rtcCE(&PORTD, 2, cIOPin::output);
@@ -86,34 +84,37 @@ int main(){
 		lcdTWI.clear();
 		lcdTWI.write_String_XY(2, 1, "current time");
 		lcdTWI.set_Cursor(4, 2);
-		if(ds1302.rtcTime.hours < 10){
+		if(ds1302.rtcTime.hours < 10)
+		{
 			lcdTWI.write_String("0");
 			lcdTWI.write_Int(ds1302.rtcTime.hours);
 			lcdTWI.write_String(":");
-			}
+		}
 		else
-			{
+		{
 			lcdTWI.write_Int(ds1302.rtcTime.hours);
 			lcdTWI.write_String(":");
-			}
-		if(ds1302.rtcTime.minutes < 10){
+		}
+		if(ds1302.rtcTime.minutes < 10)
+		{
 			lcdTWI.write_String("0");
 			lcdTWI.write_Int(ds1302.rtcTime.minutes);
 			lcdTWI.write_String(":");
-			}
+		}
 		else
-			{
+		{
 			lcdTWI.write_Int(ds1302.rtcTime.minutes);
 			lcdTWI.write_String(":");
-			}
-		if(ds1302.rtcTime.seconds < 10){
+		}
+		if(ds1302.rtcTime.seconds < 10)
+		{
 			lcdTWI.write_String("0");
 			lcdTWI.write_Int(ds1302.rtcTime.seconds);
-			}
+		}
 		else
-			{
+		{
 			lcdTWI.write_Int(ds1302.rtcTime.seconds);
-			}
+		}
 		_delay_ms(2000);
 	}
 }
