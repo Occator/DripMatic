@@ -1,11 +1,3 @@
-# tested and worked at 2017/09/09 22:24
-
-
-## makefile in dev state .2
-## basic config with multiple source files
-## things to do:
-				## define variables for target, objects, sources, etc.
-				## optimize structure of makefile
 
 # Project
 TARGET = autspir
