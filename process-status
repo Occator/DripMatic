@@ -1,0 +1,9 @@
+######### Teaching myself C++ combined with microcontroller programming #########
+
+process status:
+
+1. HD44780 compatible LCD with PCF8475T is up and running
+1.1. all methods are checked and working, example is shown in main.cpp
+2. RTC-module DS1302 3-wire is up and running
+2.1. all methods are checked and working
+2.2. date and time are shown on the LC-Display, example is shown in main.cpp
