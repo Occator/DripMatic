@@ -5,10 +5,9 @@ class cADCPin {
 public:
 	cADCPin(uint8_t ch);
 	~cADCPin();
-
-	void init();
 	uint16_t read();
 private:
+	void init();
 	uint8_t _channel;
 };
 
