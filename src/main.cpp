@@ -1,5 +1,3 @@
-// tested and worked at 2017/09/28 22:06
-
 #include <avr/io.h>
 #include <util/delay.h>
 #include <stdint.h>
