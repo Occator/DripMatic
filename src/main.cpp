@@ -5,10 +5,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "TWI/class_TWI.hpp"
-#include "TWI/class_lcd_1602.hpp"
-#include "ADC/class_adc_pin.hpp"
-#include "MCU/class_pin_io.hpp"
+#include "include/class_TWI.hpp"
+#include "include/class_lcd_1602.hpp"
+#include "include/class_adc_pin.hpp"
+#include "include/class_pin_io.hpp"
 
 
 int main(){
