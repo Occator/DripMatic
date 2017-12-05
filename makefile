@@ -9,7 +9,7 @@
 
 # Project
 TARGET = handsOn
-OBJECTS = main.o class_adc_pin.o class_TWI.o class_lcd_1602.o class_pin_io.o
+OBJECTS = build/main.o build/class_adc_pin.o build/class_TWI.o build/class_lcd_1602.o build/class_pin_io.o
 
 # chip and project specific global definitons
 MCU = atmega328p
@@ -24,30 +24,30 @@ OBJCOPY=avr-objcopy
 CFLAGS=-Os -DF_CPU=$(F_CPU) -mmcu=atmega328p -std=c++11
 PORT=/dev/ttyACM0
 
-handsOn.hex: handsOn.elf
-	$(OBJCOPY) -j .text -j .data -O ihex handsOn.elf handsOn.hex
+build/autspir_hex.hex: build/autspir.elf
+	$(OBJCOPY) -j .text -j .data -O ihex build/autspir.elf build/autspir_hex.hex
 
-handsOnbin.bin: handsOn.elf
-	$(OBJCOPY) -O binary -R handsOn.elf handsOnbin.bin
+bin/autspir_bin.bin: /build/autspir.elf
+	$(OBJCOPY) -O binary -R build/autspir.elf bin/handsOnbin.bin
 
-handsOn.elf: $(OBJECTS)
+build/autspir.elf: $(OBJECTS)
 	$(CC) $(CFLAGS) -g -Wall -o handsOn.elf $(OBJECTS)
 
-main.o: main.cpp
-	$(CC) $(CFLAGS) -g -Wall -c main.cpp
+build/main.o: src/main.cpp
+	$(CC) $(CFLAGS) -g -Wall -c src/main.cpp
 
-class_adc_pin.o: ADC/class_adc_pin.cpp ADC/class_adc_pin.hpp
-	$(CC) $(CFLAGS) -g -Wall -c ADC/class_adc_pin.cpp
+build/class_adc_pin.o: src/class_adc_pin.cpp include/class_adc_pin.hpp
+	$(CC) $(CFLAGS) -g -Wall -c src/class_adc_pin.cpp
 
-class_TWI.o: TWI/class_TWI.cpp TWI/class_TWI.hpp
-	$(CC) $(CFLAGS) -g -Wall -c TWI/class_TWI.cpp
+build/class_TWI.o: src/class_TWI.cpp include/class_TWI.hpp
+	$(CC) $(CFLAGS) -g -Wall -c src/class_TWI.cpp
 
 
-class_pin_io.o: MCU/class_pin_io.cpp MCU/class_pin_io.hpp
-	$(CC) $(CFLAGS) -g -Wall -c MCU/class_pin_io.cpp
+build/class_pin_io.o: src/class_pin_io.cpp include/class_pin_io.hpp
+	$(CC) $(CFLAGS) -g -Wall -c src/class_pin_io.cpp
 
-install: handsOn.hex
-	avrdude -F -V -v -v -c arduino -p atmega328p -P $(PORT) -b 115200 -e -U flash:w:handsOn.hex
+install: build/autspir_hex.hex
+	avrdude -F -V -v -v -c arduino -p atmega328p -P $(PORT) -b 115200 -e -U flash:w:build/autspir_hex.hex
 
 clean:
-	rm $(OBJECTS) handsOn.elf handsOn.hex
+	rm $(OBJECTS) build/autspir.elf build/autspir_hex.hex
