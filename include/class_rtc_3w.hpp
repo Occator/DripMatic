@@ -21,11 +21,13 @@ public:
 class cDeviceRTC{
 public:
 
-	enum eRegister{
+	enum eRegister
+	{
 		sec = 0, min, hour, date, month, dow, year, write_protect
 	};
 
-	struct cTime{
+	struct cTime
+	{
 		uint8_t seconds;
 		uint8_t minutes;
 		uint8_t hours;
@@ -38,20 +40,17 @@ public:
 
 	cDeviceRTC(cIOPin *cePin, cIOPin *ioPin, cIOPin *sclkPin);
 	~cDeviceRTC();
-	// not yet implemented propper nor debugged
+	void update_rtcTime();
 	void set_RTC(uint16_t year, uint8_t month, uint8_t date, uint8_t hour, uint8_t minute, uint8_t second);
+
+private:
 	void write_RTC_Reg(uint8_t value, eRegister _reg);
 	uint8_t read_RTC_Reg(eRegister _reg);
-
-	void update_rtcTime();
-
 	void write_CommByte(uint8_t reg);
 	void write_Byte(uint8_t data);
 	uint8_t read_Byte();
 	uint8_t bcd_To_Dec(uint16_t bcdByte);
 	uint8_t dec_To_BCD(uint16_t decByte);
-
-private:
 
 	eRegister _reg;
 	// ## implement smart pointer, if there is a workaround, because no standard memory.h

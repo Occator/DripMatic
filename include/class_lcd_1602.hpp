@@ -58,7 +58,7 @@ public:
 	cLCD1602(cTWI *twiDevice);
 	~cLCD1602();
 
-	void begin();
+
 	void init();
 	void clear();
 	void home();
@@ -70,7 +70,6 @@ public:
 	void no_Blink();
 	void backlight();
 	void no_Backlight();
-	void command(uint8_t value);
 	void write(uint8_t data);
 	void write_String(const char * string);
 	void set_Cursor(uint8_t x, uint8_t y);
@@ -79,7 +78,8 @@ public:
 	void write_Int(int data);
 
 private:
-
+	void begin();
+	void command(uint8_t value);
 	void _init_Priv();
 	void _send(uint8_t, uint8_t);
 	void _write4Bits(uint8_t value);

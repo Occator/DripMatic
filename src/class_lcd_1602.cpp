@@ -53,7 +53,6 @@ void cLCD1602::begin()
 	_delay_us(40);
 	command(LCD_CLEARDISPLAY);
 	_delay_ms(64);
-	//clear();
 }
 
 void cLCD1602::clear()
@@ -126,7 +125,6 @@ void cLCD1602::backlight()
 void cLCD1602::no_Backlight()
 {
 	_twiLCD->transmit(LCD_NOBACKLIGHT);
-//	_delay_ms(10);
 }
 void cLCD1602::command(uint8_t value)
 {
@@ -165,7 +163,6 @@ void cLCD1602::write(uint8_t data)
 
 void cLCD1602::write_String(const char * string)
 {
-
 		while(*string != '\0'){
 			write(*string);
 			string++;
@@ -195,7 +192,7 @@ void cLCD1602::set_Cursor(uint8_t x, uint8_t y )
             break;
 
         default:
-            return;                                   // für den Fall einer falschen Zeile
+            return;  // für den Fall einer falschen Zeile
     }
 
     command(data);

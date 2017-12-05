@@ -16,7 +16,8 @@ cIOPin::cIOPin(volatile uint8_t *port, const uint8_t bit, eDirection direction) 
 
 cIOPin::~cIOPin(){}
 
-void cIOPin::set_Pin(bool value){
+void cIOPin::set_Pin(bool value)
+{
 	if(value != 0){
 		*_port |= (1 << _bitVal);
 	}else{
@@ -24,19 +25,23 @@ void cIOPin::set_Pin(bool value){
 	}
 }
 
-uint8_t cIOPin::get_Pin(){
+uint8_t cIOPin::get_Pin()
+{
 	return ((*(_port - 2)) & (1 << _bitVal));
 }
 
-void cIOPin::toggle_Pin(){
+void cIOPin::toggle_Pin()
+{
 	*_port ^= (1 << _bitVal);
 }
 
-void cIOPin::toggle_Direction(){
+void cIOPin::toggle_Direction()
+{
 	*(_port - 1) ^= (1 << _bitVal);
 }
-// NOT TESTED YETs
-void cIOPin::set_Direction(bool direction){
+
+void cIOPin::set_Direction(bool direction)
+{
 	switch(direction){
 		case 0: *(_port - 1) &= ~(1 << _bitVal);
 		break;

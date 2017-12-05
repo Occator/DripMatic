@@ -23,17 +23,14 @@ public:
 	~cTWI();
 
 	void init();
+	void transmit(uint8_t data);
+private:
 	void start();
 	void stop();
 	void write(uint8_t data);
-	void transmit(uint8_t data);
 	bool get_StartFlag();
 	bool get_SlaAckFlag();
 	bool get_DataAckFlag();
-private:
-	uint8_t bcd_To_Dec(uint8_t bcdByte);
-	uint8_t dec_To_BCD(uint8_t decByte);
-	uint32_t bin_To_Hex(uint32_t binByte);
 	bool _startFlag = false;
 	bool _slaAckFlag = false;
 	bool _dataAckFlag = false;

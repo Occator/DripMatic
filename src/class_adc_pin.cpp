@@ -3,7 +3,8 @@
 #include "class_adc_pin.hpp"
 
 
-cADCPin::cADCPin(uint8_t ch){
+cADCPin::cADCPin(uint8_t ch)
+{
 	_channel = ch;
 	// keep channel in range
 	_channel &= 0x07;
@@ -11,9 +12,10 @@ cADCPin::cADCPin(uint8_t ch){
 }
 cADCPin::~cADCPin(){}
 
-void cADCPin::init(){
+void cADCPin::init()
+{
 	// set ref. Voltage [ 5V ]
-	ADMUX |= (1 << REFS0); 
+	ADMUX |= (1 << REFS0);
 	// clear ADC channel selection
 	ADMUX &= ~( (1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0) );
 	// set prescaler 128
@@ -28,7 +30,8 @@ void cADCPin::init(){
 	while(ADCSRA & (1 << ADSC)){}
 }
 
-uint16_t cADCPin::read(){
+uint16_t cADCPin::read()
+{
 	// select channel
 	ADMUX |= _channel;
 	// start conversion

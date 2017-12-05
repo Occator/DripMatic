@@ -7,7 +7,7 @@
 #include <util/delay.h>
 
 class cConfigIOPin{
-public: 
+public:
 	virtual void set_Pin(bool value) = 0;
 	virtual uint8_t get_Pin() = 0;
 	virtual void toggle_Pin() = 0;
@@ -28,13 +28,12 @@ public:
 	uint8_t get_Pin();
 	void toggle_Pin();
 	void toggle_Direction();
-	// NOT TESTED YET
 	void set_Direction(bool direction);
 private:
-	
+
 	volatile uint8_t *_port;
 	const uint8_t _bitVal;
-	eDirection _dir;	
+	eDirection _dir;
 };
 
 #endif

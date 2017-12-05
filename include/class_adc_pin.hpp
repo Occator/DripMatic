@@ -10,7 +10,6 @@ public:
 	uint16_t read();
 private:
 	uint8_t _channel;
-	// keep looking for further implementation of initializing member variables
 };
 
 #endif

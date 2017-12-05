@@ -86,7 +86,7 @@ uint8_t cDeviceRTC::read_Byte()
 	_delay_ms(50);
 
 	for(uint8_t i = 0; i < 8; i++){
-		if(PIND & (1 << 3)){  //if(_rtcIO.get_Pin())
+		if(PIND & (1 << 3)){
 			byte |= (1 << i);
 		}
 		_rtcSCLK->set_Pin(1);
