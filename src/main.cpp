@@ -30,8 +30,7 @@ int main(){
 	ds1302.set_RTC(2017, 25, 11, 14, 13, 0);
 
 	cADCPin LDR(0);
-	LDR.init();
-
+	
 	lcdTWI.init();
 
 	lcdTWI.clear();
