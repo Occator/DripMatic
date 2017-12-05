@@ -30,7 +30,8 @@ int main(){
 	ds1302.set_RTC(2017, 25, 11, 14, 13, 0);
 
 	cADCPin LDR(0);
-	
+	cADCPin TMP(2);
+
 	lcdTWI.init();
 
 	lcdTWI.clear();
@@ -45,6 +46,13 @@ int main(){
 		auto adcValue = LDR.read();
 		lcdTWI.set_Cursor(7, 2);
 		lcdTWI.write_Int(adcValue);
+		_delay_ms(500);
+
+		lcdTWI.clear();
+		lcdTWI.write_String_XY(4, 1, "Temperature");
+		auto tmpValue = TMP.read();
+		lcdTWI.set_Cursor(7, 2);
+		lcdTWI.write_Int(tmpValue);
 		_delay_ms(500);
 
 		// display date

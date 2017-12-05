@@ -1,5 +1,6 @@
 1) implement first draft of flowchart
 2) solve problem with second adc-channel
+   implement bitmask to clear bits in register
 3) implement adc interrupt
    change adc read from polling to interrupt driven
    implement in flowchart

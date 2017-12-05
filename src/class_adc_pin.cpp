@@ -32,6 +32,7 @@ void cADCPin::init()
 
 uint16_t cADCPin::read()
 {
+	ADMUX &= ~( (1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0) );
 	// select channel
 	ADMUX |= _channel;
 	// start conversion
