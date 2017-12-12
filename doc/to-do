@@ -1,8 +1,6 @@
 1) implement first draft of flowchart
-# implemented displaying date and rtcTime
-# implemented sensor measurement condition at 0, 15, 30, 45 minutes, yellowLED indicator
-# implemented threshold for irrigation, redLED indicator
 + implement formular for calculating amount of water application
++ draw flowchart as practice exercise
 2) convert tmpValue to °C
 3) implement adc interrupt
    change adc read from polling to interrupt driven
