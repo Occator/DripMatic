@@ -27,7 +27,7 @@ int main(){
 	cIOPin rtcSCLK(&PORTD, 4, cIOPin::output);
 
 	cDeviceRTC ds1302(&rtcCE, &rtcIO, &rtcSCLK);
-	ds1302.set_RTC(2017, 25, 11, 14, 13, 0);
+	ds1302.set_RTC(2017, 25, 11, 14, 14, 30);
 
 	cADCPin LDR(0);
 	cADCPin TMP(2);
@@ -35,25 +35,14 @@ int main(){
 	lcdTWI.init();
 
 	lcdTWI.clear();
-	lcdTWI.write_String("testing ADC");
+	lcdTWI.set_Cursor(1,1);
+	lcdTWI.write_String("irrigation bot");
+	lcdTWI.set_Cursor(5, 2);
+	lcdTWI.write_String("ver.01");
 	_delay_ms(3000);
 
 	for(;;)
 	{
-
-		lcdTWI.clear();
-		lcdTWI.write_String_XY(4, 1, "ADC-Value");
-		auto adcValue = LDR.read();
-		lcdTWI.set_Cursor(7, 2);
-		lcdTWI.write_Int(adcValue);
-		_delay_ms(500);
-
-		lcdTWI.clear();
-		lcdTWI.write_String_XY(4, 1, "Temperature");
-		auto tmpValue = TMP.read();
-		lcdTWI.set_Cursor(7, 2);
-		lcdTWI.write_Int(tmpValue);
-		_delay_ms(500);
 
 		// display date
 		ds1302.update_rtcTime();
@@ -123,5 +112,28 @@ int main(){
 			lcdTWI.write_Int(ds1302.rtcTime.seconds);
 		}
 		_delay_ms(1000);
+
+		if(ds1302.rtcTime.minutes == 0 || ds1302.rtcTime.minutes == 15 || ds1302.rtcTime.minutes == 30 || ds1302.rtcTime.minutes == 45)
+		{
+			lcdTWI.clear();
+			lcdTWI.write_String("start");
+			lcdTWI.write_String_XY(0, 2, "measurement...");
+			_delay_ms(500);
+			uint8_t count = 0;
+			uint32_t adcValue = 0;
+			lcdTWI.clear();
+			lcdTWI.write_String("reading Sensor");
+			while(count < 4){
+				adcValue = adcValue + LDR.read();
+				count++;
+				_delay_ms(1000);
+			}
+			auto sensorVal = adcValue / 4;
+			lcdTWI.clear();
+			lcdTWI.write_String_XY(2, 1, "Sensor value");
+			lcdTWI.set_Cursor(7, 2);
+			lcdTWI.write_Int(sensorVal);
+			_delay_ms(1000);
+		}
 	}
 }
