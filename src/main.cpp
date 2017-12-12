@@ -133,28 +133,33 @@ int main(){
 			}
 
 			yellowLED.set_Pin(0);
-			auto sensorVal = adcValue / 4;
+			auto sensorValue = adcValue / 4;
 			lcdTWI.clear();
 			lcdTWI.write_String_XY(2, 1, "Sensor value");
 			lcdTWI.set_Cursor(7, 2);
-			lcdTWI.write_Int(sensorVal);
+			lcdTWI.write_Int(sensorValue);
 			_delay_ms(1000);
-		}
-		while(sensorVal < 100)
-		{
-			lcdTWI.clear();
-			lcdTWI.write_String("start");
-			lcdTWI.write_String_XY(0, 2, "irrigation...");
-			_delay_ms(4000);
-			lcdTWI.clear();
-			lcdTWI.write_String("calculate");
-			lcdTWI.write_String_XY(0, 2, "water deficit");
-			_delay_ms(2000);
-			uint32_t irrigationValue = sensorVal;
-			while(irrigationValue < 120){
+
+			while(sensorValue < 130)
+			{
 				lcdTWI.clear();
-				lcdTWI.write_String("irrigation");
-				lcdTWI.write_String_XY(0, 2, "needed");
+				lcdTWI.write_String("start");
+				lcdTWI.write_String_XY(0, 2, "irrigation...");
+				_delay_ms(4000);
+				lcdTWI.clear();
+				lcdTWI.write_String("calculate");
+				lcdTWI.write_String_XY(0, 2, "water deficit");
+				_delay_ms(2000);
+				uint32_t irrigationValue = 160;
+				redLED.set_Pin(1);
+				while(sensorValue < irrigationValue){
+					lcdTWI.clear();
+					lcdTWI.write_String("irrigation");
+					lcdTWI.write_String_XY(0, 2, "needed");
+					_delay_ms(1000);
+					sensorValue = LDR.read();
+				}
+				redLED.set_Pin(0);
 			}
 		}
 	}
