@@ -3,6 +3,8 @@
    + draw flowchart as practice exercise
 2) convert tmpValue to °C
 3) implement timer interrupt
+http://www.engblaze.com/microcontroller-tutorial-avr-and-arduino-timer-interrupts/
+http://www.engblaze.com/we-interrupt-this-program-to-bring-you-a-tutorial-on-arduino-interrupts/
    + replace as many delays and while-loops with timer interrupts
    + change adc read from polling rtc to interrupt driven
    + implement in flowchart
