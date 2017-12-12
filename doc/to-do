@@ -1,6 +1,7 @@
 1) implement first draft of flowchart
    + implement formular for calculating amount of water application
    + draw flowchart as practice exercise
+1.1) implement equation for water deficit with tensiometer measurement
 2) implement timer interrupt
 http://www.engblaze.com/microcontroller-tutorial-avr-and-arduino-timer-interrupts/
 http://www.engblaze.com/we-interrupt-this-program-to-bring-you-a-tutorial-on-arduino-interrupts/
