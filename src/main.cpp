@@ -143,12 +143,14 @@ int main(){
 			while(sensorValue < 130)
 			{
 				lcdTWI.clear();
+				lcdTWI.write_String("calculating");
+				lcdTWI.write_String_XY(0, 2, "water deficit");
 				lcdTWI.write_String("start");
 				lcdTWI.write_String_XY(0, 2, "irrigation...");
 				_delay_ms(4000);
 				lcdTWI.clear();
-				lcdTWI.write_String("calculate");
-				lcdTWI.write_String_XY(0, 2, "water deficit");
+				lcdTWI.write_String("start");
+				lcdTWI.write_String_XY(0, 2, "irrigation...");
 				_delay_ms(2000);
 				uint32_t irrigationValue = 160;
 				redLED.set_Pin(1);
