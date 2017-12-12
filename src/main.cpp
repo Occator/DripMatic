@@ -116,6 +116,13 @@ int main(){
 		if(ds1302.rtcTime.minutes == 0 || ds1302.rtcTime.minutes == 15 || ds1302.rtcTime.minutes == 30 || ds1302.rtcTime.minutes == 45)
 		{
 			lcdTWI.clear();
+			uint32_t tempValue = TMP.read();
+			tempValue /= 4;
+			lcdTWI.write_String("Temperature");
+			lcdTWI.set_Cursor(0, 2);
+			lcdTWI.write_Int(tempValue);
+			lcdTWI.write_String(" Grad Celsius");
+			_delay_ms(2000);
 			lcdTWI.write_String("start");
 			lcdTWI.write_String_XY(0, 2, "measurement...");
 			_delay_ms(500);
