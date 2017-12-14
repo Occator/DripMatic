@@ -27,7 +27,7 @@ int main(){
 	cIOPin rtcSCLK(&PORTD, 4, cIOPin::output);
 
 	cDeviceRTC ds1302(&rtcCE, &rtcIO, &rtcSCLK);
-	ds1302.set_RTC(2017, 25, 11, 14, 14, 30);
+	ds1302.set_RTC(2017, 25, 11, 14, 14, 45);
 
 	cADCPin LDR(0);
 	cADCPin TMP(2);
