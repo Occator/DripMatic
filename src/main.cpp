@@ -123,9 +123,10 @@ int main(){
 			lcdTWI.write_Int(tempValue);
 			lcdTWI.write_String(" Grad Celsius");
 			_delay_ms(2000);
+			lcdTWI.clear();
 			lcdTWI.write_String("start");
 			lcdTWI.write_String_XY(0, 2, "measurement...");
-			_delay_ms(500);
+			_delay_ms(1000);
 			uint8_t count = 0;
 			uint32_t adcValue = 0;
 			lcdTWI.clear();
@@ -152,8 +153,6 @@ int main(){
 				lcdTWI.clear();
 				lcdTWI.write_String("calculating");
 				lcdTWI.write_String_XY(0, 2, "water deficit");
-				lcdTWI.write_String("start");
-				lcdTWI.write_String_XY(0, 2, "irrigation...");
 				_delay_ms(4000);
 				lcdTWI.clear();
 				lcdTWI.write_String("start");
