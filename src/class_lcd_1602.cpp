@@ -142,7 +142,6 @@ void cLCD1602::_send(uint8_t value, uint8_t mode)
 
 void cLCD1602::_write4Bits(uint8_t value)
 {
-	value |= LCD_BACKLIGHT;
 	_twiLCD->transmit(value & ~RW);
 	_pulseEnable(value);
 }
