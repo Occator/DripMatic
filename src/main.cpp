@@ -35,20 +35,18 @@ int main(){
 	lcdTWI.init();
 
 	lcdTWI.clear();
-	lcdTWI.set_Cursor(1,1);
+	lcdTWI.set_Cursor(3,1);
 	lcdTWI.write_String("irrigation bot");
-	lcdTWI.set_Cursor(5, 2);
+	lcdTWI.set_Cursor(7, 2);
 	lcdTWI.write_String("ver.01");
 	_delay_ms(3000);
 
 	for(;;)
 	{
-
-		// display date
 		ds1302.update_rtcTime();
 		lcdTWI.clear();
-		lcdTWI.write_String_XY(2, 1, "current date");
-		lcdTWI.set_Cursor(3, 2);
+		lcdTWI.write_String_XY(4, 1, "current date");
+		lcdTWI.set_Cursor(5, 2);
 		lcdTWI.write_Int(ds1302.rtcTime.year);
 		lcdTWI.write_String("/");
 		if(ds1302.rtcTime.month < 10)
@@ -71,13 +69,8 @@ int main(){
 			lcdTWI.write_Int(ds1302.rtcTime.date);
 		}
 
-		_delay_ms(1000);
-
-		// display time
-		ds1302.update_rtcTime();
-		lcdTWI.clear();
-		lcdTWI.write_String_XY(2, 1, "current time");
-		lcdTWI.set_Cursor(4, 2);
+		lcdTWI.write_String_XY(4, 3, "current time");
+		lcdTWI.set_Cursor(6, 4);
 		if(ds1302.rtcTime.hours < 10)
 		{
 			lcdTWI.write_String("0");
@@ -109,7 +102,6 @@ int main(){
 		{
 			lcdTWI.write_Int(ds1302.rtcTime.seconds);
 		}
-		_delay_ms(1000);
 
 		if(ds1302.rtcTime.minutes == 0 || ds1302.rtcTime.minutes == 15 || ds1302.rtcTime.minutes == 30 || ds1302.rtcTime.minutes == 45)
 		{
