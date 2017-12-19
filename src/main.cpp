@@ -134,7 +134,7 @@ int main(){
 			lcdTWI.write_String_XY(2, 1, "Sensor value");
 			lcdTWI.set_Cursor(7, 2);
 			lcdTWI.write_Int(sensorValue);
-			_delay_ms(1000);
+			_delay_ms(10000);
 
 			while(sensorValue < 19)
 			{
