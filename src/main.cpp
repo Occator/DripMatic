@@ -60,7 +60,6 @@ int main(){
 		{
 			lcdTWI.write_Int(ds1302.rtcTime.month);
 		}
-
 		lcdTWI.write_String("/");
 		if(ds1302.rtcTime.date < 10)
 		{
@@ -75,7 +74,6 @@ int main(){
 		_delay_ms(1000);
 
 		// display time
-
 		ds1302.update_rtcTime();
 		lcdTWI.clear();
 		lcdTWI.write_String_XY(2, 1, "current time");
@@ -129,8 +127,6 @@ int main(){
 			_delay_ms(1000);
 			uint8_t count = 0;
 			uint32_t adcValue = 0;
-			lcdTWI.clear();
-			lcdTWI.write_String("reading Sensor");
 			yellowLED.set_Pin(1);
 
 			while(count < 4)
@@ -139,26 +135,26 @@ int main(){
 				count++;
 				_delay_ms(1000);
 			}
-
-			yellowLED.set_Pin(0);
 			auto sensorValue = adcValue / 4;
+			yellowLED.set_Pin(0);
+
 			lcdTWI.clear();
 			lcdTWI.write_String_XY(2, 1, "Sensor value");
 			lcdTWI.set_Cursor(7, 2);
 			lcdTWI.write_Int(sensorValue);
 			_delay_ms(1000);
 
-			while(sensorValue < 130)
+			while(sensorValue < 19)
 			{
 				lcdTWI.clear();
 				lcdTWI.write_String("calculating");
 				lcdTWI.write_String_XY(0, 2, "water deficit");
-				_delay_ms(4000);
+				_delay_ms(2000);
 				lcdTWI.clear();
 				lcdTWI.write_String("start");
 				lcdTWI.write_String_XY(0, 2, "irrigation...");
 				_delay_ms(2000);
-				uint32_t irrigationValue = 160;
+				uint32_t irrigationValue = 22;
 				redLED.set_Pin(1);
 				while(sensorValue < irrigationValue){
 					lcdTWI.clear();
