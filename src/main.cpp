@@ -109,7 +109,7 @@ int main(){
 			lcdTWI.write_String("Temperature");
 			lcdTWI.set_Cursor(0, 2);
 			lcdTWI.write_Int(tempValue);
-			lcdTWI.write('-');
+			lcdTWI.write(0xDF);
 			_delay_ms(2000);
 			lcdTWI.clear();
 			lcdTWI.write_String("start");
