@@ -47,7 +47,7 @@ void cLCD1602::begin()
 
 	command(LCD_FUNCTIONSET | LCD_INTF4BITS | LCD_2LINE | LCD_5x7DOTS);
 	_delay_us(40);
-	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_CURSORON | LCD_BLINKON);  // display on, cursor on, blinking off
+	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_CURSOROFF | LCD_BLINKOFF);  // display on, cursor on, blinking off
 	_delay_us(40);
 	command(LCD_ENTRYMODESET | LCD_ENTRYINCREASE | LCD_ENTRYNOSHIFT);
 	_delay_us(40);
