@@ -40,11 +40,11 @@ int main(){
 	lcdTWI.set_Cursor(7, 2);
 	lcdTWI.write_String("ver.01");
 	_delay_ms(3000);
+	lcdTWI.clear();
 
 	for(;;)
 	{
 		ds1302.update_rtcTime();
-		lcdTWI.clear();
 		lcdTWI.write_String_XY(4, 1, "current date");
 		lcdTWI.set_Cursor(5, 2);
 		lcdTWI.write_Int(ds1302.rtcTime.year);
