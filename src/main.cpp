@@ -121,13 +121,13 @@ int main(){
 			uint32_t adcValue = 0;
 			yellowLED.set_Pin(1);
 
-			while(count < 4)
+			while(count < 20)
 			{
 				adcValue = adcValue + LDR.read();
 				count++;
 				_delay_ms(1000);
 			}
-			auto sensorValue = adcValue / 4;
+			auto sensorValue = adcValue / 20;
 			yellowLED.set_Pin(0);
 
 			lcdTWI.clear();
