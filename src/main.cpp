@@ -106,10 +106,10 @@ int main(){
 			lcdTWI.clear();
 			uint32_t tempValue = TMP.read();
 			tempValue /= 4;
-			lcdTWI.write_String("Temperature");
-			lcdTWI.set_Cursor(0, 2);
+			lcdTWI.write_String_XY(0, 2, "T:");
 			lcdTWI.write_Int(tempValue);
 			lcdTWI.write(0xDF);
+			lcdTWI.write('C');
 			_delay_ms(2000);
 			lcdTWI.clear();
 			lcdTWI.write_String("start");
