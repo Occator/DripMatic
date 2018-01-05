@@ -45,7 +45,11 @@ int main(){
 	for(;;)
 	{
 		ds1302.update_rtcTime();
+<<<<<<< HEAD
 		lcdTWI.write_String_XY(4, 1, "current date");
+=======
+		lcdTWI.clear();
+>>>>>>> master
 		lcdTWI.set_Cursor(5, 2);
 		lcdTWI.write_Int(ds1302.rtcTime.year);
 		lcdTWI.write_String("/");
@@ -69,7 +73,6 @@ int main(){
 			lcdTWI.write_Int(ds1302.rtcTime.date);
 		}
 
-		lcdTWI.write_String_XY(4, 3, "current time");
 		lcdTWI.set_Cursor(6, 4);
 		if(ds1302.rtcTime.hours < 10)
 		{
@@ -111,7 +114,7 @@ int main(){
 			lcdTWI.write_String("Temperature");
 			lcdTWI.set_Cursor(0, 2);
 			lcdTWI.write_Int(tempValue);
-			lcdTWI.write_String(" Grad Celsius");
+			lcdTWI.write(0xDF);
 			_delay_ms(2000);
 			lcdTWI.clear();
 			lcdTWI.write_String("start");
@@ -134,8 +137,12 @@ int main(){
 			lcdTWI.write_String_XY(2, 1, "Sensor value");
 			lcdTWI.set_Cursor(7, 2);
 			lcdTWI.write_Int(sensorValue);
+<<<<<<< HEAD
 			_delay_ms(1000);
 			lcdTWI.clear();
+=======
+			_delay_ms(10000);
+>>>>>>> master
 
 			while(sensorValue < 19)
 			{
