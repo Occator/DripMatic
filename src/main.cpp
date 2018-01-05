@@ -41,6 +41,7 @@ int main(){
 	lcdTWI.write_String("ver.01");
 	_delay_ms(3000);
 	lcdTWI.clear();
+	uint32_t sensorValue = 0;
 
 	for(;;)
 	{
@@ -134,6 +135,22 @@ int main(){
 		lcdTWI.write('%');
 		}
 
+		// frame_soilMoisture
+		if(sensorValue < 10)
+		{
+			lcdTWI.write_String_XY(0, 3, "SM:");
+			lcdTWI.write_Int(sensorValue);
+			lcdTWI.write('%');
+			lcdTWI.write(' ');
+		}
+		else
+		{
+		lcdTWI.write_String_XY(0, 3, "SM:");
+		lcdTWI.write_Int(sensorValue);
+		lcdTWI.write('%');
+		}
+
+
 		if(ds1302.rtcTime.minutes == 0 || ds1302.rtcTime.minutes == 15 || ds1302.rtcTime.minutes == 30 || ds1302.rtcTime.minutes == 45)
 		{
 			lcdTWI.clear();
@@ -150,7 +167,7 @@ int main(){
 				count++;
 				_delay_ms(1000);
 			}
-			auto sensorValue = adcValue / 60;
+			sensorValue = adcValue / 60;
 			yellowLED.set_Pin(0);
 
 			lcdTWI.clear();
