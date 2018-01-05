@@ -119,6 +119,21 @@ int main(){
 		lcdTWI.write('C');
 		}
 
+		// frame_relativeHumidity
+		uint8_t rhValue = 40;
+		if(rhValue < 10)
+		{
+			lcdTWI.write_String_XY(14, 2, " rh:");
+			lcdTWI.write_Int(rhValue);
+			lcdTWI.write('%');
+		}
+		else
+		{
+		lcdTWI.write_String_XY(14, 2, "rh:");
+		lcdTWI.write_Int(rhValue);
+		lcdTWI.write('%');
+		}
+
 		if(ds1302.rtcTime.minutes == 0 || ds1302.rtcTime.minutes == 15 || ds1302.rtcTime.minutes == 30 || ds1302.rtcTime.minutes == 45)
 		{
 			lcdTWI.clear();
