@@ -45,6 +45,7 @@ int main(){
 	for(;;)
 	{
 		ds1302.update_rtcTime();
+		// frame_date
 		lcdTWI.set_Cursor(0, 0);
 		lcdTWI.write_Int(ds1302.rtcTime.year);
 		lcdTWI.write_String("/");
@@ -67,7 +68,7 @@ int main(){
 		{
 			lcdTWI.write_Int(ds1302.rtcTime.date);
 		}
-
+		// frame_time
 		lcdTWI.set_Cursor(12, 0);
 		if(ds1302.rtcTime.hours < 10)
 		{
@@ -100,17 +101,26 @@ int main(){
 		{
 			lcdTWI.write_Int(ds1302.rtcTime.seconds);
 		}
-
-		if(ds1302.rtcTime.minutes == 0 || ds1302.rtcTime.minutes == 15 || ds1302.rtcTime.minutes == 30 || ds1302.rtcTime.minutes == 45)
+		// frame_temperature
+		uint32_t tempValue = TMP.read();
+		tempValue /= 4;
+		if(tempValue < 10)
 		{
-			lcdTWI.clear();
-			uint32_t tempValue = TMP.read();
-			tempValue /= 4;
 			lcdTWI.write_String_XY(0, 2, "T:");
 			lcdTWI.write_Int(tempValue);
 			lcdTWI.write(0xDF);
-			lcdTWI.write('C');
-			_delay_ms(2000);
+			lcdTWI.write_String("C ");
+		}
+		else
+		{
+		lcdTWI.write_String_XY(0, 2, "T:");
+		lcdTWI.write_Int(tempValue);
+		lcdTWI.write(0xDF);
+		lcdTWI.write('C');
+		}
+
+		if(ds1302.rtcTime.minutes == 0 || ds1302.rtcTime.minutes == 15 || ds1302.rtcTime.minutes == 30 || ds1302.rtcTime.minutes == 45)
+		{
 			lcdTWI.clear();
 			lcdTWI.write_String("start");
 			lcdTWI.write_String_XY(0, 2, "measurement...");
