@@ -159,16 +159,19 @@ int main(){
 			_delay_ms(1000);
 			uint8_t count = 0;
 			uint32_t adcValue = 0;
-			yellowLED.set_Pin(1);
+
 
 			while(count < 60)
 			{
+				yellowLED.set_Pin(1);
 				adcValue = adcValue + LDR.read();
 				count++;
-				_delay_ms(1000);
+				_delay_ms(500);
+				yellowLED.set_Pin(0);
+				_delay_ms(500);
 			}
 			sensorValue = adcValue / 60;
-			yellowLED.set_Pin(0);
+
 
 			lcdTWI.clear();
 			lcdTWI.write_String_XY(2, 1, "Sensor value");
