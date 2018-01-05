@@ -45,7 +45,7 @@ int main(){
 	for(;;)
 	{
 		ds1302.update_rtcTime();
-		lcdTWI.set_Cursor(5, 2);
+		lcdTWI.set_Cursor(0, 0);
 		lcdTWI.write_Int(ds1302.rtcTime.year);
 		lcdTWI.write_String("/");
 		if(ds1302.rtcTime.month < 10)
@@ -68,7 +68,7 @@ int main(){
 			lcdTWI.write_Int(ds1302.rtcTime.date);
 		}
 
-		lcdTWI.set_Cursor(6, 4);
+		lcdTWI.set_Cursor(12, 0);
 		if(ds1302.rtcTime.hours < 10)
 		{
 			lcdTWI.write_String("0");

@@ -174,19 +174,19 @@ void cLCD1602::set_Cursor(uint8_t x, uint8_t y )
 
     switch (y)
     {
-        case 1:    // 1. Zeile
+        case 0:    // 1. Zeile
             data = LCD_SET_DDADR + LCD_DDADR_LINE1 + x;
             break;
 
-        case 2:    // 2. Zeile
+        case 1:    // 2. Zeile
             data = LCD_SET_DDADR + LCD_DDADR_LINE2 + x;
             break;
 
-        case 3:    // 3. Zeile
+        case 2:    // 3. Zeile
             data = LCD_SET_DDADR + LCD_DDADR_LINE3 + x;
             break;
 
-        case 4:    // 4. Zeile
+        case 3:    // 4. Zeile
             data = LCD_SET_DDADR + LCD_DDADR_LINE4 + x;
             break;
 
