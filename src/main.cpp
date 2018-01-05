@@ -121,13 +121,13 @@ int main(){
 			uint32_t adcValue = 0;
 			yellowLED.set_Pin(1);
 
-			while(count < 20)
+			while(count < 60)
 			{
 				adcValue = adcValue + LDR.read();
 				count++;
 				_delay_ms(1000);
 			}
-			auto sensorValue = adcValue / 20;
+			auto sensorValue = adcValue / 60;
 			yellowLED.set_Pin(0);
 
 			lcdTWI.clear();
@@ -135,14 +135,10 @@ int main(){
 			lcdTWI.set_Cursor(7, 2);
 			lcdTWI.write_Int(sensorValue);
 			_delay_ms(1000);
+			lcdTWI.clear();
 
 			while(sensorValue < 19)
 			{
-				lcdTWI.clear();
-				lcdTWI.write_String("calculating");
-				lcdTWI.write_String_XY(0, 2, "water deficit");
-				_delay_ms(2000);
-				lcdTWI.clear();
 				lcdTWI.write_String("start");
 				lcdTWI.write_String_XY(0, 2, "irrigation...");
 				_delay_ms(2000);
@@ -156,6 +152,7 @@ int main(){
 					sensorValue = LDR.read();
 				}
 				redLED.set_Pin(0);
+				lcdTWI.clear();
 			}
 		}
 	}
