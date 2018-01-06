@@ -10,18 +10,6 @@ cLCD1602::~cLCD1602()
 
 }
 
-cLCD1602::cLCD1602(cTWI *twiDevice, uint8_t column, uint8_t row, uint16_t data)
-: _twiLCD(twiDevice)
-{
-	write_Int_XY(column, row, data);
-}
-
-cLCD1602::cLCD1602(cTWI *twiDevice, uint8_t column, uint8_t row, const char * string)
-: _twiLCD(twiDevice)
-{
-	write_String_XY(column, row, string);
-}
-
 void cLCD1602::init()
 {
 	_init_Priv();

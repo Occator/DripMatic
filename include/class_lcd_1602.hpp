@@ -56,8 +56,6 @@ class cLCD1602{
 public:
 
 	cLCD1602(cTWI *twiDevice);
-	cLCD1602(cTWI *twiDevice, uint8_t column, uint8_t row, uint16_t data);
-	cLCD1602(cTWI *twiDevice, uint8_t column, uint8_t row, const char * string);
 	~cLCD1602();
 
 

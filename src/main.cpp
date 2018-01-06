@@ -9,6 +9,9 @@
 #include "class_pin_io.hpp"
 #include "class_rtc_3w.hpp"
 
+void display_Date_Frame(cLCD1602 *lcd, cDeviceRTC *clock);
+void display_Time_Frame(cLCD1602 *lcd, cDeviceRTC *clock);
+
 
 int main(){
 
@@ -31,11 +34,8 @@ int main(){
 	cADCPin TMP(2);
 
 	cLCD1602 lcdTWI(&twiIOexpander);
-	cLCD1602 lcdFrameDate(&twiIOexpander, 0, 0, ds1302.rtcTime.year);
-
 	lcdTWI.init();
 
-	lcdTWI.clear();
 	lcdTWI.set_Cursor(3,1);
 	lcdTWI.write_String("irrigation bot");
 	lcdTWI.set_Cursor(7, 2);
@@ -47,62 +47,9 @@ int main(){
 	for(;;)
 	{
 		ds1302.update_rtcTime();
-		// frame_date
-		lcdTWI.set_Cursor(0, 0);
-		lcdTWI.write_Int(ds1302.rtcTime.year);
-		lcdTWI.write_String("/");
-		if(ds1302.rtcTime.month < 10)
-		{
-			 lcdTWI.write_String("0");
-			 lcdTWI.write_Int(ds1302.rtcTime.month);
-		}
-		else
-		{
-			lcdTWI.write_Int(ds1302.rtcTime.month);
-		}
-		lcdTWI.write_String("/");
-		if(ds1302.rtcTime.date < 10)
-		{
-			 lcdTWI.write_String("0");
-			 lcdTWI.write_Int(ds1302.rtcTime.date);
-		}
-		else
-		{
-			lcdTWI.write_Int(ds1302.rtcTime.date);
-		}
-		// frame_time
-		lcdTWI.set_Cursor(12, 0);
-		if(ds1302.rtcTime.hours < 10)
-		{
-			lcdTWI.write_String("0");
-			lcdTWI.write_Int(ds1302.rtcTime.hours);
-			lcdTWI.write_String(":");
-		}
-		else
-		{
-			lcdTWI.write_Int(ds1302.rtcTime.hours);
-			lcdTWI.write_String(":");
-		}
-		if(ds1302.rtcTime.minutes < 10)
-		{
-			lcdTWI.write_String("0");
-			lcdTWI.write_Int(ds1302.rtcTime.minutes);
-			lcdTWI.write_String(":");
-		}
-		else
-		{
-			lcdTWI.write_Int(ds1302.rtcTime.minutes);
-			lcdTWI.write_String(":");
-		}
-		if(ds1302.rtcTime.seconds < 10)
-		{
-			lcdTWI.write_String("0");
-			lcdTWI.write_Int(ds1302.rtcTime.seconds);
-		}
-		else
-		{
-			lcdTWI.write_Int(ds1302.rtcTime.seconds);
-		}
+
+		display_Date_Frame(&lcdTWI, &ds1302);
+		display_Time_Frame(&lcdTWI, &ds1302);
 		// frame_temperature
 		uint32_t tempValue = TMP.read();
 		tempValue /= 4;
@@ -151,7 +98,6 @@ int main(){
 		lcdTWI.write('%');
 		}
 
-
 		if(ds1302.rtcTime.minutes == 0 || ds1302.rtcTime.minutes == 15 || ds1302.rtcTime.minutes == 30 || ds1302.rtcTime.minutes == 45)
 		{
 			lcdTWI.clear();
@@ -160,7 +106,6 @@ int main(){
 			_delay_ms(1000);
 			uint8_t count = 0;
 			uint32_t adcValue = 0;
-
 
 			while(count < 60)
 			{
@@ -172,7 +117,6 @@ int main(){
 				_delay_ms(500);
 			}
 			sensorValue = adcValue / 60;
-
 
 			lcdTWI.clear();
 			lcdTWI.write_String_XY(2, 1, "Sensor value");
@@ -199,5 +143,68 @@ int main(){
 				lcdTWI.clear();
 			}
 		}
+	}
+}
+
+void display_Date_Frame(cLCD1602 *lcd, cDeviceRTC *clock)
+{
+	lcd->set_Cursor(0, 0);
+	// frame_date
+	lcd->write_Int(clock->rtcTime.year);
+	lcd->write_String("/");
+	if(clock->rtcTime.month < 10)
+	{
+		 lcd->write_String("0");
+		 lcd->write_Int(clock->rtcTime.month);
+	}
+	else
+	{
+		lcd->write_Int(clock->rtcTime.month);
+	}
+	lcd->write_String("/");
+	if(clock->rtcTime.date < 10)
+	{
+		 lcd->write_String("0");
+		 lcd->write_Int(clock->rtcTime.date);
+	}
+	else
+	{
+		lcd->write_Int(clock->rtcTime.date);
+	}
+}
+
+void display_Time_Frame(cLCD1602 *lcd, cDeviceRTC *clock)
+{
+	lcd->set_Cursor(12, 0);
+	if(clock->rtcTime.hours < 10)
+	{
+		lcd->write_String("0");
+		lcd->write_Int(clock->rtcTime.hours);
+		lcd->write_String(":");
+	}
+	else
+	{
+		lcd->write_Int(clock->rtcTime.hours);
+		lcd->write_String(":");
+	}
+	if(clock->rtcTime.minutes < 10)
+	{
+		lcd->write_String("0");
+		lcd->write_Int(clock->rtcTime.minutes);
+		lcd->write_String(":");
+	}
+	else
+	{
+		lcd->write_Int(clock->rtcTime.minutes);
+		lcd->write_String(":");
+	}
+	if(clock->rtcTime.seconds < 10)
+	{
+		lcd->write_String("0");
+		lcd->write_Int(clock->rtcTime.seconds);
+	}
+	else
+	{
+		lcd->write_Int(clock->rtcTime.seconds);
 	}
 }
