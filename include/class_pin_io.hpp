@@ -4,7 +4,6 @@
 #define CLASS_IO_PIN_H
 
 #include <avr/io.h>
-#include <util/delay.h>
 
 class cConfigIOPin{
 public:
