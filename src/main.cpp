@@ -21,7 +21,6 @@ int main(){
 	cIOPin yellowLED(&PORTB, 3, cIOPin::output);
 	cIOPin greenLED(&PORTB, 2, cIOPin::output);
 
-
 	// define RTC control pins
 	cIOPin rtcCE(&PORTD, 2, cIOPin::output);
 	cIOPin rtcIO(&PORTD, 3, cIOPin::output);
@@ -50,6 +49,7 @@ int main(){
 
 		display_Date_Frame(&lcdTWI, &ds1302);
 		display_Time_Frame(&lcdTWI, &ds1302);
+
 		// frame_temperature
 		uint32_t tempValue = TMP.read();
 		tempValue /= 4;
