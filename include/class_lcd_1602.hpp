@@ -56,6 +56,8 @@ class cLCD1602{
 public:
 
 	cLCD1602(cTWI *twiDevice);
+	cLCD1602(cTWI *twiDevice, uint8_t column, uint8_t row, uint16_t data);
+	cLCD1602(cTWI *twiDevice, uint8_t column, uint8_t row, const char * string);
 	~cLCD1602();
 
 
@@ -74,7 +76,7 @@ public:
 	void write_String(const char * string);
 	void set_Cursor(uint8_t x, uint8_t y);
 	void write_String_XY(uint8_t x, uint8_t y, const char * string);
-	void write_Int_XY(uint8_t x, uint8_t y, int data);
+	void write_Int_XY(uint8_t x, uint8_t y, uint16_t data);
 	void write_Int(int data);
 
 private:

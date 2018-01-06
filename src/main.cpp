@@ -13,8 +13,6 @@
 int main(){
 
 	cTWI twiIOexpander(0x4E);
-	cLCD1602 lcdTWI(&twiIOexpander);
-
 
 	cIOPin redLED(&PORTB, 4, cIOPin::output);
 	cIOPin yellowLED(&PORTB, 3, cIOPin::output);
@@ -31,6 +29,9 @@ int main(){
 
 	cADCPin LDR(0);
 	cADCPin TMP(2);
+
+	cLCD1602 lcdTWI(&twiIOexpander);
+	cLCD1602 lcdFrameDate(&twiIOexpander, 0, 0, ds1302.rtcTime.year);
 
 	lcdTWI.init();
 
