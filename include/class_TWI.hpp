@@ -24,16 +24,13 @@ public:
 
 	void init();
 	void transmit(uint8_t data);
+	uint8_t receive()	;
 private:
 	void start();
 	void stop();
 	void write(uint8_t data);
-	bool get_StartFlag();
-	bool get_SlaAckFlag();
-	bool get_DataAckFlag();
-	bool _startFlag = false;
-	bool _slaAckFlag = false;
-	bool _dataAckFlag = false;
+	uint8_t read();
+
 	uint8_t _devAddr;
 };
 

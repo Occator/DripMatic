@@ -17,31 +17,16 @@ void cTWI::init()
 
 void cTWI::start()
 {
-	// reset status flag
-	_startFlag = false;
-	_slaAckFlag = false;
 	TWCR = 0;
 	// transmit START condition
 	TWCR = (1 << TWINT) | (1 << TWSTA) | (1 << TWEN);
 	while( !(TWCR & (1 << TWINT)) );
-
-	// check if start condition was successfully transmitted
-	if( (TWSR & 0xF8) == TWI_START )
-	{
-		_startFlag = true;
-	}
 
 	// load slave address into data register
 	TWDR = _devAddr;
 	// start transmission of address
 	TWCR = (1 << TWINT) | (1 << TWEN);
 	while( !(TWCR & (1 << TWINT)) );
-
-	// check if slave address was successfully transmitted
-	if( (TWSR & 0xF8) == SLA_W_ACK )
-	{
-		_slaAckFlag = true;
-	}
 }
 
 void cTWI::stop()
@@ -51,18 +36,20 @@ void cTWI::stop()
 
 void cTWI::write(uint8_t data)
 {
-	// reset status flag
-	_dataAckFlag = false;
 	// load data into data register
 	TWDR = data;
 	// start transmission of data
 	TWCR = (1 << TWINT) | (1 << TWEN);
-	while( !(TWCR & (1 << TWINT)) );
-
-	if( (TWSR & 0xF8) == DATA_ACK){
-		_dataAckFlag = true;
-	}
+	while( !(TWCR & (1 << TWINT) ) );
 }
+
+uint8_t cTWI::read()
+{
+	TWCR = (1<<TWINT) | (1<<TWEA) | (1<<TWEN);
+	while (! (TWCR & (1<<TWINT) ) );
+	return TWDR;
+}
+
 
 void cTWI::transmit(uint8_t data)
 {
@@ -71,17 +58,11 @@ void cTWI::transmit(uint8_t data)
 	stop();
 }
 
-bool cTWI::get_StartFlag()
+uint8_t cTWI::receive()
 {
-	return _startFlag;
-}
-
-bool cTWI::get_SlaAckFlag()
-{
-	return _slaAckFlag;
-}
-
-bool cTWI::get_DataAckFlag()
-{
-	return _dataAckFlag;
+	uint8_t rByte = 0;
+	start();
+	rByte = read();
+	stop();
+	return rByte;
 }
