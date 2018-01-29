@@ -1,4 +1,3 @@
-
 # Project
 TARGET = autspir
 OBJECTS = build/main.o build/class_adc_pin.o build/class_TWI.o build/class_lcd_1602.o build/class_pin_io.o build/class_rtc_3w.o
