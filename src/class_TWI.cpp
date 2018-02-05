@@ -9,48 +9,6 @@ cTWI::cTWI(uint8_t devAddress) : _devAddr(devAddress)
 }
 cTWI::~cTWI(){}
 
-void cTWI::init()
-{
-	TWSR = 0;
-	TWBR = (uint8_t)TWBR_VALUE;
-}
-
-void cTWI::start()
-{
-	TWCR = 0;
-	// transmit START condition
-	TWCR = (1 << TWINT) | (1 << TWSTA) | (1 << TWEN);
-	while( !(TWCR & (1 << TWINT)) );
-
-	// load slave address into data register
-	TWDR = _devAddr;
-	// start transmission of address
-	TWCR = (1 << TWINT) | (1 << TWEN);
-	while( !(TWCR & (1 << TWINT)) );
-}
-
-void cTWI::stop()
-{
-	TWCR = (1 << TWINT) | (1 << TWSTO) | (1 << TWEN);
-}
-
-void cTWI::write(uint8_t data)
-{
-	// load data into data register
-	TWDR = data;
-	// start transmission of data
-	TWCR = (1 << TWINT) | (1 << TWEN);
-	while( !(TWCR & (1 << TWINT) ) );
-}
-
-uint8_t cTWI::read()
-{
-	TWCR = (1<<TWINT) | (1<<TWEA) | (1<<TWEN);
-	while (! (TWCR & (1<<TWINT) ) );
-	return TWDR;
-}
-
-
 void cTWI::transmit(uint8_t data)
 {
 	start();
@@ -65,4 +23,39 @@ uint8_t cTWI::receive()
 	rByte = read();
 	stop();
 	return rByte;
+}
+
+void cTWI::init()
+{
+	TWSR = 0;
+	TWBR = (uint8_t)TWBR_VALUE;
+}
+
+void cTWI::start()
+{
+	TWCR = 0;
+	TWCR = (1 << TWINT) | (1 << TWSTA) | (1 << TWEN);
+	while( !(TWCR & (1 << TWINT)) );
+	TWDR = _devAddr;
+	TWCR = (1 << TWINT) | (1 << TWEN);
+	while( !(TWCR & (1 << TWINT)) );
+}
+
+void cTWI::stop()
+{
+	TWCR = (1 << TWINT) | (1 << TWSTO) | (1 << TWEN);
+}
+
+void cTWI::write(uint8_t data)
+{
+	TWDR = data;
+	TWCR = (1 << TWINT) | (1 << TWEN);
+	while( !(TWCR & (1 << TWINT) ) );
+}
+
+uint8_t cTWI::read()
+{
+	TWCR = (1<<TWINT) | (1<<TWEA) | (1<<TWEN);
+	while (! (TWCR & (1<<TWINT) ) );
+	return TWDR;
 }

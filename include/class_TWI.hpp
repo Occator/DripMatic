@@ -8,7 +8,7 @@
 
 #define F_CPU 16000000UL
 #define S_CLK 400000UL
-#define TWBR_VALUE (((F_CPU / S_CLK) - 16) / 2)
+#define TWBR_VALUE ( ( (F_CPU / S_CLK) - 16) / 2)
 
 // status-codes for Master Transmit Mode (MT-Mode)
 #define TWI_START 0x08U
