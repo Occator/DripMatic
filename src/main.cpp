@@ -50,98 +50,26 @@ int main(){
 		display_Date_Frame(&lcdTWI, &ds1302);
 		display_Time_Frame(&lcdTWI, &ds1302);
 
-		// frame_temperature
-		uint32_t tempValue = TMP.read();
-		tempValue /= 4;
-		if(tempValue < 10)
-		{
-			lcdTWI.write_String_XY(0, 2, "T:");
-			lcdTWI.write_Int(tempValue);
-			lcdTWI.write(0xDF);
-			lcdTWI.write_String("C ");
-		}
-		else
-		{
-		lcdTWI.write_String_XY(0, 2, "T:");
-		lcdTWI.write_Int(tempValue);
-		lcdTWI.write(0xDF);
-		lcdTWI.write('C');
-		}
+		uint8_t count = 0;
+		uint32_t adcValue = 0;
 
-		// frame_relativeHumidity
-		uint8_t rhValue = 40;
-		if(rhValue < 10)
+		while(count < 60)
 		{
-			lcdTWI.write_String_XY(14, 2, " rh:");
-			lcdTWI.write_Int(rhValue);
-			lcdTWI.write('%');
+			yellowLED.set_Pin(1);
+			adcValue = adcValue + LDR.read();
+			count++;
+			yellowLED.set_Pin(0);
 		}
-		else
+		sensorValue = adcValue / 60;
+		lcdTWI.write_String_XY(2, 2, "Sensor value");
+		lcdTWI.set_Cursor(7, 3);
+		if(sensorValue < 1000)
 		{
-		lcdTWI.write_String_XY(14, 2, "rh:");
-		lcdTWI.write_Int(rhValue);
-		lcdTWI.write('%');
-		}
-
-		// frame_soilMoisture
-		if(sensorValue < 10)
-		{
-			lcdTWI.write_String_XY(0, 3, "SM:");
 			lcdTWI.write_Int(sensorValue);
-			lcdTWI.write('%');
-			lcdTWI.write(' ');
 		}
 		else
 		{
-		lcdTWI.write_String_XY(0, 3, "SM:");
-		lcdTWI.write_Int(sensorValue);
-		lcdTWI.write('%');
-		}
-
-		if(ds1302.rtcTime.minutes == 0 || ds1302.rtcTime.minutes == 15 || ds1302.rtcTime.minutes == 30 || ds1302.rtcTime.minutes == 45)
-		{
-			lcdTWI.clear();
-			lcdTWI.write_String("start");
-			lcdTWI.write_String_XY(0, 2, "measurement...");
-			_delay_ms(1000);
-			uint8_t count = 0;
-			uint32_t adcValue = 0;
-
-			while(count < 60)
-			{
-				yellowLED.set_Pin(1);
-				adcValue = adcValue + LDR.read();
-				count++;
-				_delay_ms(500);
-				yellowLED.set_Pin(0);
-				_delay_ms(500);
-			}
-			sensorValue = adcValue / 60;
-
-			lcdTWI.clear();
-			lcdTWI.write_String_XY(2, 1, "Sensor value");
-			lcdTWI.set_Cursor(7, 2);
 			lcdTWI.write_Int(sensorValue);
-			_delay_ms(1000);
-			lcdTWI.clear();
-
-			while(sensorValue < 19)
-			{
-				lcdTWI.write_String("start");
-				lcdTWI.write_String_XY(0, 2, "irrigation...");
-				_delay_ms(2000);
-				uint32_t irrigationValue = 22;
-				redLED.set_Pin(1);
-				while(sensorValue < irrigationValue){
-					lcdTWI.clear();
-					lcdTWI.write_String("irrigation");
-					lcdTWI.write_String_XY(0, 2, "needed");
-					_delay_ms(1000);
-					sensorValue = LDR.read();
-				}
-				redLED.set_Pin(0);
-				lcdTWI.clear();
-			}
 		}
 	}
 }
