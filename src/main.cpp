@@ -17,9 +17,13 @@ int main(){
 
 	cTWI twiIOexpander(0x4E);
 
-	cIOPin redLED(&PORTB, 4, cIOPin::output);
+	cIOPin redLED(&PORTB, 2, cIOPin::output);
 	cIOPin yellowLED(&PORTB, 3, cIOPin::output);
-	cIOPin greenLED(&PORTB, 2, cIOPin::output);
+	cIOPin greenLED(&PORTB, 4, cIOPin::output);
+
+	redLED.set_Pin(1);
+	yellowLED.set_Pin(1);
+	greenLED.set_Pin(1);
 
 	// define RTC control pins
 	cIOPin rtcCE(&PORTD, 2, cIOPin::output);
@@ -50,27 +54,13 @@ int main(){
 		display_Date_Frame(&lcdTWI, &ds1302);
 		display_Time_Frame(&lcdTWI, &ds1302);
 
-		uint8_t count = 0;
 		uint32_t adcValue = 0;
 
-		while(count < 60)
-		{
-			yellowLED.set_Pin(1);
-			adcValue = adcValue + LDR.read();
-			count++;
-			yellowLED.set_Pin(0);
-		}
-		sensorValue = adcValue / 60;
-		lcdTWI.write_String_XY(2, 2, "Sensor value");
-		lcdTWI.set_Cursor(7, 3);
-		if(sensorValue < 1000)
-		{
-			lcdTWI.write_Int(sensorValue);
-		}
-		else
-		{
-			lcdTWI.write_Int(sensorValue);
-		}
+		adcValue = LDR.read();
+		lcdTWI.write_String_XY(5, 2, "ADC-value");
+		lcdTWI.set_Cursor(8, 3);
+		lcdTWI.write_Int(adcValue - 90);
+		lcdTWI.write_String("  ");
 	}
 }
 
