@@ -33,9 +33,6 @@ int main(){
 	cDeviceRTC ds1302(&rtcCE, &rtcIO, &rtcSCLK);
 	ds1302.set_RTC(2017, 25, 11, 14, 14, 45);
 
-	cADCPin LDR(0);
-	cADCPin TMP(2);
-
 	cLCD1602 lcdTWI(&twiIOexpander);
 	lcdTWI.init();
 
