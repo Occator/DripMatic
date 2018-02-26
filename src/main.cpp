@@ -14,24 +14,25 @@ void display_Time_Frame(cLCD1602 *lcd, cDeviceRTC *clock);
 
 
 int main(){
-
-	cTWI twiIOexpander(0x4E);
-
 	cIOPin redLED(&PORTB, 2, cIOPin::output);
 	cIOPin yellowLED(&PORTB, 3, cIOPin::output);
 	cIOPin greenLED(&PORTB, 4, cIOPin::output);
-
-	redLED.set_Pin(1);
-	yellowLED.set_Pin(1);
-	greenLED.set_Pin(1);
 
 	// define RTC control pins
 	cIOPin rtcCE(&PORTD, 2, cIOPin::output);
 	cIOPin rtcIO(&PORTD, 3, cIOPin::output);
 	cIOPin rtcSCLK(&PORTD, 4, cIOPin::output);
 
+	cTWI twiIOexpander(0x4E);
+
 	cDeviceRTC ds1302(&rtcCE, &rtcIO, &rtcSCLK);
 	ds1302.set_RTC(2017, 25, 11, 14, 14, 45);
+
+	cADCPin Tensiometer(0);
+
+	redLED.set_Pin(1);
+	yellowLED.set_Pin(1);
+	greenLED.set_Pin(1);
 
 	cLCD1602 lcdTWI(&twiIOexpander);
 	lcdTWI.init();
@@ -53,7 +54,7 @@ int main(){
 
 		uint32_t adcValue = 0;
 
-		adcValue = LDR.read();
+		adcValue = Tensiometer.read();
 		lcdTWI.write_String_XY(5, 2, "ADC-value");
 		lcdTWI.set_Cursor(8, 3);
 		lcdTWI.write_Int(adcValue - 90);
