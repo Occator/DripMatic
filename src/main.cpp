@@ -77,9 +77,24 @@ int main(){
 			lcdTWI.write_Int(lastValue);
 			lcdTWI.write_String_XY(0, 3, "current: ");
 			lcdTWI.write_Int(currentValue);
-			_delay_ms(5000);
+			_delay_ms(3000);
 			lcdTWI.clear();
-
+			uint16_t thresholdValue = (1023 * 40) / 100;
+			if(currentValue < thresholdValue)
+			{
+				lcdTWI.write_String_XY(0, 0, "calculate");
+				lcdTWI.write_String_XY(0, 1, "water deficit...");
+				_delay_ms(100);
+				uint16_t irrigationValue = 900;
+				while(currentValue < irrigationValue)
+				{
+					redLED.toggle_Pin();
+					currentValue = Tensiometer.read();
+					_delay_ms(250);
+				}
+				redLED.set_Pin(0);
+			}
+			lcdTWI.clear();
 			greenLED.set_Pin(1);
 		}
 	}
