@@ -12,7 +12,6 @@
 void display_Date_Frame(cLCD1602 *lcd, cDeviceRTC *clock);
 void display_Time_Frame(cLCD1602 *lcd, cDeviceRTC *clock);
 
-
 int main(){
 
 	cTWI twiIOexpander(0x4E);
@@ -26,7 +25,7 @@ int main(){
 	cIOPin rtcIO(&PORTD, 3, cIOPin::output);
 	cIOPin rtcSCLK(&PORTD, 4, cIOPin::output);
 
-	cADCPin tensiometer(0);
+	cADCPin Tensiometer(0);
 
 	cDeviceRTC ds1302(&rtcCE, &rtcIO, &rtcSCLK);
 	ds1302.set_RTC(2017, 25, 11, 14, 14, 45);
@@ -40,7 +39,9 @@ int main(){
 	lcdTWI.write_String("ver.01");
 	_delay_ms(3000);
 	lcdTWI.clear();
-	uint32_t sensorValue = 0;
+
+	uint16_t currentValue = 0;
+	uint16_t lastValue;
 
 	for(;;)
 	{
@@ -50,16 +51,37 @@ int main(){
 		display_Date_Frame(&lcdTWI, &ds1302);
 		display_Time_Frame(&lcdTWI, &ds1302);
 
-		int32_t adcValue = 0;
-		int32_t lastValue = 0;
-		int32_t currentValue = 0;
-
-		lcdTWI.write_String_XY(1, 1, "Tensiometer-Value");
-		lcdTWI.write_String_XY(0, 2, "last Value: ");
-		lcdTWI.write_Int(lastValue);
-		lcdTWI.write_String_XY(0, 3, "current Value: ");
+		lcdTWI.write_String_XY(0, 2, "SWC-Value:");
 		lcdTWI.write_Int(currentValue);
 
+		if( (ds1302.rtcTime.minutes == 0) || (ds1302.rtcTime.minutes == 15) ||
+				(ds1302.rtcTime.minutes == 30) || (ds1302.rtcTime.minutes == 45) )
+		{
+			lcdTWI.clear();
+			greenLED.set_Pin(0);
+			lastValue = currentValue;
+			uint16_t adcValue = 0;
+			uint8_t count = 0;
+			while(count < 100)
+			{
+				lcdTWI.write_String_XY(0, 0, "reading sensor...");
+				yellowLED.toggle_Pin();
+				adcValue = adcValue + Tensiometer.read();
+				count++;
+				_delay_ms(500);
+			}
+			currentValue = adcValue / 100;
+
+			lcdTWI.write_String_XY(0, 0, "Tensiometer-Value");
+			lcdTWI.write_String_XY(0, 2, "last: ");
+			lcdTWI.write_Int(lastValue);
+			lcdTWI.write_String_XY(0, 3, "current: ");
+			lcdTWI.write_Int(currentValue);
+			_delay_ms(5000);
+			lcdTWI.clear();
+
+			greenLED.set_Pin(1);
+		}
 	}
 }
 
