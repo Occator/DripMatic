@@ -1,5 +1,3 @@
-// tested and worked at 2017/09/12 16:17
-
 #ifndef CLASS_IO_PIN_H
 #define CLASS_IO_PIN_H
 
