@@ -1,7 +1,7 @@
 #ifndef LCD_MODULE_H
 #define LCD_MODULE_H
 
-#include "TWI.h"
+#include "twi_module.h"
 #include <stdlib.h>
 
 // commands

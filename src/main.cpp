@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "TWI.h"
+#include "twi_module.h"
 #include "lcd_module.h"
 #include "adc_pin.h"
 #include "pin_io.h"

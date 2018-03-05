@@ -1,6 +1,6 @@
 // tested and worked at 2017/09/28 22:06
 
-#include "TWI.h"
+#include "twi_module.h"
 
 
 cTWI::cTWI(uint8_t devAddress) : _devAddr(devAddress)
