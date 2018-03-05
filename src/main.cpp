@@ -19,5 +19,6 @@ int main(){
 	{
 		microSDCard.master_transmit(data);
 		data++;
+		_delay_ms(2000);
 	}
 }
