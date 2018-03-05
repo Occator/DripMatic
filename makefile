@@ -1,7 +1,7 @@
 # Project
 TARGET = autspir
-OBJECTS = build/main.o build/adc_pin.o build/twi_module.o build/lcd_module.o build/pin_io.o build/rtc_3w.o build/spi_module.o
-
+OBJECTS = build/main.o build/adc_pin.o build/twi_module.o build/lcd_module.o
+OBJECTS += build/pin_io.o build/rtc_3w.o build/spi_module.o
 # chip and project specific global definitons
 MCU = atmega328p
 F_CPU = 16000000UL
