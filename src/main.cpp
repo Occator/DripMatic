@@ -3,11 +3,11 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "class_TWI.h"
-#include "class_lcd_1602.h"
-#include "class_adc_pin.h"
-#include "class_pin_io.h"
-#include "class_rtc_3w.h"
+#include "TWI.h"
+#include "lcd_1602.h"
+#include "adc_pin.h"
+#include "pin_io.h"
+#include "rtc_3w.h"
 #include "spi_module.h"
 
 int main(){

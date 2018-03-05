@@ -1,6 +1,6 @@
 #include <avr/io.h>
 #include <stdint.h>
-#include "class_adc_pin.h"
+#include "adc_pin.h"
 
 
 cADCPin::cADCPin(uint8_t ch)

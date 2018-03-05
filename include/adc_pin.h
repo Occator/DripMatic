@@ -1,5 +1,5 @@
-#ifndef CLASS_ADC_PIN_H
-#define CLASS_ADC_PIN_H
+#ifndef ADC_PIN_H
+#define ADC_PIN_H
 
 class cADCPin {
 public:

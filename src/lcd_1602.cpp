@@ -1,5 +1,5 @@
 #include <util/delay.h>
-#include "class_lcd_1602.h"
+#include "lcd_1602.h"
 
 cLCD1602::cLCD1602(cTWI *twiDevice) : _twiLCD(twiDevice)
 {

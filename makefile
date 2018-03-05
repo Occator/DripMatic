@@ -1,6 +1,6 @@
 # Project
 TARGET = autspir
-OBJECTS = build/main.o build/class_adc_pin.o build/class_TWI.o build/class_lcd_1602.o build/class_pin_io.o build/class_rtc_3w.o build/spi_module.o
+OBJECTS = build/main.o build/adc_pin.o build/TWI.o build/lcd_1602.o build/pin_io.o build/rtc_3w.o build/spi_module.o
 
 # chip and project specific global definitons
 MCU = atmega328p
@@ -26,20 +26,20 @@ build/autspir.elf: $(OBJECTS)
 build/main.o: src/main.cpp
 	$(CC) $(CFLAGS) -g -Wall -c src/main.cpp -o $@
 
-build/class_adc_pin.o: src/class_adc_pin.cpp include/class_adc_pin.h
-	$(CC) $(CFLAGS) -g -Wall -c src/class_adc_pin.cpp
+build/adc_pin.o: src/adc_pin.cpp include/adc_pin.h
+	$(CC) $(CFLAGS) -g -Wall -c src/adc_pin.cpp
 
-build/class_TWI.o: src/class_TWI.cpp include/class_TWI.h
-	$(CC) $(CFLAGS) -g -Wall -c src/class_TWI.cpp
+build/TWI.o: src/TWI.cpp include/TWI.h
+	$(CC) $(CFLAGS) -g -Wall -c src/TWI.cpp
 
-build/class_rtc_3w.o: src/class_rtc_3w.cpp include/class_rtc_3w.h
-	$(CC) $(CFLAGS) -g -Wall -c src/class_rtc_3w.cpp
+build/rtc_3w.o: src/rtc_3w.cpp include/rtc_3w.h
+	$(CC) $(CFLAGS) -g -Wall -c src/rtc_3w.cpp
 
-build/class_lcd_1602.o: src/class_lcd_1602.cpp include/class_lcd_1602.h
-	$(CC) $(CFLAGS) -g -Wall -c src/class_lcd_1602.cpp
+build/lcd_1602.o: src/lcd_1602.cpp include/lcd_1602.h
+	$(CC) $(CFLAGS) -g -Wall -c src/lcd_1602.cpp
 
-build/class_pin_io.o: src/class_pin_io.cpp include/class_pin_io.h
-	$(CC) $(CFLAGS) -g -Wall -c src/class_pin_io.cpp
+build/pin_io.o: src/pin_io.cpp include/pin_io.h
+	$(CC) $(CFLAGS) -g -Wall -c src/pin_io.cpp
 
 build/spi_module.o: src/spi_module.cpp include/spi_module.h
 	$(CC) $(CFLAGS) -g -Wall -c src/spi_module.cpp

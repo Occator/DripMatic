@@ -1,11 +1,11 @@
 // tested and worked at 2017/09/21 15:45
 
-#ifndef CLASS_RTC_3W__H
-#define CLASS_RTC_3W__H
+#ifndef RTC_3W__H
+#define RTC_3W__H
 
 #include <avr/io.h>
 #include <util/delay.h>
-#include "class_pin_io.h"
+#include "pin_io.h"
 
 class cSysTime{
 public:
