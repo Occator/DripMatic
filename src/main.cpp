@@ -19,7 +19,7 @@ int main(){
 	{
 		for(uint8_t i = 0; i < 26; i++)
 		{
-			microSDCard.transfer_byte(data);
+			microSDCard.send_byte(data);
 			data++;
 			_delay_ms(2000);
 		}
