@@ -9,8 +9,8 @@ public:
   cSPIModule();
   ~cSPIModule();
   void master_init();
-  void master_transmit(uint8_t data);
-  uint8_t master_receive();
+  void transfer_byte(uint8_t data);
+  uint8_t receive_byte();
 
 };
 #endif

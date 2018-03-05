@@ -13,7 +13,7 @@ void cSPIModule::master_init()
   SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR0);
 }
 
-void cSPIModule::transfer_byte(uint8_t data)
+void cSPIModule::send_byte(uint8_t data)
 {
   SPDR = data;
   while(! (SPSR & (1 << SPIF) ) );
