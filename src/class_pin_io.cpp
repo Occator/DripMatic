@@ -1,6 +1,6 @@
 // tested and worked at 2017/09/12 16:17
 
-#include "class_pin_io.hpp"
+#include "class_pin_io.h"
 
 extern "C" void __cxa_pure_virtual(){while(1);}
 

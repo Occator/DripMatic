@@ -5,7 +5,7 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
-#include "class_pin_io.hpp"
+#include "class_pin_io.h"
 
 class cSysTime{
 public:

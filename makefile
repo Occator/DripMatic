@@ -26,19 +26,19 @@ build/autspir.elf: $(OBJECTS)
 build/main.o: src/main.cpp
 	$(CC) $(CFLAGS) -g -Wall -c src/main.cpp -o $@
 
-build/class_adc_pin.o: src/class_adc_pin.cpp include/class_adc_pin.hpp
+build/class_adc_pin.o: src/class_adc_pin.cpp include/class_adc_pin.h
 	$(CC) $(CFLAGS) -g -Wall -c src/class_adc_pin.cpp
 
-build/class_TWI.o: src/class_TWI.cpp include/class_TWI.hpp
+build/class_TWI.o: src/class_TWI.cpp include/class_TWI.h
 	$(CC) $(CFLAGS) -g -Wall -c src/class_TWI.cpp
 
-build/class_rtc_3w.o: src/class_rtc_3w.cpp include/class_rtc_3w.hpp
+build/class_rtc_3w.o: src/class_rtc_3w.cpp include/class_rtc_3w.h
 	$(CC) $(CFLAGS) -g -Wall -c src/class_rtc_3w.cpp
 
-build/class_lcd_1602.o: src/class_lcd_1602.cpp include/class_lcd_1602.hpp
+build/class_lcd_1602.o: src/class_lcd_1602.cpp include/class_lcd_1602.h
 	$(CC) $(CFLAGS) -g -Wall -c src/class_lcd_1602.cpp
 
-build/class_pin_io.o: src/class_pin_io.cpp include/class_pin_io.hpp
+build/class_pin_io.o: src/class_pin_io.cpp include/class_pin_io.h
 	$(CC) $(CFLAGS) -g -Wall -c src/class_pin_io.cpp
 
 build/spi_module.o: src/spi_module.cpp include/spi_module.h

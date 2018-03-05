@@ -1,6 +1,6 @@
 // tested and worked at 2017/09/21 15:45
 
-#include "class_rtc_3w.hpp"
+#include "class_rtc_3w.h"
 
 cDeviceRTC::cDeviceRTC(cIOPin *cePin, cIOPin *ioPin, cIOPin *sclkPin) :
 											_rtcCE(cePin), _rtcIO(ioPin), _rtcSCLK(sclkPin)

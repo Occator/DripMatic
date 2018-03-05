@@ -1,7 +1,7 @@
 #ifndef CLASS_LCD_1602_H
 #define CLASS_LCD_1602_H
 
-#include "class_TWI.hpp"
+#include "class_TWI.h"
 #include <stdlib.h>
 
 // commands

@@ -1,4 +1,4 @@
-// tested and worked at 2017/09/28 22:06
+
 #ifndef CLASS_TWI_H
 #define CLASS_TWI_H
 
