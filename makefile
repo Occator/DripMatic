@@ -1,6 +1,6 @@
 # Project
 TARGET = autspir
-OBJECTS = build/main.o build/class_adc_pin.o build/class_TWI.o build/class_lcd_1602.o build/class_pin_io.o build/class_rtc_3w.o
+OBJECTS = build/main.o build/class_adc_pin.o build/class_TWI.o build/class_lcd_1602.o build/class_pin_io.o build/class_rtc_3w.o build/spi_module.o
 
 # chip and project specific global definitons
 MCU = atmega328p
@@ -40,6 +40,9 @@ build/class_lcd_1602.o: src/class_lcd_1602.cpp include/class_lcd_1602.hpp
 
 build/class_pin_io.o: src/class_pin_io.cpp include/class_pin_io.hpp
 	$(CC) $(CFLAGS) -g -Wall -c src/class_pin_io.cpp
+
+build/spi_module.o: src/spi_module.cpp include/spi_module.h
+	$(CC) $(CFLAGS) -g -Wall -c src/spi_module.cpp
 
 install: build/autspir_hex.hex
 	avrdude -F -V -v -v -c arduino -p atmega328p -P $(PORT) -b 115200 -e -U flash:w:build/autspir_hex.hex

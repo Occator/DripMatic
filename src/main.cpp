@@ -8,11 +8,16 @@
 #include "class_adc_pin.hpp"
 #include "class_pin_io.hpp"
 #include "class_rtc_3w.hpp"
+#include "spi_module.h"
 
 int main(){
 
+	cSPIModule microSDCard;
+	uint8_t data = 'A';
+
 	for(;;)
 	{
-
+		microSDCard.master_transmit(data);
+		data++;
 	}
 }
