@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "TWI.h"
-#include "lcd_1602.h"
+#include "lcd_module.h"
 #include "adc_pin.h"
 #include "pin_io.h"
 #include "rtc_3w.h"

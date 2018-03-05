@@ -1,6 +1,6 @@
 # Project
 TARGET = autspir
-OBJECTS = build/main.o build/adc_pin.o build/TWI.o build/lcd_1602.o build/pin_io.o build/rtc_3w.o build/spi_module.o
+OBJECTS = build/main.o build/adc_pin.o build/TWI.o build/lcd_module.o build/pin_io.o build/rtc_3w.o build/spi_module.o
 
 # chip and project specific global definitons
 MCU = atmega328p
@@ -35,8 +35,8 @@ build/TWI.o: src/TWI.cpp include/TWI.h
 build/rtc_3w.o: src/rtc_3w.cpp include/rtc_3w.h
 	$(CC) $(CFLAGS) -g -Wall -c src/rtc_3w.cpp
 
-build/lcd_1602.o: src/lcd_1602.cpp include/lcd_1602.h
-	$(CC) $(CFLAGS) -g -Wall -c src/lcd_1602.cpp
+build/lcd_module.o: src/lcd_module.cpp include/lcd_module.h
+	$(CC) $(CFLAGS) -g -Wall -c src/lcd_module.cpp
 
 build/pin_io.o: src/pin_io.cpp include/pin_io.h
 	$(CC) $(CFLAGS) -g -Wall -c src/pin_io.cpp
