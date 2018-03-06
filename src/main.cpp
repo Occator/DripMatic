@@ -15,6 +15,8 @@ int main(){
 	cSPIModule microSDCard;
 	uint8_t data = 'A';
 
+	microSDCard.master_init();
+
 	for(;;)
 	{
 		microSDCard.send_byte(data);
