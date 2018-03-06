@@ -23,5 +23,7 @@ void cSPIModule::send_byte(uint8_t data)
 
 uint8_t cSPIModule::receive_byte()
 {
-  return 0;
+  SPDR = 0xFF; // dummy send value to read out receive-register
+  while(! (SPSR & (1 << SPIF) ) );
+  return (SPDR);
 }
