@@ -17,10 +17,8 @@ void cSPIModule::master_init()
 
 void cSPIModule::send_byte(uint8_t data)
 {
-  uint8_t flushBuffer;
   SPDR = data;
   while(! (SPSR & (1 << SPIF) ) );
-  flushBuffer = SPDR;
 }
 
 uint8_t cSPIModule::receive_byte()
