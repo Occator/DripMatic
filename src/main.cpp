@@ -17,11 +17,7 @@ int main(){
 
 	for(;;)
 	{
-		for(uint8_t i = 0; i < 26; i++)
-		{
-			microSDCard.send_byte(data);
-			data++;
-			_delay_ms(2000);
-		}
+		microSDCard.send_byte(data);
+		_delay_ms(1000);
 	}
 }
