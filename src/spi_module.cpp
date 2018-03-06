@@ -10,13 +10,17 @@ cSPIModule::~cSPIModule(){}
 void cSPIModule::master_init()
 {
   DDRB = (1 << PB3) | (1 << PB5) | (1 << PB2);
+  DDRB &= ~(1 << PB4);
+  PORTB |= (1 << PB2);
   SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR0);  // | (1 << CPOL) | (1 << CPHA)
 }
 
 void cSPIModule::send_byte(uint8_t data)
 {
+  uint8_t flushBuffer;
   SPDR = data;
   while(! (SPSR & (1 << SPIF) ) );
+  flushBuffer = SPDR;
 }
 
 uint8_t cSPIModule::receive_byte()
