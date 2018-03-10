@@ -13,13 +13,18 @@
 int main(){
 
 	cSPIModule microSDCard;
-	uint8_t data = 'A';
+	uint8_t datain = 0;
+	uint8_t dataout;
 
 	microSDCard.master_init();
 
 	for(;;)
 	{
-		microSDCard.send_byte(data);
-		_delay_ms(1000);
+		PORTB |= (1 << PB1);
+		microSDCard.send_byte(datain);
+		dataout = microSDCard.receive_byte();
+		PORTB &= ~(1 << PB1);
+		_delay_ms(5);
+		datain++;
 	}
 }

@@ -2,6 +2,7 @@
 #define SPI_MODULE_H
 
 #include <avr/io.h>
+#include <util/delay.h>
 
 class cSPIModule
 {
