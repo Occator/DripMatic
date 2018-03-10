@@ -20,6 +20,7 @@ int main(){
 
 	for(;;)
 	{
+		// note: figure out how to toggle MOSI, MISO, SCLK and CS through SPI class
 		PORTB |= (1 << PB1);
 		microSDCard.send_byte(datain);
 		dataout = microSDCard.receive_byte();
