@@ -12,6 +12,8 @@ public:
 
 private:
   cSPIModule *_spi
+
+  void init();
 };
 
 #endif
