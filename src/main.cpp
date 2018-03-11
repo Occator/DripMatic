@@ -14,6 +14,8 @@ void display_Date_Frame(cLCD1602 *lcd, cDeviceRTC *clock);
 void display_Time_Frame(cLCD1602 *lcd, cDeviceRTC *clock);
 
 int main(){
+
+	cIOPin csSPIDevice(&PORTB, 1, cIOPin::output);
 	cIOPin redLED(&PORTB, 2, cIOPin::output);
 	cIOPin yellowLED(&PORTB, 3, cIOPin::output);
 	cIOPin greenLED(&PORTB, 4, cIOPin::output);
@@ -24,6 +26,7 @@ int main(){
 	cIOPin rtcSCLK(&PORTD, 4, cIOPin::output);
 
 	cTWI twiIOexpander(0x4E);
+	cSPIModule microSD(&csSPIDevice);
 
 	cDeviceRTC ds1302(&rtcCE, &rtcIO, &rtcSCLK);
 	ds1302.set_RTC(2017, 25, 11, 14, 14, 45);
