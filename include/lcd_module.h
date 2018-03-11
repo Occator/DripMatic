@@ -58,8 +58,6 @@ public:
 	cLCD1602(cTWI *twiDevice);
 	~cLCD1602();
 
-
-	void init();
 	void clear();
 	void home();
 	void display();
@@ -78,6 +76,7 @@ public:
 	void write_Int(int data);
 
 private:
+	void init();
 	void begin();
 	void command(uint8_t value);
 	void _init_Priv();

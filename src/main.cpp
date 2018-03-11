@@ -38,7 +38,6 @@ int main(){
 	greenLED.set_Pin(1);
 
 	cLCD1602 lcdTWI(&twiIOexpander);
-	lcdTWI.init();
 
 	lcdTWI.set_Cursor(3,1);
 	lcdTWI.write_String("irrigation bot");

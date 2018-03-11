@@ -3,7 +3,7 @@
 
 cLCD1602::cLCD1602(cTWI *twiDevice) : _twiLCD(twiDevice)
 {
-
+	init();
 }
 cLCD1602::~cLCD1602()
 {
