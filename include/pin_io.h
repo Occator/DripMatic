@@ -1,7 +1,5 @@
-// tested and worked at 2017/09/12 16:17
-
-#ifndef IO_PIN_H
-#define IO_PIN_H
+#ifndef CLASS_IO_PIN_H
+#define CLASS_IO_PIN_H
 
 #include <avr/io.h>
 

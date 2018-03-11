@@ -1,6 +1,5 @@
-
-#ifndef TWI_H
-#define TWI_H
+#ifndef CLASS_TWI_H
+#define CLASS_TWI_H
 
 #include <avr/io.h>
 #include <stdint.h>
