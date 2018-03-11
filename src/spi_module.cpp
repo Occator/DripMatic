@@ -30,3 +30,16 @@ uint8_t cSPIModule::receive_byte()
   while(! (SPSR & (1 << SPIF) ) );
   return (SPDR);
 }
+
+void cSPIModule::transmit(uint8_t data)
+{
+  send_byte(data);
+}
+void cSPIModule::transmit(const char * string)
+{
+    while(*string != '\0')
+    {
+      send_byte(*string);
+      string++;
+    }
+}
