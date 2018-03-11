@@ -12,19 +12,19 @@
 
 int main(){
 
-	cSPIModule microSDCard;
-	uint8_t datain = 0;
-	uint8_t dataout;
+	cIOPin chipSelect(&PORTB, 1, cIOPin::output);
 
-	microSDCard.master_init();
+	cSPIModule microSDCard(&chipSelect);
+	uint8_t datain = 'a';
+	uint8_t dataout;
 
 	for(;;)
 	{
 		// note: figure out how to toggle MOSI, MISO, SCLK and CS through SPI class
-		PORTB |= (1 << PB1);
+		//PORTB |= (1 << PB1);
 		microSDCard.send_byte(datain);
-		dataout = microSDCard.receive_byte();
-		PORTB &= ~(1 << PB1);
+		//dataout = microSDCard.receive_byte();
+		//PORTB &= ~(1 << PB1);
 		_delay_ms(5);
 		datain++;
 	}
