@@ -3,12 +3,12 @@
 
 cUART::cUART(){
 	uint16_t ubbr0Value = (F_CPU / (16 * BAUD) - 1);
-	init_UART(ubbr0Value);
+	init(ubbr0Value);
 }
 
 cUART::~cUART(){}
 
-void cUART::init_UART(uint16_t ubbr0Value){
+void cUART::init(uint16_t ubbr0Value){
 	// set baud rate
 	UBRR0L = ubbr0Value;
 	UBRR0H = (ubbr0Value >> 8);
@@ -20,24 +20,24 @@ void cUART::init_UART(uint16_t ubbr0Value){
 	UCSR0B |= (1 << RXEN0) | (1 << TXEN0);
 }
 
-uint8_t cUART::read_UART(){
+uint8_t cUART::read(){
 	// wait until data is available
 	while(!((1 << RXEN0) | (1 << TXEN0))){}
 	return UDR0;
 }
-void cUART::write_UART_Char(char data){
+void cUART::write_Char(char data){
 	// wait until transmitter is ready
 	while(!(UCSR0A & (1 << UDRE0))){}
 	UDR0 = data;
 }
-void cUART::write_UART_Int(int data){
+void cUART::write_Int(int data){
 	char buffer[5];
 	itoa(data, buffer, 10);
-	write_UART_String(buffer);
+	write_String(buffer);
 }
-void cUART::write_UART_String(const char* string){
+void cUART::write_String(const char* string){
 	while(*string != '\0'){
-			write_UART_Char(*string);
+			write_Char(*string);
 			string++;
 		}
 }

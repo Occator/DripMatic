@@ -11,11 +11,11 @@ class cUART{
 public:
 	cUART();
 	~cUART();
-	void init_UART(uint16_t ubbr0Value);
-	uint8_t read_UART();
-	void write_UART_Char(char data);
-	void write_UART_String(const char* string);
-	void write_UART_Int(int data);
+	void init(uint16_t ubbr0Value);
+	uint8_t read();
+	void write_Char(char data);
+	void write_String(const char* string);
+	void write_Int(int data);
 private:
 };
 
