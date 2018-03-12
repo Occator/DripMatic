@@ -19,6 +19,7 @@ private:
 
   void init_SPIMode();
   void send_dummyByte();
+  void send_Cmd(uint8_t command);
 };
 
 #endif

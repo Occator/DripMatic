@@ -1,4 +1,5 @@
 #include "sdcard_module.h"
+#include <util/delay.h>
 
 cSDCardModule::cSDCardModule(cSPIModule * csDevice, cUART *uartComm)
 : _spi(csDevice), _displaySD(uartComm)
@@ -19,9 +20,17 @@ void cSDCardModule::init_SPIMode()
   {
     send_dummyByte();
   }
+  _delay_ms(1);
+
+  send_Cmd(CMD0);
 }
 
 void cSDCardModule::send_dummyByte()
 {
   _spi->transmit(0xFF);
+}
+
+void cSDCardModule::send_Cmd(uint8_t command)
+{
+  _spi->transmit(command);
 }
