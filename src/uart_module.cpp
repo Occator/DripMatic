@@ -35,7 +35,7 @@ void cUART::write_UART_Int(int data){
 	itoa(data, buffer, 10);
 	write_UART_String(buffer);
 }
-void cUART::write_UART_String(char* string){
+void cUART::write_UART_String(const char* string){
 	while(*string != '\0'){
 			write_UART_Char(*string);
 			string++;

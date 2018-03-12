@@ -14,7 +14,7 @@ public:
 	void init_UART(uint16_t ubbr0Value);
 	uint8_t read_UART();
 	void write_UART_Char(char data);
-	void write_UART_String(char* string);
+	void write_UART_String(const char* string);
 	void write_UART_Int(int data);
 private:
 };
