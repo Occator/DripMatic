@@ -23,6 +23,12 @@ void cSDCardModule::init_SPIMode()
   _delay_ms(1);
 
   send_Cmd(CMD0);
+  send_Cmd(0x00);
+  send_Cmd(0x00);
+  send_Cmd(0x00);
+  send_Cmd(0x00);
+  send_Cmd(0x95);
+  send_dummyByte();
 }
 
 void cSDCardModule::send_dummyByte()
