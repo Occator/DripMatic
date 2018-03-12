@@ -14,7 +14,7 @@ private:
   cSPIModule *_spi;
   cUART *_displaySD;
 
-  void init();
+  void init_SPIMode();
 };
 
 #endif
