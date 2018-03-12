@@ -1,14 +1,14 @@
-#include "class_uart_conf_atmega328p.hpp"
+#include "uart_module.h"
 #include <stdlib.h>
 
-cUSART::cUSART(){
+cUART::cUART(){
 	uint16_t ubbr0Value = (F_CPU / (16 * BAUD) - 1);
-	init_USART(ubbr0Value);
+	init_UART(ubbr0Value);
 }
 
-cUSART::~cUSART(){}
+cUART::~cUART(){}
 
-void cUSART::init_USART(uint16_t ubbr0Value){
+void cUART::init_UART(uint16_t ubbr0Value){
 	// set baud rate
 	UBRR0L = ubbr0Value;
 	UBRR0H = (ubbr0Value >> 8);
@@ -20,24 +20,24 @@ void cUSART::init_USART(uint16_t ubbr0Value){
 	UCSR0B |= (1 << RXEN0) | (1 << TXEN0);
 }
 
-uint8_t cUSART::read_USART(){
+uint8_t cUART::read_UART(){
 	// wait until data is available
 	while(!((1 << RXEN0) | (1 << TXEN0))){}
 	return UDR0;
 }
-void cUSART::write_USART_Char(char data){
+void cUART::write_UART_Char(char data){
 	// wait until transmitter is ready
 	while(!(UCSR0A & (1 << UDRE0))){}
 	UDR0 = data;
 }
-void cUSART::write_USART_Int(int data){
+void cUART::write_UART_Int(int data){
 	char buffer[5];
 	itoa(data, buffer, 10);
-	write_USART_String(buffer);
+	write_UART_String(buffer);
 }
-void cUSART::write_USART_String(char* string){
+void cUART::write_UART_String(char* string){
 	while(*string != '\0'){
-			write_USART_Char(*string);
+			write_UART_Char(*string);
 			string++;
 		}
 }
