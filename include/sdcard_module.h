@@ -3,6 +3,9 @@
 
 #include "spi_module.h"
 
+// formular for CMDs - command number n + 64 = 64 = 0x40
+#define CMD0 0x40
+
 class cSDCardModule
 {
 public:
@@ -15,6 +18,7 @@ private:
   cUART *_displaySD;
 
   void init_SPIMode();
+  void send_dummyByte();
 };
 
 #endif
