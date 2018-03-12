@@ -6,12 +6,13 @@
 class cSDCardModule
 {
 public:
-  cSDCardModule(cSPIModule *spiModule);
+  cSDCardModule(cSPIModule *spiModule, cUART *uartComm);
   ~cSDCardModule();
 
 
 private:
-  cSPIModule *_spi
+  cSPIModule *_spi;
+  cUART *_displaySD;
 
   void init();
 };

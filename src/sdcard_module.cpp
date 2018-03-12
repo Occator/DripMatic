@@ -1,7 +1,9 @@
 #include "sdcard_module.h"
 
-cSDCardModule::cSDCardModule(cSPIModule * spiModule) : _spi(spiModule)
+cSDCardModule::cSDCardModule(cSPIModule * csDevice, cUART *uartComm)
+: _spi(csDevice), _displaySD(uartComm)
 {
+  _displaySD->write_String("init SD-Card...");
   init();
 }
 
