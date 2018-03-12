@@ -1,7 +1,7 @@
 # Project
 TARGET = autspir
 OBJECTS = build/main.o build/adc_pin.o build/twi_module.o build/lcd_module.o
-OBJECTS += build/pin_io.o build/rtc_3w.o build/spi_module.o
+OBJECTS += build/pin_io.o build/rtc_3w.o build/spi_module.o build/uart_module.o
 # chip and project specific global definitons
 MCU = atmega328p
 F_CPU = 16000000UL
@@ -43,6 +43,9 @@ build/pin_io.o: src/pin_io.cpp include/pin_io.h
 
 build/spi_module.o: src/spi_module.cpp include/spi_module.h
 	$(CC) $(CFLAGS) -g -Wall -c src/spi_module.cpp
+
+build/uart_module.o: src/uart_module.cpp include/uart_module.h
+	$(CC) $(CFLAGS) -g -Wall -c src/uart_module.cpp
 
 install: build/autspir_hex.hex
 	avrdude -F -V -v -v -c arduino -p atmega328p -P $(PORT) -b 115200 -e -U flash:w:build/autspir_hex.hex

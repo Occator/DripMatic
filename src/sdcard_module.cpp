@@ -12,5 +12,5 @@ cSDCardModule::~cSDCardModule()
 
 void cSDCardModule::init()
 {
-  
+
 }
