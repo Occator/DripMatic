@@ -17,11 +17,8 @@ void cSPIModule::master_init()
 
 void cSPIModule::send_byte(uint8_t data)
 {
-  _csSPI->set_Pin(1);
-  _delay_ms(1);
   SPDR = data;
   while(! (SPSR & (1 << SPIF) ) );
-  _csSPI->set_Pin(0);
 }
 
 uint8_t cSPIModule::receive_byte()
@@ -33,7 +30,10 @@ uint8_t cSPIModule::receive_byte()
 
 void cSPIModule::transmit(uint8_t data)
 {
+  _csSPI->set_Pin(1);
+  _delay_ms(1);
   send_byte(data);
+  _csSPI->set_Pin(0);
 }
 void cSPIModule::transmit(const char * string)
 {
