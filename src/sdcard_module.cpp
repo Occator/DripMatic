@@ -1,8 +1,8 @@
 #include "sdcard_module.h"
 #include <util/delay.h>
 
-cSDCardModule::cSDCardModule(cSPIModule * csDevice, cUART *uartComm)
-: _spi(csDevice), _displaySD(uartComm)
+cSDCardModule::cSDCardModule(cSPIModule * csDevice, cUART *uartComm, cIOPin chipSelect)
+: _spi(csDevice), _displaySD(uartComm), _csPin(chipSelect)
 {
   _displaySD->write_String("init SD-Card in SPI-mode...\r\n");
   init_SPIMode();
