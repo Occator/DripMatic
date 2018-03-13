@@ -31,9 +31,8 @@ void cSPIModule::init_master()
   SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR1) | (1 << SPR0);
 }
 
-uint8_t cSPIModule::spi_byte(uint8_t data)
+void cSPIModule::spi_byte(uint8_t data)
 {
   SPDR = data;
   while(! (SPSR & (1 << SPIF) ) );
-  return SPDR;
 }
