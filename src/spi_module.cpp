@@ -2,12 +2,12 @@
 
 cSPIModule::cSPIModule(cIOPin *csDevice) : _csSPI(csDevice)
 {
-  master_init();
+  init_master();
 }
 
 cSPIModule::~cSPIModule(){}
 
-void cSPIModule::master_init()
+void cSPIModule::init_master()
 {
   DDRB = (1 << DDB3) | (1 << DDB5) | (1 << DDB2);
   DDRB &= ~(1 << DDB4);

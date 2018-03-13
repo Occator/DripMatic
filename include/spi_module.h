@@ -15,7 +15,7 @@ public:
   void transmit(const char * string);
 private:
   cIOPin *_csSPI;
-  void master_init();
+  void init_master();
   void send_byte(uint8_t data);
   uint8_t receive_byte();
 
