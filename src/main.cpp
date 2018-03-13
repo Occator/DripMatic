@@ -8,10 +8,10 @@
 #include "sdcard_module.h"
 #include "uart_module.h"
 
-cIOPin spiCS(&PORTB, 1, cIOPin::output);
 cUART sdComm;
+cIOPin spiCS(&PORTB, 1, cIOPin::output);
 cSPIModule sdCard(&spiCS);
-cSDCardModule microSD(&sdCard, &sdComm);
+cSDCardModule microSD(&sdComm, &spiCS, &sdCard);
 
 int main(){
 

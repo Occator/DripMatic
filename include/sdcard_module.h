@@ -2,7 +2,7 @@
 #define SDCARD_MODULE_H
 
 #include "spi_module.h"
-##include "pin_io.h"
+#include "pin_io.h"
 
 // formular for CMDs - command number n + 64 = 64 = 0x40
 #define CMD0 0x40
@@ -10,14 +10,14 @@
 class cSDCardModule
 {
 public:
-  cSDCardModule(cSPIModule *spiModule, cUART *uartComm, cIOPin chipSelect);
+  cSDCardModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule * csDevice);
   ~cSDCardModule();
 
 
 private:
-  cIOPin *_csPin
+  cUART *_uartSD;
+  cIOPin *_csPin;
   cSPIModule *_spi;
-  cUART *_displaySD;
 
   void init_SPIMode();
   void send_dummyByte();
