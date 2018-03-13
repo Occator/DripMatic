@@ -11,14 +11,14 @@ void cSPIModule::transmit(uint8_t data)
 {
   _csSPI->set_Pin(1);
   _delay_ms(1);
-  send_byte(data);
+  spi_byte(data);
   _csSPI->set_Pin(0);
 }
 void cSPIModule::transmit(const char * string)
 {
     while(*string != '\0')
     {
-      send_byte(*string);
+      spi_byte(*string);
       string++;
     }
 }
@@ -31,15 +31,9 @@ void cSPIModule::init_master()
   SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR1) | (1 << SPR0);
 }
 
-void cSPIModule::send_byte(uint8_t data)
+uint8_t cSPIModule::spi_byte(uint8_t data)
 {
   SPDR = data;
   while(! (SPSR & (1 << SPIF) ) );
-}
-
-uint8_t cSPIModule::receive_byte()
-{
-  SPDR = 0xFF; // dummy send value to read out receive-register
-  while(! (SPSR & (1 << SPIF) ) );
-  return (SPDR);
+  return SPDR;
 }

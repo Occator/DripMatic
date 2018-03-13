@@ -13,8 +13,7 @@ public:
   ~cSPIModule();
   void transmit(uint8_t data);
   void transmit(const char * string);
-  void send_byte(uint8_t data);
-  uint8_t receive_byte();
+  uint8_t spi_byte(uint8_t data);
 private:
   cIOPin *_csSPI;
   void init_master();
