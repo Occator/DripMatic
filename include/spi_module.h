@@ -9,14 +9,13 @@
 class cSPIModule
 {
 public:
-  cSPIModule(cIOPin *csDevice);
+  cSPIModule();
   ~cSPIModule();
-  
+
   uint8_t transmit(uint8_t data);
   void transmit(const char * string);
   uint8_t receive();
 private:
-  cIOPin *_csSPI;
   void init_master();
 };
 #endif

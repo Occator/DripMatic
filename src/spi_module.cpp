@@ -1,6 +1,6 @@
 #include "spi_module.h"
 
-cSPIModule::cSPIModule(cIOPin *csDevice) : _csSPI(csDevice)
+cSPIModule::cSPIModule()
 {
   init_master();
 }
@@ -32,6 +32,5 @@ void cSPIModule::init_master()
 {
   DDRB = (1 << DDB3) | (1 << DDB5) | (1 << DDB2);
   DDRB &= ~(1 << DDB4);
-  _csSPI->set_Pin(0);
   SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR1) | (1 << SPR0);
 }
