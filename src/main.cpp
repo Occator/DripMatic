@@ -10,7 +10,7 @@
 
 cUART sdComm;
 cIOPin spiCS(&PORTB, 1, cIOPin::output);
-cSPIModule sdSPI(&spiCS);
+cSPIModule sdSPI;
 cMicroSDModule microSD(&sdComm, &spiCS, &sdSPI);
 
 int main(){
