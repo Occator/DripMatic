@@ -33,8 +33,7 @@ private:
   cSPIModule *_spi;
 
   void init_SPIMode();
-  void send_dummyByte();
-  void send_Cmd(uint8_t command);
+  uint8_t send_Commandmd(uint8_t command, uint32_t argument);
 };
 
 #endif
