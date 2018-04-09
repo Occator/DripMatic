@@ -16,7 +16,6 @@ public:
 
 private:
   cUART *_uartSD;
-  cIOPin *_csPin;
   cSPIModule *_spi;
 
   void init_SPIMode();
