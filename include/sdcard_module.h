@@ -10,7 +10,7 @@
 class cSDCardModule
 {
 public:
-  cSDCardModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule * csDevice);
+  cSDCardModule(cUART *uartComm, cSPIModule * csDevice);
   ~cSDCardModule();
 
 
