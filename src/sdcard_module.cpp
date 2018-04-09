@@ -1,20 +1,20 @@
 #include "sdcard_module.h"
 #include <util/delay.h>
 
-cSDCardModule::cSDCardModule(cUART *uartComm,  cSPIModule * csDevice)
-: _uartSD(uartComm), _spi(csDevice)
+cMicroSDModule::cMicroSDModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule * csDevice)
+: _uartSD(uartComm), _csPin(chipSelect), _spi(csDevice)
 {
   _uartSD->write_String("init SD-Card in SPI-mode...\r\n");
   init_SPIMode();
   _uartSD->write_String("successful...\r\n");
 }
 
-cSDCardModule::~cSDCardModule()
+cMicroSDModule::~cMicroSDModule()
 {
 
 }
 
-void cSDCardModule::init_SPIMode()
+void cMicroSDModule::init_SPIMode()
 {
   _csPin->set_Pin(1);
   for(uint8_t count = 0; count < 10; count++)
@@ -34,12 +34,12 @@ void cSDCardModule::init_SPIMode()
   _csPin->set_Pin(0);
 }
 
-void cSDCardModule::send_dummyByte()
+void cMicroSDModule::send_dummyByte()
 {
   _spi->spi_byte(0xFF);
 }
 
-void cSDCardModule::send_Cmd(uint8_t command)
+uint8_t cMicroSDModule::send_Cmd(uint8_t command)
 {
   _spi->spi_byte(command);
 }

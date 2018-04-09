@@ -7,15 +7,16 @@
 // formular for CMDs - command number n + 64 = 64 = 0x40
 #define CMD0 0x40
 
-class cSDCardModule
+class cMicroSDModule
 {
 public:
-  cSDCardModule(cUART *uartComm, cSPIModule * csDevice);
-  ~cSDCardModule();
+  cMicroSDModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule * csDevice);
+  ~cMicroSDModule();
 
 
 private:
   cUART *_uartSD;
+  cIOPin *_csPin;
   cSPIModule *_spi;
 
   void init_SPIMode();
