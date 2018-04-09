@@ -15,19 +15,6 @@ void cSPIModule::master_init()
   SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR1) | (1 << SPR0);
 }
 
-void cSPIModule::send_byte(uint8_t data)
-{
-  SPDR = data;
-  while(! (SPSR & (1 << SPIF) ) );
-}
-
-uint8_t cSPIModule::receive_byte()
-{
-  SPDR = 0xFF; // dummy send value to read out receive-register
-  while(! (SPSR & (1 << SPIF) ) );
-  return (SPDR);
-}
-
 void cSPIModule::transmit(uint8_t data)
 {
   _csSPI->set_Pin(1);
@@ -43,4 +30,17 @@ void cSPIModule::transmit(const char * string)
       _csSPI->set_Pin(0);
       string++;
     }
+}
+
+void cSPIModule::send_byte(uint8_t data)
+{
+  SPDR = data;
+  while(! (SPSR & (1 << SPIF) ) );
+}
+
+uint8_t cSPIModule::receive_byte()
+{
+  SPDR = 0xFF; // dummy send value to read out receive-register
+  while(! (SPSR & (1 << SPIF) ) );
+  return (SPDR);
 }
