@@ -12,9 +12,38 @@ cMicroSDModule::cMicroSDModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule *
 cMicroSDModule::~cMicroSDModule()
 {}
 
-void cMicroSDModule::init_SPIMode()
+uint8_t cMicroSDModule::init_SPIMode()
 {
+  uint8_t response;
+  uint8_t sdVersion;
+  uint8_t retry {0};
 
+  _csPin->set_Pin(0);
+
+  for(uint8_t i = 0; i < 10; i++)
+  {
+    _spi->transmit(0xFF);
+  }
+
+  _csPin->set_Pin(1);
+
+  send_Command(GO_IDLE_STATE, 0);
+  _delay_ms(50);
+  do
+  {
+    response = _spi->receive();
+    retry++;
+    if(retry > 100)
+    {
+      _uartSD->write_String("timeout... no card detected\r\n");
+      return 1;
+    }
+  }while(response != 0x01);
+
+  _csPin->set_Pin(0);
+
+  _spi->transmit(0xFF);
+  _spi->transmit(0xFF);
 }
 
 uint8_t cMicroSDModule::send_Command(uint8_t command, uint32_t argument)
@@ -38,11 +67,6 @@ uint8_t cMicroSDModule::send_Command(uint8_t command, uint32_t argument)
   {
     _spi->transmit(0x95);
   }
-  while( (response = _spi->receive() ) == 0xFF)
-  {
-    if(retry++ > 100) break;
-  }
-  _spi->receive();
   _csPin->set_Pin(0);
   return (response);
 }
