@@ -28,7 +28,6 @@ uint8_t cMicroSDModule::init_SPIMode()
   _csPin->set_Pin(1);
 
   send_Command(GO_IDLE_STATE, 0);
-  _delay_ms(50);
   do
   {
     response = _spi->receive();
