@@ -36,10 +36,10 @@ void cMicroSDModule::init_SPIMode()
 
 void cMicroSDModule::send_dummyByte()
 {
-  _spi->spi_byte(0xFF);
+  _spi->transmit(0xFF);
 }
 
-uint8_t cMicroSDModule::send_Cmd(uint8_t command)
+void cMicroSDModule::send_Cmd(uint8_t command)
 {
-  _spi->spi_byte(command);
+  _spi->transmit(command);
 }

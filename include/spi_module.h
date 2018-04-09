@@ -11,9 +11,10 @@ class cSPIModule
 public:
   cSPIModule(cIOPin *csDevice);
   ~cSPIModule();
-  void transmit(uint8_t data);
+  
+  uint8_t transmit(uint8_t data);
   void transmit(const char * string);
-  void spi_byte(uint8_t data);
+  uint8_t receive();
 private:
   cIOPin *_csSPI;
   void init_master();

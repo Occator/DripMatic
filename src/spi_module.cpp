@@ -7,20 +7,25 @@ cSPIModule::cSPIModule(cIOPin *csDevice) : _csSPI(csDevice)
 
 cSPIModule::~cSPIModule(){}
 
-void cSPIModule::transmit(uint8_t data)
+uint8_t cSPIModule::transmit(uint8_t data)
 {
-  _csSPI->set_Pin(1);
-  _delay_ms(1);
-  spi_byte(data);
-  _csSPI->set_Pin(0);
+  SPDR = data;
+  while(! (SPSR & (1 << SPIF) ) );
+  data = SPDR;
+  return (data);
 }
 void cSPIModule::transmit(const char * string)
 {
     while(*string != '\0')
     {
-      spi_byte(*string);
+      transmit(*string);
       string++;
     }
+}
+
+uint8_t cSPIModule::receive()
+{
+  return ( transmit(0xFF) );
 }
 
 void cSPIModule::init_master()
@@ -29,10 +34,4 @@ void cSPIModule::init_master()
   DDRB &= ~(1 << DDB4);
   _csSPI->set_Pin(0);
   SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR1) | (1 << SPR0);
-}
-
-void cSPIModule::spi_byte(uint8_t data)
-{
-  SPDR = data;
-  while(! (SPSR & (1 << SPIF) ) );
 }
