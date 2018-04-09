@@ -25,7 +25,10 @@ void cSPIModule::transmit(const char * string)
 
 uint8_t cSPIModule::receive()
 {
-  return ( transmit(0xFF) );
+  SPDR = 0xFF;
+  while(! (SPSR & (1 << SPIF) ) );
+  uint8_t data = SPDR;
+  return ( data );
 }
 
 void cSPIModule::init_master()

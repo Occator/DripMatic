@@ -32,7 +32,7 @@ private:
   cIOPin *_csPin;
   cSPIModule *_spi;
 
-  void init_SPIMode();
+  uint8_t init_SPIMode();
   uint8_t send_Command(uint8_t command, uint32_t argument);
 };
 
