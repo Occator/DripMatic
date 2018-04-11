@@ -49,7 +49,7 @@ uint8_t cMicroSDModule::send_Command(uint8_t command, uint32_t argument)
 {
   uint8_t response, retry {0}, status;
 
-  _csPin->set_Pin(1);
+  _csPin->set_Pin(0);
 
   _spi->transmit(command | 0x40);
   _spi->transmit(argument >> 24);
@@ -66,6 +66,6 @@ uint8_t cMicroSDModule::send_Command(uint8_t command, uint32_t argument)
   {
     _spi->transmit(0x95);
   }
-  _csPin->set_Pin(0);
+  _csPin->set_Pin(1);
   return (response);
 }
