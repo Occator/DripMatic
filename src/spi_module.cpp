@@ -2,7 +2,7 @@
 
 cSPIModule::cSPIModule()
 {
-  init_master();
+  init_Master();
 }
 
 cSPIModule::~cSPIModule(){}
@@ -31,7 +31,7 @@ uint8_t cSPIModule::receive()
   return ( data );
 }
 
-void cSPIModule::init_master()
+void cSPIModule::init_Master()
 {
   DDRB = (1 << DDB3) | (1 << DDB5) | (1 << DDB2);
   DDRB &= ~(1 << DDB4);

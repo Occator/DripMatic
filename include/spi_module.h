@@ -16,6 +16,6 @@ public:
   void transmit(const char * string);
   uint8_t receive();
 private:
-  void init_master();
+  void init_Master();
 };
 #endif
