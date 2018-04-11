@@ -18,14 +18,14 @@ uint8_t cMicroSDModule::init_SPIMode()
   uint8_t sdVersion;
   uint8_t retry {0};
 
-  _csPin->set_Pin(0);
+  _csPin->set_Pin(1);
 
   for(uint8_t i = 0; i < 10; i++)
   {
     _spi->transmit(0xFF);
   }
 
-  _csPin->set_Pin(1);
+  _csPin->set_Pin(0);
 
   send_Command(GO_IDLE_STATE, 0);
   do
