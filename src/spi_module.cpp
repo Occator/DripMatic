@@ -35,5 +35,6 @@ void cSPIModule::init_master()
 {
   DDRB = (1 << DDB3) | (1 << DDB5) | (1 << DDB2);
   DDRB &= ~(1 << DDB4);
+  PORTB |= (1 << PB2);
   SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR1) | (1 << SPR0);
 }
