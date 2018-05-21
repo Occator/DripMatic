@@ -19,6 +19,7 @@
 #define APP_CMD	55
 #define READ_OCR 58
 #define CRC_ON_OFF 59
+#define BLOCK_LENGTH 512
 
 // transmission
 #define SD_START_TOKEN 0xFE
@@ -35,6 +36,7 @@ private:
   cIOPin *_csPin;
   cSPIModule *_spi;
   bool _isSuccessful = false;
+  uint8_t _registerBuffer[BLOCK_LENGTH];
 
   void _csAsserted();
   void _csDeasserted();
