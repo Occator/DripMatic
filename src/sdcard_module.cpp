@@ -5,24 +5,30 @@ cMicroSDModule::cMicroSDModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule *
 : _uartSD(uartComm), _csPin(chipSelect), _spi(csDevice)
 {
   _uartSD->write_String("init SD-Card in SPI-mode...\r\n");
-  if (!initSPIMode())
+  if (!_initSPIMode())
+  {
+    _isSuccessful = true;
+    _uartSD->write_String("init successful...\r\n");
+  }
+  else
   {
     _isSuccessful = false;
-    _uartSD->write_String("not successful...\r\n");
+    _uartSD->write_String("init not successful...\r\n");
   }
-  _isSuccessful = true;
-  _uartSD->write_String("successful...\r\n");
+
+  // get register information
+  
 }
 
 cMicroSDModule::~cMicroSDModule()
 {}
 
-uint8_t cMicroSDModule::initSPIMode()
+uint8_t cMicroSDModule::_initSPIMode()
 {
   uint8_t response;
   uint8_t retry {0};
 
-  csAsserted(); // cs asserted
+  _csAsserted(); // cs asserted
   do
   {
     for(uint8_t i = 0; i < 10; i++)
@@ -30,7 +36,8 @@ uint8_t cMicroSDModule::initSPIMode()
       _spi->transmit(0xFF);
     }
     //_csPin->set_Pin(1);
-    response = sendCommand(GO_IDLE_STATE, 0);
+    response = _sendCommand(GO_IDLE_STATE, 0);
+    _uartSD->write_String("reset SD card\r\n");
 
     retry++;
     if(retry > 15)
@@ -40,33 +47,39 @@ uint8_t cMicroSDModule::initSPIMode()
     }
   } while(response != 0x01);
 
-  csDeasserted();  // cs deasserted
+  _csDeasserted();  // cs deasserted
 
   _spi->transmit(0xFF);
   _spi->transmit(0xFF);
 
   retry = 0;
+  _uartSD->write_String("send HCS info and activate card init process\r\n");
   do {
-    response = sendCommand(SEND_OP_COND, 0);
+    response = _sendCommand(SEND_OP_COND, 0);
     retry++;
     if(retry > 15)
     {
       return 1;
     }
+    _uartSD->write_String("command failed ... retry\r\n");
   } while(response);
+  _uartSD->write_String("init process successful activated\r\n");
 
-  sendCommand(CRC_ON_OFF, 0);
-  sendCommand(SET_BLOCK_LEN, 512);
+  _sendCommand(CRC_ON_OFF, 0);
+  _uartSD->write_String("CRC option off\r\n");
+
+  _sendCommand(SET_BLOCK_LEN, 512);
+  _uartSD->write_String("set block length to 512 bytes\r\n");
 
   return 0;
 }
 
-uint8_t cMicroSDModule::sendCommand(uint8_t command, uint32_t argument)
+uint8_t cMicroSDModule::_sendCommand(uint8_t command, uint32_t argument)
 {
   uint8_t response;
   uint8_t retry {0};
 
-  csAsserted();
+  _csAsserted();
 
   _spi->transmit(command | 0x40);
   _spi->transmit(argument >> 24);
@@ -93,16 +106,16 @@ uint8_t cMicroSDModule::sendCommand(uint8_t command, uint32_t argument)
   }
 
   _spi->receive();
-  csDeasserted();
+  _csDeasserted();
   return (response);
 }
 
-void cMicroSDModule::csAsserted()
+void cMicroSDModule::_csAsserted()
 {
   _csPin->set_Pin(0);
 }
 
-void cMicroSDModule::csDeasserted()
+void cMicroSDModule::_csDeasserted()
 {
   _csPin->set_Pin(1);
 }

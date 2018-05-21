@@ -25,7 +25,7 @@ class cMicroSDModule
 public:
   cMicroSDModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule * csDevice);
   ~cMicroSDModule();
-
+  uint8_t _sendCommand(uint8_t command, uint32_t argument);
 
 private:
   cUART *_uartSD;
@@ -33,10 +33,10 @@ private:
   cSPIModule *_spi;
   bool _isSuccessful = false;
 
-  void csAsserted();
-  void csDeasserted();
-  uint8_t initSPIMode();
-  uint8_t sendCommand(uint8_t command, uint32_t argument);
+  void _csAsserted();
+  void _csDeasserted();
+  uint8_t _initSPIMode();
+
 };
 
 #endif
