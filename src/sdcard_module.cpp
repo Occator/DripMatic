@@ -5,51 +5,68 @@ cMicroSDModule::cMicroSDModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule *
 : _uartSD(uartComm), _csPin(chipSelect), _spi(csDevice)
 {
   _uartSD->write_String("init SD-Card in SPI-mode...\r\n");
-  init_SPIMode();
+  if (!initSPIMode())
+  {
+    _isSuccessful = false;
+    _uartSD->write_String("not successful...\r\n");
+  }
+  _isSuccessful = true;
   _uartSD->write_String("successful...\r\n");
 }
 
 cMicroSDModule::~cMicroSDModule()
 {}
 
-uint8_t cMicroSDModule::init_SPIMode()
+uint8_t cMicroSDModule::initSPIMode()
 {
   uint8_t response;
-  uint8_t sdVersion;
   uint8_t retry {0};
 
-  _csPin->set_Pin(1);
-
-  for(uint8_t i = 0; i < 10; i++)
-  {
-    _spi->transmit(0xFF);
-  }
-
-  _csPin->set_Pin(0);
-
-  send_Command(GO_IDLE_STATE, 0);
+  csAsserted(); // cs asserted
   do
   {
-    response = _spi->receive();
+    for(uint8_t i = 0; i < 10; i++)
+    {
+      _spi->transmit(0xFF);
+    }
+    //_csPin->set_Pin(1);
+    response = sendCommand(GO_IDLE_STATE, 0);
+
     retry++;
-    if(retry > 100)
+    if(retry > 15)
     {
       _uartSD->write_String("timeout... no card detected\r\n");
       return 1;
     }
-  }while(response != 0x01);
+  } while(response != 0x01);
 
-  _csPin->set_Pin(0);
+  csDeasserted();  // cs deasserted
 
   _spi->transmit(0xFF);
   _spi->transmit(0xFF);
+
+  retry = 0;
+  do {
+    response = sendCommand(SEND_OP_COND, 0);
+    retry++;
+    if(retry > 15)
+    {
+      return 1;
+    }
+  } while(response);
+
+  sendCommand(CRC_ON_OFF, 0);
+  sendCommand(SET_BLOCK_LEN, 512);
+
+  return 0;
 }
 
-uint8_t cMicroSDModule::send_Command(uint8_t command, uint32_t argument)
+uint8_t cMicroSDModule::sendCommand(uint8_t command, uint32_t argument)
 {
-  uint8_t response, retry {0}, status;
+  uint8_t response;
+  uint8_t retry {0};
 
-  _csPin->set_Pin(0);
+  csAsserted();
 
   _spi->transmit(command | 0x40);
   _spi->transmit(argument >> 24);
@@ -66,6 +83,26 @@ uint8_t cMicroSDModule::send_Command(uint8_t command, uint32_t argument)
   {
     _spi->transmit(0x95);
   }
-  _csPin->set_Pin(1);
+
+  while( (response = _spi->receive()) == 0xFF)
+  {
+    if(retry++ > 20)
+    {
+      break;
+    }
+  }
+
+  _spi->receive();
+  csDeasserted();
   return (response);
+}
+
+void cMicroSDModule::csAsserted()
+{
+  _csPin->set_Pin(0);
+}
+
+void cMicroSDModule::csDeasserted()
+{
+  _csPin->set_Pin(1);
 }

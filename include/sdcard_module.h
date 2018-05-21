@@ -31,9 +31,12 @@ private:
   cUART *_uartSD;
   cIOPin *_csPin;
   cSPIModule *_spi;
+  bool _isSuccessful = false;
 
-  uint8_t init_SPIMode();
-  uint8_t send_Command(uint8_t command, uint32_t argument);
+  void csAsserted();
+  void csDeasserted();
+  uint8_t initSPIMode();
+  uint8_t sendCommand(uint8_t command, uint32_t argument);
 };
 
 #endif
