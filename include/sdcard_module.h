@@ -9,6 +9,7 @@
 #define SEND_OP_COND 1
 #define SEND_IF_COND 8
 #define SEND_CSD 9
+#define SEND_CID 10
 #define STOP_TRANSMISSION 12
 #define SEND_STATUS 13
 #define SET_BLOCK_LEN 16
@@ -19,6 +20,8 @@
 #define READ_OCR 58
 #define CRC_ON_OFF 59
 
+// transmission
+#define SD_START_TOKEN 0xFE
 
 class cMicroSDModule
 {
@@ -36,6 +39,7 @@ private:
   void _csAsserted();
   void _csDeasserted();
   uint8_t _initSPIMode();
+  bool _getRegister(uint8_t command, uint8_t *buffer, uint8_t responseLength);
 
 };
 
