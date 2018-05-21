@@ -16,8 +16,8 @@ cMicroSDModule::cMicroSDModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule *
     _uartSD->write_String("init not successful...\r\n");
   }
 
-  // get register information
-  
+  // sd card information
+
 }
 
 cMicroSDModule::~cMicroSDModule()
@@ -109,6 +109,9 @@ uint8_t cMicroSDModule::_sendCommand(uint8_t command, uint32_t argument)
   _csDeasserted();
   return (response);
 }
+
+bool cMicroSDModule::_getRegister(uint8_t command, uint8_t *buffer, uint8_t responseLength)
+{}
 
 void cMicroSDModule::_csAsserted()
 {
