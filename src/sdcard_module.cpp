@@ -16,8 +16,6 @@ cMicroSDModule::cMicroSDModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule *
     _uartSD->write_String("init not successful...\r\n");
   }
 
-  // sd card information
-
 }
 
 cMicroSDModule::~cMicroSDModule()
@@ -36,7 +34,7 @@ uint8_t cMicroSDModule::_initSPIMode()
       _spi->transmit(0xFF);
     }
     //_csPin->set_Pin(1);
-    response = _sendCommand(GO_IDLE_STATE, 0);
+    response = sendCommand(GO_IDLE_STATE, 0);
     _uartSD->write_String("reset SD card\r\n");
 
     retry++;
@@ -55,7 +53,7 @@ uint8_t cMicroSDModule::_initSPIMode()
   retry = 0;
   _uartSD->write_String("send HCS info and activate card init process\r\n");
   do {
-    response = _sendCommand(SEND_OP_COND, 0);
+    response = sendCommand(SEND_OP_COND, 0);
     retry++;
     if(retry > 15)
     {
@@ -65,16 +63,16 @@ uint8_t cMicroSDModule::_initSPIMode()
   } while(response);
   _uartSD->write_String("init process successful activated\r\n");
 
-  _sendCommand(CRC_ON_OFF, 0);
+  sendCommand(CRC_ON_OFF, 0);
   _uartSD->write_String("CRC option off\r\n");
 
-  _sendCommand(SET_BLOCK_LEN, 512);
+  sendCommand(SET_BLOCK_LEN, 512);
   _uartSD->write_String("set block length to 512 bytes\r\n");
 
   return 0;
 }
 
-uint8_t cMicroSDModule::_sendCommand(uint8_t command, uint32_t argument)
+uint8_t cMicroSDModule::sendCommand(uint8_t command, uint32_t argument)
 {
   uint8_t response;
   uint8_t retry {0};
@@ -92,9 +90,13 @@ uint8_t cMicroSDModule::_sendCommand(uint8_t command, uint32_t argument)
   {
     _spi->transmit(0x87);
   }
-  else
+  else if(command == GO_IDLE_STATE)
   {
     _spi->transmit(0x95);
+  }
+  else
+  {
+    _spi->transmit(0xFF);
   }
 
   while( (response = _spi->receive()) == 0xFF)
@@ -109,9 +111,40 @@ uint8_t cMicroSDModule::_sendCommand(uint8_t command, uint32_t argument)
   _csDeasserted();
   return (response);
 }
+uint8_t cMicroSDModule::readSingleBlock(uint32_t startBlock)
+{
+  uint8_t response;
+  uint16_t retry {0};
 
-bool cMicroSDModule::_getRegister(uint8_t command, uint8_t *buffer, uint8_t responseLength)
-{}
+  response = sendCommand(READ_SINGLE_BLOCK, startBlock << 9); // multiplies
+  // with 512, alternate startBlock * BLOCK_LENGTH
+  if(response != 0x00)
+  {
+    return response;
+  }
+
+  _csAsserted();
+
+  while(_spi->receive() != 0xFE);
+  if(retry++ > 100)
+  {
+    _csDeasserted();
+    return 1;
+  }
+
+  for(uint8_t i = 0; i< BLOCK_LENGTH; i++)
+  {
+    _rwBuffer[i] = _spi->receive();
+  }
+
+  _spi->receive();
+  _spi->receive();
+  _spi->receive();
+
+  _csDeasserted();
+
+  return 0;
+}
 
 void cMicroSDModule::_csAsserted()
 {
