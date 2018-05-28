@@ -29,7 +29,9 @@ class cMicroSDModule
 public:
   cMicroSDModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule * csDevice);
   ~cMicroSDModule();
-  uint8_t _sendCommand(uint8_t command, uint32_t argument);
+  uint8_t sendCommand(uint8_t command, uint32_t argument);
+  uint8_t readSingleBlock(uint32_t startBlock);
+  bool getCID(uint8_t *buffer);
 
 private:
   cUART *_uartSD;
@@ -37,6 +39,7 @@ private:
   cSPIModule *_spi;
   bool _isSuccessful = false;
   uint8_t _registerBuffer[BLOCK_LENGTH];
+  volatile uint8_t _rwBuffer[BLOCK_LENGTH];
 
   void _csAsserted();
   void _csDeasserted();
