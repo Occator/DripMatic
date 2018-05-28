@@ -29,8 +29,10 @@ class cMicroSDModule
 public:
   cMicroSDModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule * csDevice);
   ~cMicroSDModule();
+
   uint8_t sendCommand(uint8_t command, uint32_t argument);
   uint8_t readSingleBlock(uint32_t startBlock);
+  uint8_t getRWBuffer();
   bool getCID(uint8_t *buffer);
 
 private:

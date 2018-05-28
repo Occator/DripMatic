@@ -146,6 +146,14 @@ uint8_t cMicroSDModule::readSingleBlock(uint32_t startBlock)
   return 0;
 }
 
+uint8_t cMicroSDModule::getRWBuffer()
+{
+  for(uint8_t i = 0; i < BLOCK_LENGTH; i++)
+  {
+    return _rwBuffer[i];
+  }
+}
+
 void cMicroSDModule::_csAsserted()
 {
   _csPin->set_Pin(0);
