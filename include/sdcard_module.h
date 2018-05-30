@@ -32,16 +32,15 @@ public:
 
   uint8_t sendCommand(uint8_t command, uint32_t argument);
   uint8_t readSingleBlock(uint32_t startBlock);
-  uint8_t getRWBuffer();
-  bool getCID(uint8_t *buffer);
+  uint8_t readCID();
+  uint8_t _registerBuffer[48];
 
 private:
   cUART *_uartSD;
   cIOPin *_csPin;
   cSPIModule *_spi;
   bool _isSuccessful = false;
-  uint8_t _registerBuffer[BLOCK_LENGTH];
-  volatile uint8_t _rwBuffer[BLOCK_LENGTH];
+  uint8_t _rwBuffer[BLOCK_LENGTH];
 
   void _csAsserted();
   void _csDeasserted();
