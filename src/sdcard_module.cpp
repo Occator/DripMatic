@@ -79,16 +79,8 @@ uint8_t cMicroSDModule::_initSPIMode()
 
     _spi->transmit(0xFF);
     _delay_ms(1);
-    _csAsserted();
-
+    _csDeasserted();
   }
-/*
-  _uartSD->write_String("reading CID ...");
-  readCID();
-  _uartSD->write_String(" done \r\n");
-  readSingleBlock(4);
-  _csDeasserted();
-  */
 
   return 0;
 }
