@@ -33,7 +33,6 @@ public:
   uint8_t sendCommand(uint8_t command, uint32_t argument);
   uint8_t readSingleBlock(uint32_t startBlock);
   uint8_t readCID();
-  uint8_t _registerBuffer[48];
 
 private:
   cUART *_uartSD;
@@ -41,10 +40,12 @@ private:
   cSPIModule *_spi;
   bool _isSuccessful = false;
   uint8_t _rwBuffer[BLOCK_LENGTH];
+  uint8_t _registerBuffer[48];
 
   void _csAsserted();
   void _csDeasserted();
   uint8_t _initSPIMode();
+  uint8_t _sendAppCmd();
   bool _getRegister(uint8_t command, uint8_t *buffer, uint8_t responseLength);
 
 };

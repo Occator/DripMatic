@@ -27,12 +27,18 @@ uint8_t cMicroSDModule::_initSPIMode()
   uint8_t retry {0};
 
   _csAsserted();
+  for(uint8_t i = 0; i < 10; i++)
+  {
+    _spi->transmit(0xFF);
+  }
+
+  _csDeasserted();
+
+  _delay_ms(2);
+
+  _csAsserted();
   do
   {
-    for(uint8_t i = 0; i < 10; i++)
-    {
-      _spi->transmit(0xFF);
-    }
     response = sendCommand(GO_IDLE_STATE, 0);
 
     retry++;
@@ -49,18 +55,37 @@ uint8_t cMicroSDModule::_initSPIMode()
 
   retry = 0;
   _csAsserted();
-  do {
-    response = sendCommand(SEND_OP_COND, 0);
+  do
+  {
+    response = sendCommand(SEND_IF_COND, 0x000001AA);
     retry++;
     if(retry > 15)
     {
       return 1;
     }
-  } while(response);
+  } while(response != 0x01);
   _spi->transmit(0xFF);
 
+  retry = 0;
   _csDeasserted();
   _spi->transmit(0xFF);
+
+  _csAsserted();
+  _delay_ms(1);
+
+  _sendAppCmd();
+/*
+  _csAsserted();
+  _delay_ms(1);
+
+  do {
+    response = _sendAppCmd();
+  } while(response != 0x00);
+
+  _spi->transmit(0xFF);
+  _csDeasserted();
+
+  _delay_ms(5);
 
   _csAsserted();
   sendCommand(CRC_ON_OFF, 0);
@@ -72,9 +97,13 @@ uint8_t cMicroSDModule::_initSPIMode()
 
   _csAsserted();
   sendCommand(SET_BLOCK_LEN, 512);
+  do {
+    response = sendCommand(SET_BLOCK_LEN, 512);
+  } while(response != 0x00);
   _spi->transmit(0xFF);
-  _csDeasserted();
 
+  _csDeasserted();
+*/
   _spi->transmit(0xFF);
   _spi->transmit(0xFF);
 /*
@@ -210,4 +239,51 @@ void cMicroSDModule::_csAsserted()
 void cMicroSDModule::_csDeasserted()
 {
   _csPin->set_Pin(1);
+}
+
+uint8_t cMicroSDModule::_sendAppCmd()
+{
+  uint8_t response;
+  uint8_t retry {0};
+
+  sendCommand(APP_CMD, 0);
+
+  do
+  {
+    response = _spi->receive();
+    retry++;
+    if(retry > 5)
+    {
+      break;
+    }
+  } while(response != 0x01);
+
+  _spi->transmit(0xFF);
+  _csDeasserted();
+
+  _spi->transmit(0xFF);
+
+  retry = 0;
+  _delay_ms(5);
+
+  _csAsserted();
+  _delay_ms(5);
+
+  sendCommand(SD_SEND_OP_COND, 0);
+
+  do
+  {
+    response = _spi->receive();
+    retry++;
+    if(retry > 5)
+    {
+      break;
+    }
+  } while(response != 0x00);
+  _spi->transmit(0xFF);
+  _spi->transmit(0xFF);
+  _csDeasserted();
+
+
+  return response;
 }
