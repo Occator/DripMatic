@@ -70,49 +70,25 @@ uint8_t cMicroSDModule::_initSPIMode()
   _csDeasserted();
   _spi->transmit(0xFF);
 
-  _csAsserted();
-  _delay_ms(1);
+  for(uint8_t j = 0; j < 3; j++)
+  {
+    _csAsserted();
+    _delay_ms(1);
 
-  _sendAppCmd();
-/*
-  _csAsserted();
-  _delay_ms(1);
-
-  do {
     response = _sendAppCmd();
-  } while(response != 0x00);
 
-  _spi->transmit(0xFF);
-  _csDeasserted();
+    _spi->transmit(0xFF);
+    _delay_ms(1);
+    _csAsserted();
 
-  _delay_ms(5);
-
-  _csAsserted();
-  sendCommand(CRC_ON_OFF, 0);
-  _spi->transmit(0xFF);
-  _csDeasserted();
-
-  _spi->transmit(0xFF);
-  _spi->transmit(0xFF);
-
-  _csAsserted();
-  sendCommand(SET_BLOCK_LEN, 512);
-  do {
-    response = sendCommand(SET_BLOCK_LEN, 512);
-  } while(response != 0x00);
-  _spi->transmit(0xFF);
-
-  _csDeasserted();
-*/
-  _spi->transmit(0xFF);
-  _spi->transmit(0xFF);
+  }
 /*
   _uartSD->write_String("reading CID ...");
   readCID();
   _uartSD->write_String(" done \r\n");
   readSingleBlock(4);
-*/
   _csDeasserted();
+  */
 
   return 0;
 }
@@ -260,14 +236,13 @@ uint8_t cMicroSDModule::_sendAppCmd()
 
   _spi->transmit(0xFF);
   _csDeasserted();
-
   _spi->transmit(0xFF);
 
   retry = 0;
-  _delay_ms(5);
+  _delay_ms(1);
 
   _csAsserted();
-  _delay_ms(5);
+  _delay_ms(1);
 
   sendCommand(SD_SEND_OP_COND, 0);
 
@@ -280,10 +255,10 @@ uint8_t cMicroSDModule::_sendAppCmd()
       break;
     }
   } while(response != 0x00);
-  _spi->transmit(0xFF);
+
   _spi->transmit(0xFF);
   _csDeasserted();
-
+  _spi->transmit(0xFF);
 
   return response;
 }
