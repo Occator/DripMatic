@@ -91,6 +91,15 @@ uint8_t cMicroSDModule::_initSPIMode()
   _delay_ms(1);
   _csDeasserted();
 
+  _csAsserted();
+  _delay_ms(1);
+
+  sendCommand(SET_BLOCK_LEN, BLOCK_LENGTH);
+
+  _spi->transmit(0xFF);
+  _delay_ms(1);
+  _csDeasserted();
+
   return 0;
 }
 
@@ -248,9 +257,9 @@ uint8_t cMicroSDModule::_sendOCRCmd()
   uint8_t response;
 
   _spi->transmit(0xFF);
-  response = sendCommand(READ_OCR, 0);
+  _ocrRegister[0] = sendCommand(READ_OCR, 0);
 
-  if(response != 0x00)
+  if(_ocrRegister[0] == 0x00)
   {
     for(uint8_t i = 1; i < 5; i++)
     {
@@ -258,12 +267,11 @@ uint8_t cMicroSDModule::_sendOCRCmd()
     }
     _spi->transmit(0xFF);
   }
-
-  for(uint8_t i = 0; i < 5; i++)
+  else
   {
-    _ocrRegister[i] = _spi->receive();
+    return 0;
   }
-  _spi->transmit(0xFF);
+
 
   return response;
 }
