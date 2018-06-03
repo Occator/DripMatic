@@ -82,6 +82,15 @@ uint8_t cMicroSDModule::_initSPIMode()
     _csDeasserted();
   }
 
+  _csAsserted();
+  _delay_ms(1);
+
+  _sendOCRCmd();
+
+  _spi->transmit(0xFF);
+  _delay_ms(1);
+  _csDeasserted();
+
   return 0;
 }
 
@@ -120,35 +129,6 @@ uint8_t cMicroSDModule::sendCommand(uint8_t command, uint32_t argument)
 
   _spi->receive();
   return (response);
-}
-
-uint8_t cMicroSDModule::readCID()
-{
-  uint8_t response;
-  uint8_t retry {0};
-  for(uint8_t i = 0; i < 16; i++)
-  {
-    _registerBuffer[i] = 0;
-  }
-  _csAsserted();
-  do
-  {
-    response = sendCommand(SEND_CID, 0);
-    retry++;
-    if(retry > 15)
-    {
-      return 1;
-    }
-  } while(response != 0x00);
-
-  while( (_spi->receive() != 0xFE) );
-  _csDeasserted();
-
-  for(uint8_t i = 0; i < 16; i++)
-  {
-    _registerBuffer[i] = _spi->receive();
-  }
-  return 0;
 }
 
 uint8_t cMicroSDModule::readSingleBlock(uint32_t startBlock)
@@ -198,6 +178,8 @@ uint8_t cMicroSDModule::readSingleBlock(uint32_t startBlock)
     return 0;
   }
 }
+
+
 
 void cMicroSDModule::_csAsserted()
 {
@@ -250,6 +232,31 @@ uint8_t cMicroSDModule::_sendAppCmd()
 
   _spi->transmit(0xFF);
   _csDeasserted();
+  _spi->transmit(0xFF);
+
+  return response;
+}
+
+uint8_t cMicroSDModule::_sendOCRCmd()
+{
+  uint8_t response;
+
+  _spi->transmit(0xFF);
+  response = sendCommand(READ_OCR, 0);
+
+  if(response != 0x00)
+  {
+    for(uint8_t i = 1; i < 5; i++)
+    {
+      _ocrRegister[i] = _spi->receive();
+    }
+    _spi->transmit(0xFF);
+  }
+
+  for(uint8_t i = 0; i < 5; i++)
+  {
+    _ocrRegister[i] = _spi->receive();
+  }
   _spi->transmit(0xFF);
 
   return response;
