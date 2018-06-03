@@ -179,7 +179,13 @@ uint8_t cMicroSDModule::readSingleBlock(uint32_t startBlock)
   }
 }
 
-
+void cMicroSDModule::readOCRRegister(uint8_t *buffer)
+{
+  for(uint8_t i = 0; i < 5; i++)
+  {
+    buffer[i] = _ocrRegister[i];
+  }
+}
 
 void cMicroSDModule::_csAsserted()
 {

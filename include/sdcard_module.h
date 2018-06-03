@@ -32,6 +32,7 @@ public:
 
   uint8_t sendCommand(uint8_t command, uint32_t argument);
   uint8_t readSingleBlock(uint32_t startBlock);
+  void readOCRRegister(uint8_t *buffer);
 
 private:
   cUART *_uartSD;

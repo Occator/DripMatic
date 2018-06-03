@@ -15,14 +15,19 @@ int main(){
 	cSPIModule sdSPI;
 	cMicroSDModule microSD(&sdComm, &spiCS, &sdSPI);
 
-/*
-	for(uint8_t i = 0; i < 16; i++)
+	uint8_t sdRegBuffer[5];
+
+	microSD.readOCRRegister(sdRegBuffer);
+
+		sdComm.write_String("OCR-Register:\r\n");
+
+	for(uint8_t i = 0; i < 4; i++)
 	{
-		sdComm.write_Char(microSD._registerBuffer[i]);
+		sdComm.write_Int(sdRegBuffer[i]);
 		sdComm.write_String("\r\n");
 	}
 
-*/
+
 	for(;;)
 	{
 	}
