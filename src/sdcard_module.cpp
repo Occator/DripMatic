@@ -149,19 +149,16 @@ uint8_t cMicroSDModule::readSingleBlock(uint32_t startBlock)
   {
     response = _spi->receive();
   } while(response != 0x00);
-  _uartSD->write_Int(__LINE__);
+
   do
   {
     response = _spi->receive();
   }  while(response != 0xFE);
 
-  _uartSD->write_Int(__LINE__);
-
   for(uint16_t i = 0; i < BLOCK_LENGTH; i++)
   {
     _rwBuffer[i] = _spi->receive();
   }
-  _uartSD->write_Int(__LINE__);
 
   _spi->receive(); // discard incomming CRC - 16-bits
   _spi->receive();
