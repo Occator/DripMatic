@@ -34,6 +34,9 @@ public:
   uint8_t readSingleBlock(uint32_t startBlock);
   void readOCRRegister(uint8_t *buffer);
   void getRWBuffer(uint8_t *rwBuffer);
+  uint8_t firstDataByte {0};
+  uint8_t secondDataByte {0};
+  uint8_t thirdDataByte {0};
 
 private:
   cUART *_uartSD;

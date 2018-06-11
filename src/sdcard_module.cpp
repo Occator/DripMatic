@@ -144,11 +144,12 @@ uint8_t cMicroSDModule::readSingleBlock(uint32_t startBlock)
 {
   _csAsserted();
   uint8_t response;
-  sendCommand(READ_SINGLE_BLOCK, ( (uint32_t)startBlock) << 9);
-  do
+  response  = sendCommand(READ_SINGLE_BLOCK, ( (uint32_t)startBlock) << 9);
+
+  while(response != 0x00)
   {
     response = _spi->receive();
-  } while(response != 0x00);
+  }
 
   do
   {
