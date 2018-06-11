@@ -45,7 +45,6 @@ private:
   void _csDeasserted();
   uint8_t _initSPIMode();
   uint8_t _sendAppCmd();
-  uint8_t _sendOCRCmd();
 };
 
 #endif
