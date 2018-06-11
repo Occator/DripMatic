@@ -31,15 +31,13 @@ public:
   ~cMicroSDModule();
 
   uint8_t sendCommand(uint8_t command, uint32_t argument);
-  uint8_t readSingleBlock(uint32_t startBlock);
-  void getRWBuffer(uint8_t *rwBuffer);
+  uint8_t readSingleBlock(uint8_t *buffer, uint32_t startBlock);
 
 private:
   cUART *_uartSD;
   cIOPin *_csPin;
   cSPIModule *_spi;
   bool _isSuccessful = false;
-  uint8_t _rwBuffer[BLOCK_LENGTH];
 
   void _csAsserted();
   void _csDeasserted();
