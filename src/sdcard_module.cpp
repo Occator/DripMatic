@@ -143,31 +143,25 @@ uint8_t cMicroSDModule::sendCommand(uint8_t command, uint32_t argument)
 uint8_t cMicroSDModule::readSingleBlock(uint32_t startBlock)
 {
   _csAsserted();
-  _spi->transmit(0xFF);
   uint8_t response;
-  uint8_t retry {0};
   sendCommand(READ_SINGLE_BLOCK, ( (uint32_t)startBlock) << 9);
   do
   {
     response = _spi->receive();
-    retry++;
-    if(retry > 15)
-    {
-      return 1;
-    }
   } while(response != 0x00);
-  _spi->receive();
-
+  _uartSD->write_Int(__LINE__);
   do
   {
     response = _spi->receive();
   }  while(response != 0xFE);
 
+  _uartSD->write_Int(__LINE__);
 
-  for(uint8_t i = 0; i < BLOCK_LENGTH; i++)
+  for(uint16_t i = 0; i < BLOCK_LENGTH; i++)
   {
     _rwBuffer[i] = _spi->receive();
   }
+  _uartSD->write_Int(__LINE__);
 
   _spi->receive(); // discard incomming CRC - 16-bits
   _spi->receive();
@@ -188,7 +182,7 @@ void cMicroSDModule::readOCRRegister(uint8_t *buffer)
 
 void cMicroSDModule::getRWBuffer(uint8_t *rwBuffer)
 {
-  for(uint8_t i = 0; i < BLOCK_LENGTH; i++)
+  for(uint16_t i = 0; i < BLOCK_LENGTH; i++)
   {
     *rwBuffer++ = _rwBuffer[i];
   }
