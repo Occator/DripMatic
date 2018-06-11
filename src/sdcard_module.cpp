@@ -70,7 +70,7 @@ uint8_t cMicroSDModule::_initSPIMode()
   _csDeasserted();
   _spi->transmit(0xFF);
 
-  for(uint8_t j = 0; j < 3; j++)
+  for(uint8_t j = 0; j < 10; j++)
   {
     _csAsserted();
     _delay_ms(1);
@@ -81,15 +81,6 @@ uint8_t cMicroSDModule::_initSPIMode()
     _delay_ms(1);
     _csDeasserted();
   }
-
-  _csAsserted();
-  _delay_ms(1);
-
-  _sendOCRCmd();
-
-  _spi->transmit(0xFF);
-  _delay_ms(1);
-  _csDeasserted();
 
   _csAsserted();
   _delay_ms(1);
@@ -170,14 +161,6 @@ uint8_t cMicroSDModule::readSingleBlock(uint32_t startBlock)
   return response;
 }
 
-void cMicroSDModule::readOCRRegister(uint8_t *buffer)
-{
-  for(uint8_t i = 0; i < 5; i++)
-  {
-    buffer[i] = _ocrRegister[i];
-  }
-}
-
 void cMicroSDModule::getRWBuffer(uint8_t *rwBuffer)
 {
   for(uint16_t i = 0; i < BLOCK_LENGTH; i++)
@@ -238,33 +221,6 @@ uint8_t cMicroSDModule::_sendAppCmd()
   _spi->transmit(0xFF);
   _csDeasserted();
   _spi->transmit(0xFF);
-
-  return response;
-}
-
-uint8_t cMicroSDModule::_sendOCRCmd()
-{
-  uint8_t response;
-
-  _spi->transmit(0xFF);
-  _ocrRegister[0] = sendCommand(READ_OCR, 0);
-
-  if(_ocrRegister[0] == 0x00)
-  {
-    for(uint8_t i = 1; i < 5; i++)
-    {
-      _ocrRegister[i] = _spi->receive();
-    }
-    _spi->transmit(0xFF);
-  }
-  else
-  {
-    for(uint8_t j = 1; j < 5; j++)
-    {
-      _ocrRegister[j] = 0;
-    }
-    return 0;
-  }
 
   return response;
 }

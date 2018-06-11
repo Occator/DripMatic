@@ -32,7 +32,6 @@ public:
 
   uint8_t sendCommand(uint8_t command, uint32_t argument);
   uint8_t readSingleBlock(uint32_t startBlock);
-  void readOCRRegister(uint8_t *buffer);
   void getRWBuffer(uint8_t *rwBuffer);
   uint8_t firstDataByte {0};
   uint8_t secondDataByte {0};
@@ -45,7 +44,6 @@ private:
   bool _isSuccessful = false;
   uint8_t _rwBuffer[BLOCK_LENGTH];
   uint8_t _registerBuffer[48];
-  uint8_t _ocrRegister[5];
 
   void _csAsserted();
   void _csDeasserted();
