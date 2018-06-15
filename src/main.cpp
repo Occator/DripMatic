@@ -18,7 +18,20 @@ int main(){
 	sdComm.write_String("r/w buffer content:\r\n");
 
 	uint8_t rwBuffer[512];
-	microSD.readSingleBlock(rwBuffer, 0);
+	for(uint16_t j = 0; j < 512; j++)
+	{
+		rwBuffer[j] = 0;
+	}
+
+	for(uint8_t i = 0; i < 8; i++)
+	{
+		rwBuffer[i] = 13;
+	}
+
+	microSD.writeSingeBlock(rwBuffer, 5);
+
+
+	microSD.readSingleBlock(rwBuffer, 5);
 
 	for(uint16_t j = 0; j < 512; j++)
 	{

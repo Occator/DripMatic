@@ -32,6 +32,7 @@ public:
 
   uint8_t sendCommand(uint8_t command, uint32_t argument);
   uint8_t readSingleBlock(uint8_t *buffer, uint32_t startBlock);
+  uint8_t writeSingeBlock(uint8_t *buffer, uint32_t startBlock);
 
 private:
   cUART *_uartSD;
