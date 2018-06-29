@@ -3,16 +3,14 @@
 
 cMicroSDModule::cMicroSDModule()
 {
-  //_uartSD->write_String("init SD-Card in SPI-mode...\r\n");
+
   if (!_initSPIMode())
   {
     _isSuccessful = true;
-    //_uartSD->write_String("init successful...\r\n");
   }
   else
   {
     _isSuccessful = false;
-    //_uartSD->write_String("init not successful...\r\n");
   }
 
 }
@@ -126,7 +124,6 @@ uint8_t cMicroSDModule::_initSPIMode()
     retry++;
     if(retry > 15)
     {
-      //_uartSD->write_String("timeout... no card detected\r\n");
       return 1;
     }
   } while(response != 0x01);
@@ -213,15 +210,6 @@ uint8_t cMicroSDModule::sendCommand(uint8_t command, uint32_t argument)
   return (response);
 }
 
-void cMicroSDModule::_csAsserted()
-{
-  _csPin.set_Pin(0);
-}
-
-void cMicroSDModule::_csDeasserted()
-{
-  _csPin.set_Pin(1);
-}
 
 uint8_t cMicroSDModule::_sendAppCmd()
 {
@@ -267,4 +255,14 @@ uint8_t cMicroSDModule::_sendAppCmd()
   _spi.transmit(0xFF);
 
   return response;
+}
+
+void cMicroSDModule::_csAsserted()
+{
+  _csPin.set_Pin(0);
+}
+
+void cMicroSDModule::_csDeasserted()
+{
+  _csPin.set_Pin(1);
 }
