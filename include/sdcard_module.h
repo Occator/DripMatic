@@ -23,10 +23,12 @@
 // transmission
 #define SD_START_TOKEN 0xFE
 
+static cIOPin _csPin(&PORTB, 2, cIOPin::output);
+
 class cMicroSDModule
 {
 public:
-  cMicroSDModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule * csDevice);
+  cMicroSDModule();
   ~cMicroSDModule();
 
   uint8_t sendCommand(uint8_t command, uint32_t argument);
@@ -34,9 +36,7 @@ public:
   uint8_t writeSingeBlock(uint8_t *buffer, uint32_t startBlock);
 
 private:
-  cUART *_uartSD;
-  cIOPin *_csPin;
-  cSPIModule *_spi;
+  cSPIModule _spi;
   bool _isSuccessful = false;
 
   void _csAsserted();

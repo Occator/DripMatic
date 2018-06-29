@@ -3,17 +3,12 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "pin_io.h"
-#include "spi_module.h"
 #include "sdcard_module.h"
 #include "uart_module.h"
 
-
 int main(){
 	cUART sdComm;
-	cIOPin spiCS(&PORTB, 2, cIOPin::output);
-	cSPIModule sdSPI;
-	cMicroSDModule microSD(&sdComm, &spiCS, &sdSPI);
+	cMicroSDModule microSD;
 
 
 	uint8_t rwBuffer[512];
@@ -26,15 +21,15 @@ int main(){
 
 	for(uint8_t i = 0; i < 8; i++)
 	{
-		rwBuffer[i] = 13;
+		rwBuffer[i] = 0;
 	}
 
-	microSD.writeSingeBlock(rwBuffer, 5);
+	microSD.writeSingeBlock(rwBuffer, 4);
 
 
 	sdComm.write_String("r/w buffer content:\r\n");
 
-	microSD.readSingleBlock(rwBuffer, 5);
+	microSD.readSingleBlock(rwBuffer, 4);
 
 	for(uint16_t j = 0; j < 512; j++)
 	{
