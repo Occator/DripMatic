@@ -2,7 +2,6 @@
 #define SDCARD_MODULE_H
 
 #include "spi_module.h"
-#include "pin_io.h"
 
 // formular for CMDs - command number n | 0x40
 #define GO_IDLE_STATE 0

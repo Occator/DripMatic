@@ -21,6 +21,89 @@ cMicroSDModule::cMicroSDModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule *
 cMicroSDModule::~cMicroSDModule()
 {}
 
+uint8_t cMicroSDModule::readSingleBlock(uint8_t *buffer, uint32_t startBlock)
+{
+
+  _csAsserted();
+  uint8_t response;
+  response  = sendCommand(READ_SINGLE_BLOCK, ( (uint32_t)startBlock) << 9);
+  while(response != 0x00)
+  {
+    response = _spi->receive();
+  }
+
+  do
+  {
+    response = _spi->receive();
+  }  while(response != 0xFE);
+
+  for(uint16_t i = 0; i < BLOCK_LENGTH; i++)
+  {
+    *buffer++ = _spi->receive();
+  }
+  _spi->receive(); // discard incomming CRC - 16-bits
+  _spi->receive();
+  _csDeasserted();
+
+  _spi->receive();
+
+  return response;
+  }
+
+uint8_t cMicroSDModule::writeSingeBlock(uint8_t *buffer, uint32_t startBlock)
+{
+  _csAsserted();
+  uint8_t response;
+  response = sendCommand(WRITE_SINGLE_BLOCK, ( (uint32_t)startBlock) << 9);
+
+  while(response != 0x00)
+  {
+    response = _spi->receive();
+  }
+
+  for(uint8_t k = 0; k < 3; k++)
+  {
+    _spi->receive();
+  }
+
+  _spi->transmit(0xFE);
+
+  for(uint16_t i = 0; i < 512; i++)
+  {
+    _spi->transmit(*buffer++);
+  }
+  _spi->transmit(0xFF);
+  _spi->transmit(0xFF);
+
+  response = _spi->transmit(0xFF);
+
+  if( (response & 0x1F) != 0x05)
+  {
+    _csDeasserted();
+    return response;
+  }
+
+  for(uint8_t j = 0; j < 40; j++)
+  {
+    response = _spi->transmit(0xFF);
+  }
+
+  do
+  {
+      response = _spi->receive();
+  } while(response != 0x00);
+
+  for(uint8_t j = 0; j < 20; j++)
+  {
+    response = _spi->transmit(0xFF);
+  }
+
+  _spi->receive();
+  _csDeasserted();
+
+  return response;
+}
+
 uint8_t cMicroSDModule::_initSPIMode()
 {
   uint8_t response;
@@ -129,91 +212,6 @@ uint8_t cMicroSDModule::sendCommand(uint8_t command, uint32_t argument)
 
   _spi->receive();
   return (response);
-}
-
-uint8_t cMicroSDModule::readSingleBlock(uint8_t *buffer, uint32_t startBlock)
-{
-  _csAsserted();
-  uint8_t response;
-  response  = sendCommand(READ_SINGLE_BLOCK, ( (uint32_t)startBlock) << 9);
-
-  while(response != 0x00)
-  {
-    response = _spi->receive();
-  }
-
-  do
-  {
-    response = _spi->receive();
-  }  while(response != 0xFE);
-
-  for(uint16_t i = 0; i < BLOCK_LENGTH; i++)
-  {
-    *buffer++ = _spi->receive();
-  }
-
-  _spi->receive(); // discard incomming CRC - 16-bits
-  _spi->receive();
-  _csDeasserted();
-
-  _spi->receive();
-
-  return response;
-}
-
-uint8_t cMicroSDModule::writeSingeBlock(uint8_t *buffer, uint32_t startBlock)
-{
-  _csAsserted();
-  uint8_t response;
-  response = sendCommand(WRITE_SINGLE_BLOCK, ( (uint32_t)startBlock) << 9);
-
-  while(response != 0x00)
-  {
-    response = _spi->receive();
-  }
-
-  for(uint8_t k = 0; k < 3; k++)
-  {
-    _spi->receive();
-  }
-
-  _spi->transmit(0xFE);
-
-  for(uint16_t i = 0; i < 512; i++)
-  {
-    _spi->transmit(*buffer++);
-  }
-  _spi->transmit(0xFF);
-  _spi->transmit(0xFF);
-
-  response = _spi->transmit(0xFF);
-
-  if( (response & 0x1F) != 0x05)
-  {
-    _csDeasserted();
-    return response;
-  }
-
-  for(uint8_t j = 0; j < 20; j++)
-  {
-    response = _spi->transmit(0xFF);
-  }
-
-  do
-  {
-      response = _spi->receive();
-  } while(response != 0x00);
-
-  for(uint8_t j = 0; j < 20; j++)
-  {
-    response = _spi->transmit(0xFF);
-  }
-
-  _spi->receive();
-  _csDeasserted();
-
-  return response;
-
 }
 
 void cMicroSDModule::_csAsserted()
