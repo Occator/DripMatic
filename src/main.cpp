@@ -11,11 +11,13 @@
 
 int main(){
 	cUART sdComm;
+	sdComm.write_String("testing sd card init, read/write single block:\r\n");
+
+	_delay_ms(5000);
 	cIOPin spiCS(&PORTB, 2, cIOPin::output);
 	cSPIModule sdSPI;
 	cMicroSDModule microSD(&sdComm, &spiCS, &sdSPI);
 
-	sdComm.write_String("r/w buffer content:\r\n");
 
 	uint8_t rwBuffer[512];
 	for(uint16_t j = 0; j < 512; j++)
@@ -30,7 +32,9 @@ int main(){
 
 	microSD.writeSingeBlock(rwBuffer, 5);
 
+	_delay_ms(2000);
 
+	sdComm.write_String("r/w buffer content:\r\n");
 	microSD.readSingleBlock(rwBuffer, 5);
 
 	for(uint16_t j = 0; j < 512; j++)
