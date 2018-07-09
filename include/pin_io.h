@@ -3,21 +3,14 @@
 
 #include <avr/io.h>
 
-class cConfigIOPin{
-public:
-	virtual void set_Pin(bool value) = 0;
-	virtual uint8_t get_Pin() = 0;
-	virtual void toggle_Pin() = 0;
-	virtual void toggle_Direction() = 0;
-	virtual void set_Direction(bool direction) = 0;
-};
-
-class cIOPin : public cConfigIOPin{
+class cIOPin
+{
 public:
 	enum eDirection{
 		input = 0, output = 1
 	};
 
+	cIOPin();
 	cIOPin( volatile uint8_t *port, const uint8_t bit, eDirection direction);
 	~cIOPin();
 
@@ -28,6 +21,7 @@ public:
 	void set_Direction(bool direction);
 private:
 
+	const uint8_t _defaultInit {0};
 	volatile uint8_t *_port;
 	const uint8_t _bitVal;
 	eDirection _dir;

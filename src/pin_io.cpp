@@ -2,7 +2,8 @@
 
 #include "pin_io.h"
 
-extern "C" void __cxa_pure_virtual(){while(1);}
+cIOPin::cIOPin() : _bitVal(_defaultInit)
+{}
 
 cIOPin::cIOPin(volatile uint8_t *port, const uint8_t bit, eDirection direction) : _port(port), _bitVal(bit), _dir(direction){
 	switch(_dir){
@@ -12,7 +13,6 @@ cIOPin::cIOPin(volatile uint8_t *port, const uint8_t bit, eDirection direction) 
 		break;
 	}
 }
-
 
 cIOPin::~cIOPin(){}
 
