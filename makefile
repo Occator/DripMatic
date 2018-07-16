@@ -2,7 +2,7 @@
 TARGET = autspir
 OBJECTS = build/main.o build/adc_pin.o build/twi_module.o build/lcd_module.o
 OBJECTS += build/pin_io.o build/rtc_3w.o build/spi_module.o build/uart_module.o
-OBJECTS += build/sdcard_module.o
+OBJECTS += build/sdcard_module.o build/diskio.o build/ff.o
 # chip and project specific global definitons
 MCU = atmega328p
 F_CPU = 16000000UL
@@ -50,6 +50,12 @@ build/sdcard_module.o: src/sdcard_module.cpp include/sdcard_module.h
 
 build/uart_module.o: src/uart_module.cpp include/uart_module.h
 	$(CC) $(CFLAGS) -g -Wall -c src/uart_module.cpp
+
+build/diskio.o: src/diskio.cpp include/diskio.h
+	$(CC) $(CFLAGS) -g -Wall -c src/diskio.cpp
+
+build/ff.o: src/ff.c include/ff.h
+	$(CC) $(CFLAGS) -g -Wall -c src/ff.c
 
 install: build/autspir_hex.hex
 	avrdude -F -V -v -v -c arduino -p atmega328p -P $(PORT) -b 115200 -e -U flash:w:build/autspir_hex.hex
