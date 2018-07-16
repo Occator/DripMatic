@@ -3698,6 +3698,25 @@ FRESULT f_open (
 	LEAVE_FF(fs, res);
 }
 
+/*------------------------------------------------------------/
+/ Open or create a file in append mode
+/ (This function was sperseded by FA_OPEN_APPEND flag at FatFs R0.12a)
+/------------------------------------------------------------*/
+
+FRESULT open_append(FIL* fp, const TCHAR* path)
+{
+	FRESULT fr;
+
+    /* Opens an existing file. If not exist, creates a new file. */
+    fr = f_open(fp, path, FA_WRITE | FA_OPEN_ALWAYS);
+    if (fr == FR_OK) {
+        /* Seek to end of the file to append data */
+        fr = f_lseek(fp, f_size(fp));
+        if (fr != FR_OK)
+            f_close(fp);
+    }
+    return fr;
+}
 
 
 
@@ -6529,5 +6548,5 @@ FRESULT f_setcp (
 	}
 	return FR_OK;
 }
-#endif	/* FF_CODE_PAGE == 0 */
 
+#endif	/* FF_CODE_PAGE == 0 */
