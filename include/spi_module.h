@@ -3,8 +3,6 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
-#include "pin_io.h"
-#include "uart_module.h"
 
 class cSPIModule
 {
