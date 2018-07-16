@@ -8,12 +8,10 @@ cMicroSDModule::cMicroSDModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule *
   if (!_initSPIMode())
   {
     _isSuccessful = true;
-    _uartSD->write_String("init successful...\r\n");
   }
   else
   {
     _isSuccessful = false;
-    _uartSD->write_String("init not successful...\r\n");
   }
 }
 
