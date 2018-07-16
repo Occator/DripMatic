@@ -29,6 +29,7 @@ DSTATUS disk_initialize (
 {
   sdCard_ = &sdCard;
 
+	uart.write_String("SD-Card successful initialized\r\n");
   return RES_OK;
 }
 
