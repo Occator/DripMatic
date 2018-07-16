@@ -13,13 +13,23 @@
 
 int main(){
 
-	FATFS fs;
-	FIL fil;
+	 FRESULT fr;
+	 FATFS fs;
+	 FIL fil;
+	 cUART comm;
 
-	f_mount(&fs, "", 0);
+	 /* Open or create a log file and ready to append */
+	 f_mount(&fs, "", 0);
 
-	f_open(&fil, "logfile.txt", FA_WRITE | FA_OPEN_ALWAYS);
-	f_close(&fil);
+	 fr = f_open(&fil, "logfile.txt", FA_WRITE | FA_OPEN_ALWAYS);
+	 if (fr != FR_OK) return 1;
+
+	 comm.write_String("file opened\r\n");
+
+	 /* Close the file */
+	 f_close(&fil);
+
+	 comm.write_String("file closed\r\n");
 
 	for(;;)
 	{
