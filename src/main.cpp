@@ -13,23 +13,46 @@
 
 int main(){
 
-	 FRESULT fr;
-	 FATFS fs;
+	 FATFS fatFs;
 	 FIL fil;
+	 FRESULT res_mount, res_open, res_seek, res_write;
 	 cUART comm;
+	 uint16_t fa;
+
+	 _delay_ms(10);
 
 	 /* Open or create a log file and ready to append */
-	 f_mount(&fs, "", 0);
+	 res_mount = f_mount(&fatFs, "", 1);
 
-	 fr = f_open(&fil, "logfile.txt", FA_WRITE | FA_OPEN_ALWAYS);
-	 if (fr != FR_OK) return 1;
+	 if(res_mount == FR_OK)
+	 {
+		 comm.write_String("FAT mounted\r\n");
+		 _delay_ms(10);
+		 res_open = f_open(&fil, "test.txt", FA_WRITE | FA_OPEN_ALWAYS | FA_READ);
 
-	 comm.write_String("file opened\r\n");
+		 if(res_open == FR_OK)
+		 {
+			 comm.write_String("file open\r\n");
+			 _delay_ms(10);
+			 res_seek = f_lseek(&fil, f_size(&fil) );
+			 if(res_seek == FR_OK)
+			 {
+				 _delay_ms(10);
 
-	 /* Close the file */
-	 f_close(&fil);
-
-	 comm.write_String("file closed\r\n");
+				 for(uint16_t count = 0; count < 1512; count++)
+				 {
+				 	res_write = f_write(&fil, "A", 1, &fa);
+					if(fa > 0 && res_write == FR_OK)
+					{
+						f_sync(&fil);
+						comm.write_String("buffer flush\r\n");
+					}
+			 	 }
+				 f_close(&fil);
+				 comm.write_String("file closed\r\n");
+			 }
+		 }
+	 }
 
 	for(;;)
 	{
