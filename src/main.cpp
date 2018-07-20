@@ -3,11 +3,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "pin_io.h"
-#include "spi_module.h"
 #include "sdcard_module.h"
 #include "uart_module.h"
-
 
 int main(){
 	cUART sdComm;
@@ -20,17 +17,20 @@ int main(){
 
 
 	uint8_t rwBuffer[512];
+
 	for(uint16_t j = 0; j < 512; j++)
 	{
 		rwBuffer[j] = 0;
 	}
 
+
 	for(uint8_t i = 0; i < 8; i++)
 	{
-		rwBuffer[i] = 13;
+		rwBuffer[i] = 'A';
 	}
 
-	microSD.writeSingeBlock(rwBuffer, 5);
+	microSD.writeSingeBlock(rwBuffer, 4);
+
 
 	_delay_ms(2000);
 

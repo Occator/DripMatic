@@ -2,7 +2,6 @@
 #define SDCARD_MODULE_H
 
 #include "spi_module.h"
-#include "pin_io.h"
 
 // formular for CMDs - command number n | 0x40
 #define GO_IDLE_STATE 0
@@ -24,10 +23,12 @@
 // transmission
 #define SD_START_TOKEN 0xFE
 
+static cIOPin _csPin(&PORTB, 2, cIOPin::output);
+
 class cMicroSDModule
 {
 public:
-  cMicroSDModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule * csDevice);
+  cMicroSDModule();
   ~cMicroSDModule();
 
   uint8_t sendCommand(uint8_t command, uint32_t argument);
@@ -35,9 +36,7 @@ public:
   uint8_t writeSingeBlock(uint8_t *buffer, uint32_t startBlock);
 
 private:
-  cUART *_uartSD;
-  cIOPin *_csPin;
-  cSPIModule *_spi;
+  cSPIModule _spi;
   bool _isSuccessful = false;
 
   void _csAsserted();
