@@ -23,8 +23,6 @@
 // transmission
 #define SD_START_TOKEN 0xFE
 
-static cIOPin _csPin(&PORTB, 2, cIOPin::output);
-
 class cMicroSDModule
 {
 public:
