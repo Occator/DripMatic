@@ -16,6 +16,21 @@ cMicroSDModule::cMicroSDModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule *
 
 }
 
+cMicroSDModule::cMicroSDModule(cIOPin *chipSelect, cSPIModule * csDevice)
+: _csPin(chipSelect), _spi(csDevice)
+{
+
+  if (!_initSPIMode())
+  {
+    _isSuccessful = true;
+  }
+  else
+  {
+    _isSuccessful = false;
+  }
+
+}
+
 cMicroSDModule::~cMicroSDModule()
 {}
 

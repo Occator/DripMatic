@@ -27,6 +27,7 @@ class cMicroSDModule
 {
 public:
   cMicroSDModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule * csDevice);
+  cMicroSDModule(cIOPin *chipSelect, cSPIModule * csDevice);
   ~cMicroSDModule();
 
   uint8_t sendCommand(uint8_t command, uint32_t argument);
