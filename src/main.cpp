@@ -24,7 +24,7 @@ int main(){
 	}
 
 
-	for(uint8_t i = 0; i < 8; i++)
+	for(uint8_t i = 0; i < 128; i++)
 	{
 		rwBuffer[i] = 'A';
 	}
@@ -35,7 +35,7 @@ int main(){
 	_delay_ms(2000);
 
 	sdComm.write_String("r/w buffer content:\r\n");
-	microSD.readSingleBlock(rwBuffer, 5);
+	microSD.readSingleBlock(rwBuffer, 4);
 
 	for(uint16_t j = 0; j < 512; j++)
 	{

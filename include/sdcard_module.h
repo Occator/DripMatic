@@ -28,15 +28,18 @@ static cIOPin _csPin(&PORTB, 2, cIOPin::output);
 class cMicroSDModule
 {
 public:
-  cMicroSDModule();
+  cMicroSDModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule * csDevice);
   ~cMicroSDModule();
 
   uint8_t sendCommand(uint8_t command, uint32_t argument);
   uint8_t readSingleBlock(uint8_t *buffer, uint32_t startBlock);
+  uint8_t readSDCard(uint8_t *buffer, uint8_t startBlock, uint16_t count);
   uint8_t writeSingeBlock(uint8_t *buffer, uint32_t startBlock);
 
 private:
-  cSPIModule _spi;
+  cUART *_uartSD;
+  cIOPin *_csPin;
+  cSPIModule *_spi;
   bool _isSuccessful = false;
 
   void _csAsserted();
