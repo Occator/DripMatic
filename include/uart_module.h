@@ -9,7 +9,7 @@
 
 class cUART{
 public:
-	static cUART& instance()
+	static cUART& getInstance()
 	{
 		static cUART uartInstance;
 		return uartInstance;
