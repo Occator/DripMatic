@@ -9,14 +9,21 @@
 
 class cUART{
 public:
-	cUART();
-	~cUART();
+	static cUART& instance()
+	{
+		static cUART uartInstance;
+		return uartInstance;
+	}
 	void init(uint16_t ubbr0Value);
 	uint8_t read();
 	void write_Char(char data);
 	void write_String(const char* string);
 	void write_Int(int data);
 private:
+	cUART();
+	cUART(cUART const &);  // copy cosntructor
+	cUART& operator=(cUART const&);  // assignment operator
+	~cUART();
 };
 
 #endif
