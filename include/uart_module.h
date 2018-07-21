@@ -7,6 +7,12 @@
 #define F_CPU 16000000UL
 #define BAUD 9600UL
 
+__extension__ typedef int __guard __attribute__((mode (__DI__)));
+
+extern "C" int __cxa_guard_acquire(__guard *);
+extern "C" void __cxa_guard_release (__guard *);
+extern "C" void __cxa_guard_abort (__guard *);
+
 class cUART{
 public:
 	static cUART& getInstance()
