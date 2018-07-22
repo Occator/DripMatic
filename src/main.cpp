@@ -7,8 +7,7 @@
 #include "uart_module.h"
 
 int main(){
-	// cUART sdComm;
-	// sdComm.write_String("testing sd card init, read/write single block:\r\n");
+	
 	cUART::getInstance()->init( (F_CPU / (16 * BAUD) - 1) );
 	cUART::getInstance()->write_String("testing UART singleton\r\n");
 

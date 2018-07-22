@@ -23,6 +23,7 @@ cMicroSDModule::cMicroSDModule(cIOPin *chipSelect, cSPIModule * csDevice)
   if (!_initSPIMode())
   {
     _isSuccessful = true;
+    cUART::getInstance()->write_String("init SD card successful\r\n");
   }
   else
   {
