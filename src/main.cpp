@@ -7,8 +7,8 @@
 #include "uart_module.h"
 
 int main(){
-
 	cUART::getInstance()->init( (F_CPU / (16 * BAUD) - 1) );
+	cUART::getInstance()->write_String("-----------------------------------\r\n");
 	cUART::getInstance()->write_String("testing UART singleton\r\n");
 
 
@@ -19,31 +19,32 @@ int main(){
 
 
 	uint8_t rwBuffer[512];
-
+	cUART::getInstance()->write_String("clear r/w buffer\r\n");
 	for(uint16_t j = 0; j < 512; j++)
 	{
 		rwBuffer[j] = 0;
 	}
 
-
+	cUART::getInstance()->write_String("fill r/w buffer with 128 A's\r\n");
 	for(uint8_t i = 0; i < 128; i++)
 	{
 		rwBuffer[i] = 'A';
 	}
 
+	cUART::getInstance()->write_String("write single Block\r\n");
 	microSD.writeSingeBlock(rwBuffer, 4);
-
 
 	_delay_ms(2000);
 
-	// sdComm.write_String("r/w buffer content:\r\n");
+	cUART::getInstance()->write_String("read single Block\r\n");
 	microSD.readSingleBlock(rwBuffer, 4);
 
 	for(uint16_t j = 0; j < 512; j++)
 	{
-		// sdComm.write_Int(rwBuffer[j]);
-		// sdComm.write_String("\r\n");
+		cUART::getInstance()->write_Int(rwBuffer[j]);
+		cUART::getInstance()->write_String("\r\n");
 	}
+	cUART::getInstance()->write_String("-----------------------------------\r\n");
 
 	for(;;)
 	{
