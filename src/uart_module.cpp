@@ -1,7 +1,6 @@
 #include "uart_module.h"
 #include <stdlib.h>
 
-//cUART* cUART::_debugger = 0;
 
 cUART::cUART(){
 	uint16_t ubbr0Value = (F_CPU / (16 * BAUD) - 1);
