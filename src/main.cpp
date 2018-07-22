@@ -7,7 +7,7 @@
 #include "uart_module.h"
 
 int main(){
-	
+
 	cUART::getInstance()->init( (F_CPU / (16 * BAUD) - 1) );
 	cUART::getInstance()->write_String("testing UART singleton\r\n");
 
@@ -15,7 +15,6 @@ int main(){
 	_delay_ms(5000);
 	cIOPin spiCS(&PORTB, 2, cIOPin::output);
 	cSPIModule sdSPI;
-	//cMicroSDModule microSD(&sdComm, &spiCS, &sdSPI);
 	cMicroSDModule microSD(&spiCS, &sdSPI);
 
 

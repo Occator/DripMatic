@@ -18,10 +18,10 @@ public:
 	void write_Int(int data);
 private:
 	cUART();
-	cUART(cUART const &);  // copy cosntructor
+	cUART(cUART const &);  // copy constructor
 	cUART& operator=(cUART const&);  // assignment operator
 	~cUART();
-	
+
 };
 
 #endif
