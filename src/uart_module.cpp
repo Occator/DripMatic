@@ -1,12 +1,21 @@
 #include "uart_module.h"
 #include <stdlib.h>
 
+cUART* cUART::_debugger = 0;
+
 cUART::cUART(){
 	uint16_t ubbr0Value = (F_CPU / (16 * BAUD) - 1);
 	init(ubbr0Value);
 }
 
 cUART::~cUART(){}
+
+cUART* cUART::getInstance()
+{
+	static cUART* uartInstance;
+	_debugger = uartInstance;
+	return _debugger;
+}
 
 void cUART::init(uint16_t ubbr0Value){
 	// set baud rate
@@ -41,7 +50,8 @@ void cUART::write_String(const char* string){
 			string++;
 		}
 }
-
+/*
 int __cxa_guard_acquire(__guard *g) {return !*(char *)(g);};
 void __cxa_guard_release (__guard *g) {*(char *)g = 1;};
 void __cxa_guard_abort (__guard *) {};
+*/
