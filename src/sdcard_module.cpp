@@ -69,14 +69,13 @@ uint8_t cMicroSDModule::_initSPIMode()
 
   for(uint8_t j = 0; j < 10; j++)
   {
-    _csAsserted();
-    _delay_ms(1);
-
     response = _sendAppCmd();
-
-    _spi->transmit(0xFF);
-    _delay_ms(1);
-    _csDeasserted();
+    if(response == 0x00)
+    {
+      _spi->transmit(0xFF);
+      _csDeasserted();
+      break;
+    }
   }
 
   _csAsserted();
@@ -230,45 +229,24 @@ void cMicroSDModule::_csDeasserted()
 uint8_t cMicroSDModule::_sendAppCmd()
 {
   uint8_t response;
-  uint8_t retry {0};
 
-  sendCommand(APP_CMD, 0);
-
-  do
+  for(uint8_t i = 0; i < 50; i++)
   {
-    response = _spi->receive();
-    retry++;
-    if(retry > 5)
+    _csAsserted();
+    response = sendCommand(APP_CMD, 0);
+    _spi->transmit(0xFF);
+    _spi->transmit(0xFF);
+
+    _csDeasserted();
+    _delay_ms(1);
+
+    _csAsserted();
+    response = sendCommand(SD_SEND_OP_COND, 0);
+    if(response == 0x00)
     {
+      _csDeasserted();
       break;
     }
-  } while(response != 0x01);
-
-  _spi->transmit(0xFF);
-  _csDeasserted();
-  _spi->transmit(0xFF);
-
-  retry = 0;
-  _delay_ms(1);
-
-  _csAsserted();
-  _delay_ms(1);
-
-  sendCommand(SD_SEND_OP_COND, 0);
-
-  do
-  {
-    response = _spi->receive();
-    retry++;
-    if(retry > 5)
-    {
-      break;
-    }
-  } while(response != 0x00);
-
-  _spi->transmit(0xFF);
-  _csDeasserted();
-  _spi->transmit(0xFF);
-
+  }
   return response;
 }
