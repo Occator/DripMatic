@@ -21,10 +21,9 @@ int main(){
 
 	 _delay_ms(10);
 
-	 disk_initialize(1);
-/*
 	 // Open or create a log file and ready to append
 	 res_mount = f_mount(&fatFs, "", 1);
+	 /*
 
 	 if(res_mount == FR_OK)
 	 {
