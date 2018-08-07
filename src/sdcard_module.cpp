@@ -143,17 +143,7 @@ uint8_t cMicroSDModule::readSingleBlock(uint8_t *buffer, uint32_t startBlock)
       break;
     }
   }
-/*
-  while(response != 0x00)
-  {
-    response = _spi->receive();
-  }
 
-  do
-  {
-    response = _spi->receive();
-  }  while(response != 0xFE);
-*/
   for(uint16_t i = 0; i < BLOCK_LENGTH; i++)
   {
     *buffer++ = _spi->receive();
