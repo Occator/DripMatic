@@ -134,6 +134,16 @@ uint8_t cMicroSDModule::readSingleBlock(uint8_t *buffer, uint32_t startBlock)
   uint8_t response;
   response  = sendCommand(READ_SINGLE_BLOCK, ( (uint32_t)startBlock) << 9);
 
+  for(uint8_t retry = 0; retry < 50; retry++)
+  {
+    response = _spi->receive();
+    if(response == SD_START_TOKEN)
+    {
+      retry = 0;
+      break;
+    }
+  }
+/*
   while(response != 0x00)
   {
     response = _spi->receive();
@@ -143,7 +153,7 @@ uint8_t cMicroSDModule::readSingleBlock(uint8_t *buffer, uint32_t startBlock)
   {
     response = _spi->receive();
   }  while(response != 0xFE);
-
+*/
   for(uint16_t i = 0; i < BLOCK_LENGTH; i++)
   {
     *buffer++ = _spi->receive();
