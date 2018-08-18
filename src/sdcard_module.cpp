@@ -125,6 +125,22 @@ uint8_t cMicroSDModule::sendCommand(uint8_t command, uint32_t argument)
     }
   }
 
+  if(response == 0x00 && command == READ_OCR)
+  {
+    status = _spi->receive() & 0x40;  // first byte of OCR register (bits 31:24)
+    if(status == 0x40)
+    {
+      _sdhcFlag = 1;
+    }
+    else
+    {
+      _sdhcFlag = 0;
+    }
+    _spi->receive();  // three remaining bytes of OCR register are discarded
+    _spi->receive();
+    _spi->receive();
+  }
+
   _spi->receive();
   _csDeasserted();
   return response;
