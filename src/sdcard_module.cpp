@@ -200,19 +200,16 @@ uint8_t cMicroSDModule::readSingleBlock(uint8_t *buffer, uint32_t startBlock)
 uint8_t cMicroSDModule::writeSingeBlock(uint8_t *buffer, uint32_t startBlock)
 {
   _uartSD->write_String("**enter writeSingleBlock\r\n");
-  _csAsserted();
+
   uint8_t response;
   response = sendCommand(WRITE_SINGLE_BLOCK, ( (uint32_t)startBlock) << 9);
 
-  while(response != 0x00)
+  if(response != 0x00)
   {
-    response = _spi->receive();
+    return response;
   }
 
-  for(uint8_t k = 0; k < 3; k++)
-  {
-    _spi->receive();
-  }
+  _csAsserted();
 
   _spi->transmit(0xFE);
 
@@ -231,27 +228,17 @@ uint8_t cMicroSDModule::writeSingeBlock(uint8_t *buffer, uint32_t startBlock)
     return response;
   }
 
-  for(uint8_t j = 0; j < 20; j++)
-  {
-    response = _spi->transmit(0xFF);
-  }
+  while( !_spi->receive() );
 
-  do
-  {
-      response = _spi->receive();
-  } while(response != 0x00);
-
-  for(uint8_t j = 0; j < 20; j++)
-  {
-    response = _spi->transmit(0xFF);
-  }
-
-  _spi->receive();
   _csDeasserted();
+  _spi->transmit(0xFF);
+  _csAsserted();
 
+  while( !_spi->receive() );
+
+  _csDeasserted();
   _uartSD->write_String("**exit writeSingleBlock\r\n");
-  return response;
-
+  return 0;
 }
 
 void cMicroSDModule::_csAsserted()
