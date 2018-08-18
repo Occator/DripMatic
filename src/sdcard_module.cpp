@@ -162,9 +162,15 @@ uint8_t cMicroSDModule::sendCommand(uint8_t command, uint32_t argument)
 uint8_t cMicroSDModule::readSingleBlock(uint8_t *buffer, uint32_t startBlock)
 {
   _uartSD->write_String("**enter readSingleBlock\r\n");
-  _csAsserted();
+
   uint8_t response;
   response  = sendCommand(READ_SINGLE_BLOCK, ( (uint32_t)startBlock) << 9);
+  if(response != 0x00)
+  {
+    return response;
+  }
+
+  _csAsserted();
 
   for(uint8_t retry = 0; retry < 50; retry++)
   {
@@ -183,12 +189,12 @@ uint8_t cMicroSDModule::readSingleBlock(uint8_t *buffer, uint32_t startBlock)
 
   _spi->receive(); // discard incomming CRC - 16-bits
   _spi->receive();
-  _csDeasserted();
 
   _spi->receive();
+  _csDeasserted();
 
   _uartSD->write_String("**exit readSingleBlock\r\n");
-  return response;
+  return 0;
 }
 
 uint8_t cMicroSDModule::writeSingeBlock(uint8_t *buffer, uint32_t startBlock)
