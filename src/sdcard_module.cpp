@@ -95,6 +95,8 @@ uint8_t cMicroSDModule::sendCommand(uint8_t command, uint32_t argument)
   uint8_t response;
   uint8_t retry {0};
 
+  _csAsserted();
+
   _spi->transmit(command | 0x40);
   _spi->transmit(argument >> 24);
   _spi->transmit(argument >> 16);
@@ -124,7 +126,8 @@ uint8_t cMicroSDModule::sendCommand(uint8_t command, uint32_t argument)
   }
 
   _spi->receive();
-  return (response);
+  _csDeasserted();
+  return response;
 }
 
 uint8_t cMicroSDModule::readSingleBlock(uint8_t *buffer, uint32_t startBlock)
