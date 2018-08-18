@@ -247,19 +247,10 @@ uint8_t cMicroSDModule::_sendAppCmd()
 
   for(uint8_t i = 0; i < 50; i++)
   {
-    _csAsserted();
     response = sendCommand(APP_CMD, 0);
-    _spi->transmit(0xFF);
-    _spi->transmit(0xFF);
-
-    _csDeasserted();
-    _delay_ms(1);
-
-    _csAsserted();
     response = sendCommand(SD_SEND_OP_COND, 0);
     if(response == 0x00)
     {
-      _csDeasserted();
       break;
     }
   }
