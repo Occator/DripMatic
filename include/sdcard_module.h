@@ -26,6 +26,7 @@
 
 // transmission
 #define SD_START_TOKEN 0xFE
+#define SD_MULTIPLE_TOKEN 0xFC
 
 class cMicroSDModule
 {
