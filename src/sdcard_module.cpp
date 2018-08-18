@@ -68,20 +68,37 @@ uint8_t cMicroSDModule::_initSPIMode()
     response = _sendAppCmd();
     if(response == 0x00)
     {
-      _spi->transmit(0xFF);
-      _csDeasserted();
       break;
     }
   }
 
-  _csAsserted();
-  _delay_ms(1);
+  _sdhcFlag = 0;
 
+  if(sdVersion == 2)
+  {
+    do
+    {
+      response = sendCommand(READ_OCR, 0);
+      retry++;
+      if(retry > 20)
+      {
+        _cardType = 0;
+        break;
+      }
+    }while(response != 0x00);
+
+    if(_sdhcFlag == 1)
+    {
+      _cardType = 2;
+    }
+    else
+    {
+      _cardType = 3;
+    }
+  }
+
+  sendCommand(CRC_ON_OFF, 0);
   sendCommand(SET_BLOCK_LEN, BLOCK_LENGTH);
-
-  _spi->transmit(0xFF);
-  _delay_ms(1);
-  _csDeasserted();
 
   return 0;
 }
