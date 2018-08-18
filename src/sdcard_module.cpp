@@ -248,7 +248,7 @@ uint8_t cMicroSDModule::_sendAppCmd()
   for(uint8_t i = 0; i < 50; i++)
   {
     response = sendCommand(APP_CMD, 0);
-    response = sendCommand(SD_SEND_OP_COND, 0);
+    response = sendCommand(SD_SEND_OP_COND, 0x40000000);
     if(response == 0x00)
     {
       break;
