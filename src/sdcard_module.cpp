@@ -20,7 +20,7 @@ cMicroSDModule::~cMicroSDModule()
 
 uint8_t cMicroSDModule::_initSPIMode()
 {
-  uint8_t response;
+  uint8_t response, sdVersion;
   uint8_t retry {0};
 
   _csAsserted();
