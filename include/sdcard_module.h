@@ -43,7 +43,9 @@ private:
   cIOPin *_csPin;
   cSPIModule *_spi;
   bool _isSuccessful = false;
-
+  uint8_t _sdhcFlag;
+  uint8_t _cardType;
+  
   void _csAsserted();
   void _csDeasserted();
   uint8_t _initSPIMode();
