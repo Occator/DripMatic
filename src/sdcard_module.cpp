@@ -39,27 +39,29 @@ uint8_t cMicroSDModule::_initSPIMode()
       return 1;
     }
   } while(response != 0x01);
-  _spi->transmit(0xFF);
 
   _csDeasserted();
   _spi->transmit(0xFF);
+  _spi->transmit(0xFF);
 
   retry = 0;
-  _csAsserted();
+
+  sdVersion = 2;
+
   do
   {
     response = sendCommand(SEND_IF_COND, 0x000001AA);
     retry++;
     if(retry > 15)
     {
-      return 1;
+      sdVersion = 1;
+      _cardType = 1;
+      break;
     }
   } while(response != 0x01);
-  _spi->transmit(0xFF);
+
 
   retry = 0;
-  _csDeasserted();
-  _spi->transmit(0xFF);
 
   for(uint8_t j = 0; j < 10; j++)
   {
