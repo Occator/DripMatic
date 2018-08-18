@@ -23,21 +23,15 @@ uint8_t cMicroSDModule::_initSPIMode()
   uint8_t response, sdVersion;
   uint8_t retry {0};
 
-  _csAsserted();
   for(uint8_t i = 0; i < 10; i++)
   {
     _spi->transmit(0xFF);
   }
 
-  _csDeasserted();
-
-  _delay_ms(2);
-
   _csAsserted();
   do
   {
     response = sendCommand(GO_IDLE_STATE, 0);
-
     retry++;
     if(retry > 15)
     {
