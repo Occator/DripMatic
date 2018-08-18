@@ -92,7 +92,7 @@ uint8_t cMicroSDModule::_initSPIMode()
 
 uint8_t cMicroSDModule::sendCommand(uint8_t command, uint32_t argument)
 {
-  uint8_t response;
+  uint8_t response, status;
   uint8_t retry {0};
 
   _csAsserted();
