@@ -35,11 +35,22 @@ int main(){
 			 _delay_ms(10);
 			 comm.write_String("writing to file ...\r\n");
 			 _delay_ms(10);
-			 f_printf(&fil, "testing on avr 1, 2, 3, ...");
+			 f_printf(&fil, "testing on avr 1, 2, 3, ...\n");
 		 }
-			f_close(&fil);
-			comm.write_String("file closed\r\n");
+		 f_close(&fil);
+		 comm.write_String("file closed\r\n");
 		}
+
+		res_open = open_append(&fil, "test.txt");
+		if(res_open == FR_OK)
+		{
+			comm.write_String("file open append\r\n");
+			comm.write_String("writing to file ...\r\n");
+			f_printf(&fil, "file open append ...\n");
+		}
+		f_close(&fil);
+		comm.write_String("file closed\r\n");
+
 
 	for(;;)
 	{
