@@ -7,7 +7,7 @@
 #include "uart_module.h"
 
 int main(){
-	cUART::getInstance()->init( (F_CPU / (16 * BAUD) - 1) );
+	cUART::getInstance()->init();
 	cUART::getInstance()->write_String("-----------------------------------\r\n");
 	cUART::getInstance()->write_String("testing UART singleton\r\n");
 
