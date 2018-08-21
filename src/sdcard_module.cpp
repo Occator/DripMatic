@@ -1,10 +1,11 @@
 #include "sdcard_module.h"
+#include "uart_module.h"
 #include <util/delay.h>
 
-cMicroSDModule::cMicroSDModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule * csDevice)
-: _uartSD(uartComm), _csPin(chipSelect), _spi(csDevice)
+cMicroSDModule::cMicroSDModule(cIOPin *chipSelect, cSPIModule * csDevice)
+: _csPin(chipSelect), _spi(csDevice)
 {
-  _uartSD->write_String("**init SD-Card in SPI-mode...\r\n");
+  cUART::getInstance()->write_String("**init SD-Card in SPI-mode...\r\n");
   if (!_initSPIMode())
   {
     _isSuccessful = true;
@@ -18,87 +19,85 @@ cMicroSDModule::cMicroSDModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule *
 cMicroSDModule::~cMicroSDModule()
 {}
 
+
 uint8_t cMicroSDModule::readSingleBlock(uint8_t *buffer, uint32_t startBlock)
 {
+  cUART::getInstance()->write_String("**enter readSingleBlock\r\n");
+    uint8_t response;
+    response  = sendCommand(READ_SINGLE_BLOCK, ( (uint32_t)startBlock) << 9);
+    if(response != 0x00)
+    {
+      return response;
+    }
 
-  _csAsserted();
-  uint8_t response;
-  response  = sendCommand(READ_SINGLE_BLOCK, ( (uint32_t)startBlock) << 9);
-  while(response != 0x00)
-  {
-    response = _spi->receive();
-  }
+    _csAsserted();
 
-  do
-  {
-    response = _spi->receive();
-  }  while(response != 0xFE);
+    for(uint8_t retry = 0; retry < 50; retry++)
+    {
+      response = _spi->receive();
+      if(response == SD_START_TOKEN)
+      {
+        retry = 0;
+        break;
+      }
+    }
 
-  for(uint16_t i = 0; i < BLOCK_LENGTH; i++)
-  {
-    *buffer++ = _spi->receive();
-  }
-  _spi->receive(); // discard incomming CRC - 16-bits
-  _spi->receive();
-  _csDeasserted();
+    for(uint16_t i = 0; i < BLOCK_LENGTH; i++)
+    {
+      *buffer++ = _spi->receive();
+    }
 
-  _spi->receive();
+    _spi->receive(); // discard incomming CRC - 16-bits
+    _spi->receive();
 
-  return response;
-  }
+    _spi->receive();
+    _csDeasserted();
+
+  cUART::getInstance()->write_String("**exit readSingleBlock\r\n");
+  return 0;
+}
 
 uint8_t cMicroSDModule::writeSingeBlock(uint8_t *buffer, uint32_t startBlock)
 {
-  _csAsserted();
-  uint8_t response;
-  response = sendCommand(WRITE_SINGLE_BLOCK, ( (uint32_t)startBlock) << 9);
+  cUART::getInstance()->write_String("**enter writeSingleBlock\r\n");
+    uint8_t response;
+    response = sendCommand(WRITE_SINGLE_BLOCK, ( (uint32_t)startBlock) << 9);
 
-  while(response != 0x00)
-  {
-    response = _spi->receive();
-  }
+    if(response != 0x00)
+    {
+      return response;
+    }
 
-  for(uint8_t k = 0; k < 3; k++)
-  {
-    _spi->receive();
-  }
+    _csAsserted();
 
-  _spi->transmit(0xFE);
+    _spi->transmit(0xFE);
 
-  for(uint16_t i = 0; i < 512; i++)
-  {
-    _spi->transmit(*buffer++);
-  }
-  _spi->transmit(0xFF);
-  _spi->transmit(0xFF);
+    for(uint16_t i = 0; i < 512; i++)
+    {
+      _spi->transmit(*buffer++);
+    }
+    _spi->transmit(0xFF);
+    _spi->transmit(0xFF);
 
-  response = _spi->transmit(0xFF);
+    response = _spi->transmit(0xFF);
 
-  if( (response & 0x1F) != 0x05)
-  {
+    if( (response & 0x1F) != 0x05)
+    {
+      _csDeasserted();
+      return response;
+    }
+
+    while( !_spi->receive() );
+
     _csDeasserted();
-    return response;
-  }
+    _spi->transmit(0xFF);
+    _csAsserted();
 
-  for(uint8_t j = 0; j < 40; j++)
-  {
-    response = _spi->transmit(0xFF);
-  }
+    while( !_spi->receive() );
 
-  do
-  {
-      response = _spi->receive();
-  } while(response != 0x00);
-
-  for(uint8_t j = 0; j < 20; j++)
-  {
-    response = _spi->transmit(0xFF);
-  }
-
-  _spi->receive();
-  _csDeasserted();
-
-  return response;
+    _csDeasserted();
+  cUART::getInstance()->write_String("**exit writeSingleBlock\r\n");
+  return 0;
 }
 
 uint8_t cMicroSDModule::_initSPIMode()
@@ -118,7 +117,7 @@ uint8_t cMicroSDModule::_initSPIMode()
     retry++;
     if(retry > 15)
     {
-      _uartSD->write_String("**timeout... no card detected\r\n");
+      cUART::getInstance()->write_String("**timeout... no card detected\r\n");
       return 1;
     }
   } while(response != 0x01);
@@ -242,88 +241,6 @@ uint8_t cMicroSDModule::sendCommand(uint8_t command, uint32_t argument)
   return response;
 }
 
-uint8_t cMicroSDModule::readSingleBlock(uint8_t *buffer, uint32_t startBlock)
-{
-  _uartSD->write_String("**enter readSingleBlock\r\n");
-
-  uint8_t response;
-  response  = sendCommand(READ_SINGLE_BLOCK, ( (uint32_t)startBlock) << 9);
-  if(response != 0x00)
-  {
-    return response;
-  }
-
-  _csAsserted();
-
-  for(uint8_t retry = 0; retry < 50; retry++)
-  {
-    response = _spi->receive();
-    if(response == SD_START_TOKEN)
-    {
-      retry = 0;
-      break;
-    }
-  }
-
-  for(uint16_t i = 0; i < BLOCK_LENGTH; i++)
-  {
-    *buffer++ = _spi->receive();
-  }
-
-  _spi->receive(); // discard incomming CRC - 16-bits
-  _spi->receive();
-
-  _spi->receive();
-  _csDeasserted();
-
-  _uartSD->write_String("**exit readSingleBlock\r\n");
-  return 0;
-}
-
-uint8_t cMicroSDModule::writeSingeBlock(uint8_t *buffer, uint32_t startBlock)
-{
-  _uartSD->write_String("**enter writeSingleBlock\r\n");
-
-  uint8_t response;
-  response = sendCommand(WRITE_SINGLE_BLOCK, ( (uint32_t)startBlock) << 9);
-
-  if(response != 0x00)
-  {
-    return response;
-  }
-
-  _csAsserted();
-
-  _spi->transmit(0xFE);
-
-  for(uint16_t i = 0; i < 512; i++)
-  {
-    _spi->transmit(*buffer++);
-  }
-  _spi->transmit(0xFF);
-  _spi->transmit(0xFF);
-
-  response = _spi->transmit(0xFF);
-
-  if( (response & 0x1F) != 0x05)
-  {
-    _csDeasserted();
-    return response;
-  }
-
-  while( !_spi->receive() );
-
-  _csDeasserted();
-  _spi->transmit(0xFF);
-  _csAsserted();
-
-  while( !_spi->receive() );
-
-  _csDeasserted();
-  _uartSD->write_String("**exit writeSingleBlock\r\n");
-  return 0;
-}
-
 void cMicroSDModule::_csAsserted()
 {
   _csPin->set_Pin(0);
@@ -348,14 +265,4 @@ uint8_t cMicroSDModule::_sendAppCmd()
     }
   }
   return response;
-}
-
-void cMicroSDModule::_csAsserted()
-{
-  _csPin->set_Pin(0);
-}
-
-void cMicroSDModule::_csDeasserted()
-{
-  _csPin->set_Pin(1);
 }

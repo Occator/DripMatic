@@ -7,10 +7,9 @@
 
 static cMicroSDModule* sdCard_ = 0;
 
-static cUART uart;
 static cSPIModule spi;
 static cIOPin chipSelect(&PORTB, 2, cIOPin::output);
-static cMicroSDModule sdCard(&uart, &chipSelect, &spi);
+static cMicroSDModule sdCard(&chipSelect, &spi);
 
 extern "C"
 {
@@ -29,7 +28,7 @@ DSTATUS disk_initialize (
 {
   sdCard_ = &sdCard;
 
-	uart.write_String("SD-Card successful initialized\r\n");
+	cUART::getInstance()->write_String("SD-Card successful initialized\r\n");
   return RES_OK;
 }
 
