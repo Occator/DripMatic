@@ -3,7 +3,6 @@
 
 #include "spi_module.h"
 #include "pin_io.h"
-#include "uart_module.h"
 
 // formular for CMDs - command number n | 0x40
 #define GO_IDLE_STATE 0
@@ -31,21 +30,22 @@
 class cMicroSDModule
 {
 public:
-  cMicroSDModule(cUART *uartComm, cIOPin *chipSelect, cSPIModule * csDevice);
+
+  cMicroSDModule(cIOPin *chipSelect, cSPIModule * csDevice);
   ~cMicroSDModule();
 
   uint8_t sendCommand(uint8_t command, uint32_t argument);
   uint8_t readSingleBlock(uint8_t *buffer, uint32_t startBlock);
+  uint8_t readSDCard(uint8_t *buffer, uint8_t startBlock, uint16_t count);
   uint8_t writeSingeBlock(uint8_t *buffer, uint32_t startBlock);
 
 private:
-  cUART *_uartSD;
   cIOPin *_csPin;
   cSPIModule *_spi;
   bool _isSuccessful = false;
   uint8_t _sdhcFlag;
   uint8_t _cardType;
-  
+
   void _csAsserted();
   void _csDeasserted();
   uint8_t _initSPIMode();

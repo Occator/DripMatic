@@ -1,8 +1,10 @@
 #include "spi_module.h"
+#include "uart_module.h"
 
 cSPIModule::cSPIModule()
 {
   init_Master();
+  cUART::getInstance()->write_String("SPI init() called\r\n");
 }
 
 cSPIModule::~cSPIModule(){}

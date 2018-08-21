@@ -3,20 +3,18 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "pin_io.h"
-#include "spi_module.h"
 #include "sdcard_module.h"
 #include "uart_module.h"
 #include "diskio.h"
 #include "ff.h"
 
-
 int main(){
+
+	cUART::getInstance()->init();
 
 	 FATFS fatFs;
 	 FIL fil;
 	 FRESULT res_mount, res_open, res_seek, res_write;
-	 cUART comm;
 
 	 _delay_ms(10);
 

@@ -1,12 +1,16 @@
 #include "uart_module.h"
 #include <stdlib.h>
 
-cUART::cUART(){
-	uint16_t ubbr0Value = (F_CPU / (16 * BAUD) - 1);
-	init(ubbr0Value);
-}
+
+cUART::cUART(){}
 
 cUART::~cUART(){}
+
+cUART* cUART::getInstance()
+{
+	static cUART* uartInstance;
+	return uartInstance;
+}
 
 void cUART::init(uint16_t ubbr0Value){
 	// set baud rate
