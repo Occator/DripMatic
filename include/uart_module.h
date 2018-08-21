@@ -11,7 +11,7 @@ class cUART{
 public:
 	static cUART* getInstance();
 
-	void init(uint16_t ubbr0Value);
+	void init();
 	uint8_t read();
 	void write_Char(char data);
 	void write_String(const char* string);

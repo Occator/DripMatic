@@ -12,7 +12,8 @@ cUART* cUART::getInstance()
 	return uartInstance;
 }
 
-void cUART::init(uint16_t ubbr0Value){
+void cUART::init(){
+	uint16_t ubbr0Value = (F_CPU / (16 * BAUD) - 1) ;
 	// set baud rate
 	UBRR0L = ubbr0Value;
 	UBRR0H = (ubbr0Value >> 8);
