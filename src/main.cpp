@@ -17,13 +17,11 @@ int main(){
 	 FIL fil;
 	 FRESULT res_mount, res_open, res_seek, res_write;
 	 cUART comm;
-	 uint16_t fa;
 
 	 _delay_ms(10);
 
 	 // Open or create a log file and ready to append
-	 res_mount = f_mount(&fatFs, "", 1);
-	 /*
+	 res_mount = f_mount(&fatFs, "", 0);
 
 	 if(res_mount == FR_OK)
 	 {
@@ -35,26 +33,14 @@ int main(){
 		 {
 			 comm.write_String("file open\r\n");
 			 _delay_ms(10);
-			 res_seek = f_lseek(&fil, f_size(&fil) );
-			 if(res_seek == FR_OK)
-			 {
-				 _delay_ms(10);
-
-				 for(uint16_t count = 0; count < 1512; count++)
-				 {
-				 	res_write = f_write(&fil, "A", 1, &fa);
-					if(fa > 0 && res_write == FR_OK)
-					{
-						f_sync(&fil);
-						comm.write_String("buffer flush\r\n");
-					}
-			 	 }
-				 f_close(&fil);
-				 comm.write_String("file closed\r\n");
-			 }
+			 comm.write_String("writing to file ...\r\n");
+			 _delay_ms(10);
+			 f_printf(&fil, "testing on avr 1, 2, 3, ...");
 		 }
-	 }
-*/
+			f_close(&fil);
+			comm.write_String("file closed\r\n");
+		}
+
 	for(;;)
 	{
 	}
