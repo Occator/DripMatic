@@ -47,7 +47,7 @@ int main(){
 		{
 			cUART::getInstance()->write_String("file open append\r\n");
 			cUART::getInstance()->write_String("writing to file ...\r\n");
-			f_printf(&fil, "integration of uart Singleton-Pattern ...\n");
+			f_printf(&fil, "merged fatFS on top of master ...\n");
 		}
 		f_close(&fil);
 		cUART::getInstance()->write_String("file closed\r\n");
