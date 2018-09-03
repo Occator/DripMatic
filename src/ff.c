@@ -30,10 +30,10 @@ own includings
 
 static cDeviceRTC *fatRTC_ = 0;
 
-static cIOPin chipRTC(&PORTB, 2, cIOPin::output);
-static cIOPin chipRTC(&PORTB, 2, cIOPin::output);
-static cIOPin chipRTC(&PORTB, 2, cIOPin::output);
-static cDeviceRTC fatRTC(cIOPin *cePin, cIOPin *ioPin, cIOPin *sclkPin);
+static cIOPin rtcCE(&PORTD, 2, cIOPin::output);
+static cIOPin rtcIO(&PORTD, 3, cIOPin::output);
+static cIOPin rtcSCLK(&PORTD, 4, cIOPin::output);
+static cDeviceRTC fatRTC(&rtcCE, &rtcIO, &rtcSCLK);
 /*--------------------------------------------------------------------------
 
    Module Private Definitions
@@ -575,6 +575,24 @@ static const BYTE DbcTbl[] = MKCVTBL(TBL_DC, FF_CODE_PAGE);
 
 ---------------------------------------------------------------------------*/
 
+/*-----------------------------------------------------------------------*/
+/* RTC-Module get_fattime implementation                       */
+/*-----------------------------------------------------------------------*/
+DWORD get_fattime()
+{
+	if(fatRTC_ == 0)
+	{
+		fatRTC_ = &fatRTC;
+	}
+
+	fatRTC_->update_rtcTime();
+	return ( (DWORD)fatRTC_->rtcTime.year << 25)
+					| ( (DWORD)fatRTC_->rtcTime.month << 21)
+					| ( (DWORD)fatRTC_->rtcTime.date << 16)
+					| ( (DWORD)fatRTC_->rtcTime.hours << 11)
+					| ( (DWORD)fatRTC_->rtcTime.minutes << 5)
+					| ( (DWORD)fatRTC_->rtcTime.seconds >> 1);
+}
 
 /*-----------------------------------------------------------------------*/
 /* Load/Store multi-byte word in the FAT structure                       */
