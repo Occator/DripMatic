@@ -22,7 +22,18 @@
 #include "ff.h"			/* Declarations of FatFs API */
 #include "diskio.h"		/* Declarations of device I/O functions */
 
+/*--------------------------------------------------------------------------
+own includings
+/----------------------------------------------------------------------------*/
+#include "pin_io.h"
+#include "rtc_3w.h"
 
+static cDeviceRTC *fatRTC_ = 0;
+
+static cIOPin chipRTC(&PORTB, 2, cIOPin::output);
+static cIOPin chipRTC(&PORTB, 2, cIOPin::output);
+static cIOPin chipRTC(&PORTB, 2, cIOPin::output);
+static cDeviceRTC fatRTC(cIOPin *cePin, cIOPin *ioPin, cIOPin *sclkPin);
 /*--------------------------------------------------------------------------
 
    Module Private Definitions
@@ -33,6 +44,8 @@
 #error Wrong include file (ff.h).
 #endif
 
+extern "C"
+{
 
 /* Character code support macros */
 #define IsUpper(c)		((c) >= 'A' && (c) <= 'Z')
@@ -6550,3 +6563,4 @@ FRESULT f_setcp (
 }
 
 #endif	/* FF_CODE_PAGE == 0 */
+}
