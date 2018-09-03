@@ -52,6 +52,16 @@ int main(){
 		f_close(&fil);
 		cUART::getInstance()->write_String("file closed\r\n");
 
+		res_open = open_append(&fil, "test.txt");
+		if(res_open == FR_OK)
+		{
+			cUART::getInstance()->write_String("file open append\r\n");
+			cUART::getInstance()->write_String("writing to file ...\r\n");
+			f_printf(&fil, "now with RTC-Module implemented ...\n");
+		}
+		f_close(&fil);
+		cUART::getInstance()->write_String("file closed\r\n");
+
 
 	for(;;)
 	{
