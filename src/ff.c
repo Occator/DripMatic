@@ -586,10 +586,10 @@ DWORD get_fattime()
 	}
 
 	fatRTC_->update_rtcTime();
-	return ( (DWORD)fatRTC_->rtcTime.year << 25)
+	return ( (DWORD)(fatRTC_->rtcTime.year - 1980) << 25)
 					| ( (DWORD)fatRTC_->rtcTime.month << 21)
 					| ( (DWORD)fatRTC_->rtcTime.date << 16)
-					| ( (DWORD)fatRTC_->rtcTime.hours << 11)
+					| ( (DWORD)(fatRTC_->rtcTime.hours - 2) << 11)
 					| ( (DWORD)fatRTC_->rtcTime.minutes << 5)
 					| ( (DWORD)fatRTC_->rtcTime.seconds >> 1);
 }
