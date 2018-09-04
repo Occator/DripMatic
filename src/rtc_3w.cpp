@@ -6,7 +6,7 @@ cDeviceRTC::cDeviceRTC(cIOPin *cePin, cIOPin *ioPin, cIOPin *sclkPin) :
 											_rtcCE(cePin), _rtcIO(ioPin), _rtcSCLK(sclkPin)
 {
 	write_RTC_Reg(0, cDeviceRTC::write_protect);
-	set_RTC(2018, 9, 3, 21, 14, 0);
+	set_RTC(2018, 9, 4, 20, 50, 0);
 }
 
 cDeviceRTC::~cDeviceRTC()
@@ -17,7 +17,7 @@ cDeviceRTC::~cDeviceRTC()
 void cDeviceRTC::set_RTC(uint16_t year, uint8_t month, uint8_t date,
 												uint8_t hour, uint8_t minute,	uint8_t second)
 {
-	write_RTC_Reg((year - 2000), cDeviceRTC::year);
+	write_RTC_Reg( (year - 2000), cDeviceRTC::year);
 	write_RTC_Reg(date, cDeviceRTC::date);
 	write_RTC_Reg(month, cDeviceRTC::month);
 	write_RTC_Reg(hour, cDeviceRTC::hour);
