@@ -57,7 +57,7 @@ int main(){
 		{
 			cUART::getInstance()->write_String("file open append\r\n");
 			cUART::getInstance()->write_String("writing to file ...\r\n");
-			f_printf(&fil, "now with RTC-Module implemented ...\n");
+			f_printf(&fil, "now with RTC-Module 04.09.2018 20:50 ...\n");
 		}
 		f_close(&fil);
 		cUART::getInstance()->write_String("file closed\r\n");
