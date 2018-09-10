@@ -15,16 +15,21 @@
 
 int main(){
 
+/*
 	void displayDate(cLCD *lcd2004, cDeviceRTC *clock);
 	void displayTime(cLCD *lcd2004, cDeviceRTC *clock);
 	bool sensorReading = true;
-
+*/
 	char convertBuffer[5];
 
 	TCHAR header0[] = "no.";
 	TCHAR header1[] = "DATE";
 	TCHAR header2[] = "TIME";
 	TCHAR header3[] = "Tensio-Val";
+
+	cIOPin rtcCE(&PORTD, 2, cIOPin::output);
+	cIOPin rtcIO(&PORTD, 3, cIOPin::output);
+	cIOPin rtcSCLK(&PORTD, 4, cIOPin::output);
 
 	FATFS fatFS;
 	FIL systemLog;
@@ -37,23 +42,21 @@ int main(){
 	cIOPin yellowLED(&PORTD, 6, cIOPin::output);
 	cIOPin greenLED(&PORTD, 7, cIOPin::output);
 
-	cIOPin rtcCE(&PORTD, 2, cIOPin::output);
-	cIOPin rtcIO(&PORTD, 3, cIOPin::output);
-	cIOPin rtcSCLK(&PORTD, 4, cIOPin::output);
+	cADCPin tensiometer(0);
+	cLCD userDisplay(&ioExpander);
+
 
 	cDeviceRTC ds1302(&rtcCE, &rtcIO, &rtcSCLK);
 	ds1302.set_RTC(2018, 9, 10, 16, 15, 0);
 
-	cADCPin tensiometer(0);
-
-	cLCD userDisplay(&ioExpander);
-
 	res_mount = f_mount(&fatFS, "", 0);
 	if(res_mount == FR_OK)
 	{
-		res_open = f_open(&systemLog, "systemLog.txt", FA_WRITE | FA_OPEN_ALWAYS | FA_READ);
+		_delay_ms(10);
+		res_open = f_open(&systemLog, "sysLog.txt", FA_WRITE | FA_OPEN_ALWAYS | FA_READ);
 		if(res_open == FR_OK)
 		{
+			_delay_ms(10);
 			f_printf(&systemLog, "System start: ");
 			ds1302.update_rtcTime();
 			itoa(ds1302.rtcTime.year, convertBuffer, 10);
@@ -68,14 +71,15 @@ int main(){
 			f_printf(&systemLog, " ");
 			itoa(ds1302.rtcTime.hours, convertBuffer, 10);
 			f_puts(convertBuffer, &systemLog);
-			f_putc('/', &systemLog);
+			f_putc(':', &systemLog);
 			itoa(ds1302.rtcTime.minutes, convertBuffer, 10);
 			f_puts(convertBuffer, &systemLog);
-			f_putc('/', &systemLog);
+			f_putc(':', &systemLog);
 			itoa(ds1302.rtcTime.seconds, convertBuffer, 10);
 			f_puts(convertBuffer, &systemLog);
 			f_putc('\r', &systemLog);
 			f_putc('\n', &systemLog);
+
 		}
 		f_close(&systemLog);
 	}
@@ -90,16 +94,35 @@ int main(){
 	uint16_t currentValue { 0 };
 	uint16_t lastValue { 0 };
 
+	if(res_mount == FR_OK)
+	{
+		_delay_ms(10);
+		res_open = f_open(&records, "records.txt", FA_WRITE | FA_OPEN_ALWAYS | FA_READ);
+		if(res_open == FR_OK)
+		{
+			_delay_ms(10);
+			f_puts(header0, &records);
+			f_putc(',', &records);
+			f_puts(header1, &records);
+			f_putc(',', &records);
+			f_puts(header2, &records);
+			f_putc(',', &records);
+			f_puts(header3, &records);
+			f_putc('\n', &records);
+		}
+	}
 	for(;;)
 	{
+		/*
 		greenLED.set_Pin(1);
 		ds1302.update_rtcTime();
 
 		displayDate(&userDisplay, &ds1302);
 		displayTime(&userDisplay, &ds1302);
+		*/
 	}
 }
-
+/*
 void displayDate(cLCD *lcd, cDeviceRTC *clock)
 {
 	lcd->set_Cursor(0, 0);
@@ -151,3 +174,4 @@ void displayTime(cLCD *lcd, cDeviceRTC *clock)
 		lcd->write_Int(clock->rtcTime.minutes);
 	}
 }
+*/
