@@ -52,11 +52,11 @@
 #define LCD_DDADR_LINE4 0x54
 
 
-class cLCD1602{
+class cLCD{
 public:
 
-	cLCD1602(cTWI *twiDevice);
-	~cLCD1602();
+	cLCD(cTWI *twiDevice);
+	~cLCD();
 
 	void clear();
 	void home();

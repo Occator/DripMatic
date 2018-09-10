@@ -1,26 +1,26 @@
 #include <util/delay.h>
 #include "lcd_module.h"
 
-cLCD1602::cLCD1602(cTWI *twiDevice) : _twiLCD(twiDevice)
+cLCD::cLCD(cTWI *twiDevice) : _twiLCD(twiDevice)
 {
 	init();
 }
-cLCD1602::~cLCD1602()
+cLCD::~cLCD()
 {
 
 }
 
-void cLCD1602::init()
+void cLCD::init()
 {
 	_init_Priv();
 }
 
-void cLCD1602::_init_Priv()
+void cLCD::_init_Priv()
 {
 	begin();
 }
 
-void cLCD1602::begin()
+void cLCD::begin()
 {
 
 	_delay_ms(2000);
@@ -55,20 +55,20 @@ void cLCD1602::begin()
 	_delay_ms(64);
 }
 
-void cLCD1602::clear()
+void cLCD::clear()
 {
 	command(LCD_CLEARDISPLAY);
 	_delay_ms(64);
 }
 
 
-void cLCD1602::home()
+void cLCD::home()
 {
 	command(LCD_RETURNHOME);
 	_delay_ms(64);
 }
 
-void cLCD1602::display()
+void cLCD::display()
 {
 
 	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON| LCD_BLINKON | LCD_CURSORON);
@@ -76,13 +76,13 @@ void cLCD1602::display()
 	_delay_ms(20);
 }
 
-void cLCD1602::no_Display()
+void cLCD::no_Display()
 {
 	command(LCD_DISPLAYCONTROL | LCD_DISPLAYOFF);
 	_delay_ms(20);
 }
 
-void cLCD1602::cursor()
+void cLCD::cursor()
 {
 	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_BLINKON | LCD_CURSORON);
 	_delay_ms(200);
@@ -90,7 +90,7 @@ void cLCD1602::cursor()
 	_delay_ms(20);
 }
 
-void cLCD1602::no_Cursor()
+void cLCD::no_Cursor()
 {
 	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_BLINKON | LCD_CURSOROFF);
 	_delay_ms(200);
@@ -98,7 +98,7 @@ void cLCD1602::no_Cursor()
 	_delay_ms(20);
 }
 
-void cLCD1602::blink()
+void cLCD::blink()
 {
 	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_BLINKON | LCD_CURSOROFF);
 	_delay_ms(200);
@@ -106,7 +106,7 @@ void cLCD1602::blink()
 	_delay_ms(20);
 }
 
-void cLCD1602::no_Blink()
+void cLCD::no_Blink()
 {
 	command(LCD_DISPLAYCONTROL | LCD_DISPLAYON | LCD_BLINKOFF | LCD_CURSORON);
 	_delay_ms(200);
@@ -115,22 +115,22 @@ void cLCD1602::no_Blink()
 	_delay_ms(20);
 }
 
-void cLCD1602::backlight()
+void cLCD::backlight()
 {
 	_twiLCD->transmit(LCD_BACKLIGHT);
 }
 
-void cLCD1602::no_Backlight()
+void cLCD::no_Backlight()
 {
 	_twiLCD->transmit(LCD_NOBACKLIGHT);
 }
-void cLCD1602::command(uint8_t value)
+void cLCD::command(uint8_t value)
 {
 	_send(value, 0);
 	_delay_ms(5);
 }
 
-void cLCD1602::_send(uint8_t value, uint8_t mode)
+void cLCD::_send(uint8_t value, uint8_t mode)
 {
 	uint8_t highnib = (value & 0xF0);
 	uint8_t lownib = ((value << 4) & 0xF0);
@@ -138,13 +138,13 @@ void cLCD1602::_send(uint8_t value, uint8_t mode)
 	_write4Bits((lownib | mode));
 }
 
-void cLCD1602::_write4Bits(uint8_t value)
+void cLCD::_write4Bits(uint8_t value)
 {
 	_twiLCD->transmit(value & ~RW);
 	_pulseEnable(value);
 }
 
-void cLCD1602::_pulseEnable(uint8_t data)
+void cLCD::_pulseEnable(uint8_t data)
 {
 	_twiLCD->transmit(data | ENABLE);
     _delay_ms(5);
@@ -152,13 +152,13 @@ void cLCD1602::_pulseEnable(uint8_t data)
 	_delay_ms(1);
 }
 
-void cLCD1602::write(uint8_t data)
+void cLCD::write(uint8_t data)
 {
 	_send(data, RS);
 }
 
 
-void cLCD1602::write_String(const char * string)
+void cLCD::write_String(const char * string)
 {
 		while(*string != '\0'){
 			write(*string);
@@ -166,7 +166,7 @@ void cLCD1602::write_String(const char * string)
 		}
 }
 
-void cLCD1602::set_Cursor(uint8_t x, uint8_t y )
+void cLCD::set_Cursor(uint8_t x, uint8_t y )
 {
     uint8_t data = 0;
 
@@ -195,13 +195,13 @@ void cLCD1602::set_Cursor(uint8_t x, uint8_t y )
     command(data);
 }
 
-void cLCD1602::write_String_XY(uint8_t x, uint8_t y, const char * string)
+void cLCD::write_String_XY(uint8_t x, uint8_t y, const char * string)
 {
     set_Cursor(x, y);
     write_String(string);
 }
 
-void cLCD1602::write_Int_XY(uint8_t x, uint8_t y, uint16_t data)
+void cLCD::write_Int_XY(uint8_t x, uint8_t y, uint16_t data)
 {
 	set_Cursor(x,y);
 	char buffer[5];
@@ -209,7 +209,7 @@ void cLCD1602::write_Int_XY(uint8_t x, uint8_t y, uint16_t data)
 	write_String(buffer);
 }
 
-void cLCD1602::write_Int(int data)
+void cLCD::write_Int(int data)
 {
 	char buffer[5];
 	itoa(data, buffer, 10);
