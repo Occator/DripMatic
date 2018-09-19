@@ -47,7 +47,7 @@ int main(){
 
 
 	cDeviceRTC ds1302(&rtcCE, &rtcIO, &rtcSCLK);
-	ds1302.set_RTC(2018, 9, 10, 16, 15, 0);
+	ds1302.set_RTC(2018, 9, 19, 09, 50, 0);
 
 	res_mount = f_mount(&fatFS, "", 0);
 	if(res_mount == FR_OK)
