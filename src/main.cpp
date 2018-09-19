@@ -53,7 +53,7 @@ int main(){
 	if(res_mount == FR_OK)
 	{
 		_delay_ms(10);
-		res_open = f_open(&records, "records.csv", FA_WRITE | FA_OPEN_ALWAYS | FA_READ);
+		res_open = f_open(&records, "records.txt", FA_WRITE | FA_OPEN_ALWAYS | FA_READ);
 		if(res_open == FR_OK)
 		{
 			_delay_ms(10);
