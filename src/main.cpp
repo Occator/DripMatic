@@ -159,7 +159,6 @@ int main(){
 			sensorReading = false;
 			runningNumber++;
 		}
-
 	}
 }
 
