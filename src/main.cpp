@@ -99,7 +99,7 @@ int main(){
 			sensorReading = true;
 		}
 
-		if( ( (ds1302.rtcTime.minutes % 2 ) == 0) && (sensorReading) )
+		if( ( (ds1302.rtcTime.minutes % 15 ) == 0) && (sensorReading) )
 		{
 			userDisplay.clear();
 			greenLED.set_Pin(0);
