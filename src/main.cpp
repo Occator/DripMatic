@@ -90,9 +90,9 @@ int main(){
 		DisplayTime(&userDisplay, &ds1302);
 
 		userDisplay.write_String_XY(0, 2, "last: ");
-		userDisplay.write_Int(currentValue);
-		userDisplay.write_String_XY(0, 3, "current: ");
 		userDisplay.write_Int(lastValue);
+		userDisplay.write_String_XY(0, 3, "current: ");
+		userDisplay.write_Int(currentValue);
 
 		if(!sensorReading){
 			_delay_ms(30000);
