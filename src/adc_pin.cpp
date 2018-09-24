@@ -8,11 +8,24 @@ cADCPin::cADCPin(uint8_t ch)
 	_channel = ch;
 	// keep channel in range
 	_channel &= 0x07;
-	init();
+	Init();
 }
 cADCPin::~cADCPin(){}
 
-void cADCPin::init()
+
+uint16_t cADCPin::Read()
+{
+	ADMUX &= ~( (1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0) );
+	// select channel
+	ADMUX |= _channel;
+	// start conversion
+	ADCSRA |= (1 << ADSC);
+	// wait until conversion is completed
+	while(ADCSRA & (1 << ADSC)){}
+		return ADC;
+}
+
+void cADCPin::Init()
 {
 	// set ref. Voltage [ 5V ]
 	ADMUX |= (1 << REFS0);
@@ -28,16 +41,4 @@ void cADCPin::init()
 	// start first conversion and make a "dummy-readout"
 	ADCSRA |= (1 << ADSC);
 	while(ADCSRA & (1 << ADSC)){}
-}
-
-uint16_t cADCPin::read()
-{
-	ADMUX &= ~( (1 << MUX3) | (1 << MUX2) | (1 << MUX1) | (1 << MUX0) );
-	// select channel
-	ADMUX |= _channel;
-	// start conversion
-	ADCSRA |= (1 << ADSC);
-	// wait until conversion is completed
-	while(ADCSRA & (1 << ADSC)){}
-		return ADC;
 }
