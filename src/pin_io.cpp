@@ -1,5 +1,3 @@
-// tested and worked at 2017/09/12 16:17
-
 #include "pin_io.h"
 
 cIOPin::cIOPin() : _bitVal(_defaultInit)
@@ -16,7 +14,7 @@ cIOPin::cIOPin(volatile uint8_t *port, const uint8_t bit, eDirection direction) 
 
 cIOPin::~cIOPin(){}
 
-void cIOPin::set_Pin(bool value)
+void cIOPin::SetPin(bool value)
 {
 	if(value != 0){
 		*_port |= (1 << _bitVal);
@@ -25,22 +23,22 @@ void cIOPin::set_Pin(bool value)
 	}
 }
 
-uint8_t cIOPin::get_Pin()
+uint8_t cIOPin::GetPin()
 {
 	return ((*(_port - 2)) & (1 << _bitVal));
 }
 
-void cIOPin::toggle_Pin()
+void cIOPin::TogglePin()
 {
 	*_port ^= (1 << _bitVal);
 }
 
-void cIOPin::toggle_Direction()
+void cIOPin::ToggleDirection()
 {
 	*(_port - 1) ^= (1 << _bitVal);
 }
 
-void cIOPin::set_Direction(bool direction)
+void cIOPin::SetDirection(bool direction)
 {
 	switch(direction){
 		case 0: *(_port - 1) &= ~(1 << _bitVal);

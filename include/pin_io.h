@@ -14,11 +14,11 @@ public:
 	cIOPin( volatile uint8_t *port, const uint8_t bit, eDirection direction);
 	~cIOPin();
 
-	void set_Pin(bool value);
-	uint8_t get_Pin();
-	void toggle_Pin();
-	void toggle_Direction();
-	void set_Direction(bool direction);
+	void SetPin(bool value);
+	uint8_t GetPin();
+	void TogglePin();
+	void ToggleDirection();
+	void SetDirection(bool direction);
 private:
 
 	const uint8_t _defaultInit {0};

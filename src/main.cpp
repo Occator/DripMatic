@@ -83,7 +83,7 @@ int main(){
 	for(;;)
 	{
 
-		greenLED.set_Pin(1);
+		greenLED.SetPin(1);
 		ds1302.update_rtcTime();
 
 		DisplayDate(&userDisplay, &ds1302);
@@ -102,14 +102,14 @@ int main(){
 		if( ( (ds1302.rtcTime.minutes % 15 ) == 0) && (sensorReading) )
 		{
 			userDisplay.Clear();
-			greenLED.set_Pin(0);
+			greenLED.SetPin(0);
 			lastValue = currentValue;
 			uint16_t adcValue = 0;
 			uint8_t count  = 0;
 			while(count < 50)
 			{
 				userDisplay.WriteStringXY(0, 0, "reading sensor...");
-				yellowLED.toggle_Pin();
+				yellowLED.TogglePin();
 				adcValue += tensiometer.Read();
 				count++;
 				_delay_ms(10);
@@ -155,7 +155,7 @@ int main(){
 			f_close(&records);
 
 			userDisplay.Clear();
-			greenLED.set_Pin(1);
+			greenLED.SetPin(1);
 			sensorReading = false;
 			runningNumber++;
 		}

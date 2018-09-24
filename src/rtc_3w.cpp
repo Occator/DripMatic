@@ -35,35 +35,35 @@ void cDeviceRTC::write_RTC_Reg(uint8_t value, eRegister _reg)
 
 void cDeviceRTC::write_CommByte(uint8_t reg)
 {
-	_rtcIO->set_Direction(cIOPin::output);
-	_rtcCE->set_Pin(1);
+	_rtcIO->SetDirection(cIOPin::output);
+	_rtcCE->SetPin(1);
 	_delay_ms(10);
 
 	for(uint8_t i = 0; i < 8; i++){
-		_rtcSCLK->set_Pin(0);
+		_rtcSCLK->SetPin(0);
 		if(reg & (1 << i)){
-			_rtcIO->set_Pin(1);
+			_rtcIO->SetPin(1);
 		}else{
-			_rtcIO->set_Pin(0);
+			_rtcIO->SetPin(0);
 		}
-		_rtcSCLK->set_Pin(1);
+		_rtcSCLK->SetPin(1);
 	}
 }
 
 void cDeviceRTC::write_Byte(uint8_t data)
 {
-	_rtcSCLK->set_Pin(0);
+	_rtcSCLK->SetPin(0);
 	for(uint8_t i = 0; i < 8; i++){
 		if(data & (1 << i)){
-			_rtcIO->set_Pin(1);
+			_rtcIO->SetPin(1);
 		}else{
-			_rtcIO->set_Pin(0);
+			_rtcIO->SetPin(0);
 		}
-		_rtcSCLK->set_Pin(1);
-		_rtcSCLK->set_Pin(0);
+		_rtcSCLK->SetPin(1);
+		_rtcSCLK->SetPin(0);
 	}
 
-	_rtcCE->set_Pin(0);
+	_rtcCE->SetPin(0);
 }
 
 uint8_t cDeviceRTC::read_RTC_Reg(eRegister _reg)
@@ -78,11 +78,11 @@ uint8_t cDeviceRTC::read_Byte()
 	uint8_t byte {0};
 
 	// set DDRD IO as INPUT
-	_rtcIO->set_Direction(cIOPin::input);
+	_rtcIO->SetDirection(cIOPin::input);
 
 	// set IO and SCLK low
-	_rtcIO->set_Pin(0);
-	_rtcSCLK->set_Pin(0);
+	_rtcIO->SetPin(0);
+	_rtcSCLK->SetPin(0);
 
 	_delay_ms(50);
 
@@ -90,11 +90,11 @@ uint8_t cDeviceRTC::read_Byte()
 		if(PIND & (1 << 3)){
 			byte |= (1 << i);
 		}
-		_rtcSCLK->set_Pin(1);
-		_rtcSCLK->set_Pin(0);
+		_rtcSCLK->SetPin(1);
+		_rtcSCLK->SetPin(0);
 	}
 
-	_rtcCE->set_Pin(0);
+	_rtcCE->SetPin(0);
 	return byte;
 }
 

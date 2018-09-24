@@ -243,12 +243,12 @@ uint8_t cMicroSDModule::sendCommand(uint8_t command, uint32_t argument)
 
 void cMicroSDModule::_csAsserted()
 {
-  _csPin->set_Pin(0);
+  _csPin->SetPin(0);
 }
 
 void cMicroSDModule::_csDeasserted()
 {
-  _csPin->set_Pin(1);
+  _csPin->SetPin(1);
 }
 
 uint8_t cMicroSDModule::_sendAppCmd()
