@@ -110,7 +110,7 @@ int main(){
 			{
 				userDisplay.write_String_XY(0, 0, "reading sensor...");
 				yellowLED.toggle_Pin();
-				adcValue += tensiometer.read();
+				adcValue += tensiometer.Read();
 				count++;
 				_delay_ms(10);
 			}
