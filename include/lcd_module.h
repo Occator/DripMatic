@@ -58,31 +58,31 @@ public:
 	cLCD(cTWI *twiDevice);
 	~cLCD();
 
-	void clear();
-	void home();
-	void display();
-	void no_Display();
-	void cursor();
-	void no_Cursor();
-	void blink();
-	void no_Blink();
-	void backlight();
-	void no_Backlight();
-	void write(uint8_t data);
-	void write_String(const char * string);
-	void set_Cursor(uint8_t x, uint8_t y);
-	void write_String_XY(uint8_t x, uint8_t y, const char * string);
-	void write_Int_XY(uint8_t x, uint8_t y, uint16_t data);
-	void write_Int(int data);
+	void Clear();
+	void Home();
+	void Display();
+	void NoDisplay();
+	void Cursor();
+	void NoCursor();
+	void Blink();
+	void NoBlink();
+	void Backlight();
+	void NoBacklight();
+	void Write(uint8_t data);
+	void WriteString(const char * string);
+	void WriteInt(int data);
+	void SetCursor(uint8_t x, uint8_t y);
+	void WriteStringXY(uint8_t x, uint8_t y, const char * string);
+	void WriteIntXY(uint8_t x, uint8_t y, uint16_t data);
 
 private:
-	void init();
-	void begin();
-	void command(uint8_t value);
-	void _init_Priv();
-	void _send(uint8_t, uint8_t);
-	void _write4Bits(uint8_t value);
-	void _pulseEnable(uint8_t data);
+	void _Init();
+	void _InitPriv();
+	void _Begin();
+	void _Command(uint8_t value);
+	void _Send(uint8_t, uint8_t);
+	void _Write4Bits(uint8_t value);
+	void _PulseEnable(uint8_t data);
 
 	cTWI *_twiLCD;
 	uint8_t _displaycontrol = 0;

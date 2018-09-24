@@ -70,12 +70,12 @@ int main(){
 		f_close(&records);
 	}
 
-	userDisplay.set_Cursor(5,1);
-	userDisplay.write_String("DripMatic");
-	userDisplay.set_Cursor(7, 2);
-	userDisplay.write_String("ver.0.1");
+	userDisplay.SetCursor(5,1);
+	userDisplay.WriteString("DripMatic");
+	userDisplay.SetCursor(7, 2);
+	userDisplay.WriteString("ver.0.1");
 	_delay_ms(3000);
-	userDisplay.clear();
+	userDisplay.Clear();
 
 	uint16_t currentValue { 0 };
 	uint16_t lastValue { 0 };
@@ -89,10 +89,10 @@ int main(){
 		DisplayDate(&userDisplay, &ds1302);
 		DisplayTime(&userDisplay, &ds1302);
 
-		userDisplay.write_String_XY(0, 2, "last: ");
-		userDisplay.write_Int(lastValue);
-		userDisplay.write_String_XY(0, 3, "current: ");
-		userDisplay.write_Int(currentValue);
+		userDisplay.WriteStringXY(0, 2, "last: ");
+		userDisplay.WriteInt(lastValue);
+		userDisplay.WriteStringXY(0, 3, "current: ");
+		userDisplay.WriteInt(currentValue);
 
 		if(!sensorReading){
 			_delay_ms(30000);
@@ -101,14 +101,14 @@ int main(){
 
 		if( ( (ds1302.rtcTime.minutes % 15 ) == 0) && (sensorReading) )
 		{
-			userDisplay.clear();
+			userDisplay.Clear();
 			greenLED.set_Pin(0);
 			lastValue = currentValue;
 			uint16_t adcValue = 0;
 			uint8_t count  = 0;
 			while(count < 50)
 			{
-				userDisplay.write_String_XY(0, 0, "reading sensor...");
+				userDisplay.WriteStringXY(0, 0, "reading sensor...");
 				yellowLED.toggle_Pin();
 				adcValue += tensiometer.Read();
 				count++;
@@ -116,11 +116,11 @@ int main(){
 			}
 			currentValue = adcValue / 50;
 
-			userDisplay.write_String_XY(0, 0, "Tensiometer-Value");
-			userDisplay.write_String_XY(0, 2, "last: ");
-			userDisplay.write_Int(lastValue);
-			userDisplay.write_String_XY(0, 3, "current: ");
-			userDisplay.write_Int(currentValue);
+			userDisplay.WriteStringXY(0, 0, "Tensiometer-Value");
+			userDisplay.WriteStringXY(0, 2, "last: ");
+			userDisplay.WriteInt(lastValue);
+			userDisplay.WriteStringXY(0, 3, "current: ");
+			userDisplay.WriteInt(currentValue);
 			_delay_ms(10000);
 
 			res_open = open_append(&records, "records.txt");
@@ -154,7 +154,7 @@ int main(){
 			}
 			f_close(&records);
 
-			userDisplay.clear();
+			userDisplay.Clear();
 			greenLED.set_Pin(1);
 			sensorReading = false;
 			runningNumber++;
@@ -164,52 +164,52 @@ int main(){
 
 void DisplayDate(cLCD *lcd, cDeviceRTC *clock)
 {
-	lcd->set_Cursor(0, 0);
+	lcd->SetCursor(0, 0);
 	// frame_date
-	lcd->write_Int(clock->rtcTime.year);
-	lcd->write_String("/");
+	lcd->WriteInt(clock->rtcTime.year);
+	lcd->WriteString("/");
 	if(clock->rtcTime.month < 10)
 	{
-		 lcd->write_String("0");
-		 lcd->write_Int(clock->rtcTime.month);
+		 lcd->WriteString("0");
+		 lcd->WriteInt(clock->rtcTime.month);
 	}
 	else
 	{
-		lcd->write_Int(clock->rtcTime.month);
+		lcd->WriteInt(clock->rtcTime.month);
 	}
-	lcd->write_String("/");
+	lcd->WriteString("/");
 	if(clock->rtcTime.date < 10)
 	{
-		 lcd->write_String("0");
-		 lcd->write_Int(clock->rtcTime.date);
+		 lcd->WriteString("0");
+		 lcd->WriteInt(clock->rtcTime.date);
 	}
 	else
 	{
-		lcd->write_Int(clock->rtcTime.date);
+		lcd->WriteInt(clock->rtcTime.date);
 	}
 }
 
 void DisplayTime(cLCD *lcd, cDeviceRTC *clock)
 {
-	lcd->set_Cursor(15, 0);
+	lcd->SetCursor(15, 0);
 	if(clock->rtcTime.hours < 10)
 	{
-		lcd->write_String("0");
-		lcd->write_Int(clock->rtcTime.hours);
-		lcd->write_String(":");
+		lcd->WriteString("0");
+		lcd->WriteInt(clock->rtcTime.hours);
+		lcd->WriteString(":");
 	}
 	else
 	{
-		lcd->write_Int(clock->rtcTime.hours);
-		lcd->write_String(":");
+		lcd->WriteInt(clock->rtcTime.hours);
+		lcd->WriteString(":");
 	}
 	if(clock->rtcTime.minutes < 10)
 	{
-		lcd->write_String("0");
-		lcd->write_Int(clock->rtcTime.minutes);
+		lcd->WriteString("0");
+		lcd->WriteInt(clock->rtcTime.minutes);
 	}
 	else
 	{
-		lcd->write_Int(clock->rtcTime.minutes);
+		lcd->WriteInt(clock->rtcTime.minutes);
 	}
 }
