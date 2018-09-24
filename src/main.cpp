@@ -47,7 +47,7 @@ int main(){
 
 
 	cDeviceRTC ds1302(&rtcCE, &rtcIO, &rtcSCLK);
-	ds1302.set_RTC(2018, 9, 19, 19, 29, 0);
+	ds1302.set_RTC(2018, 9, 19, 9, 59, 0);
 
 	res_mount = f_mount(&fatFS, "", 0);
 	if(res_mount == FR_OK)
@@ -99,133 +99,66 @@ int main(){
 			sensorReading = true;
 		}
 
-		if( ( ( ds1302.rtcTime.hours > 20 ) == 0) && sensorReading )
+		if( ( (ds1302.rtcTime.minutes % 15 ) == 0) && (sensorReading) )
 		{
-			if( ( ds1302.rtcTime.minutes == 0 ) && sensorReading )
+			userDisplay.Clear();
+			greenLED.SetPin(0);
+			lastValue = currentValue;
+			uint16_t adcValue = 0;
+			uint8_t count  = 0;
+			while(count < 50)
 			{
-				userDisplay.Clear();
-				greenLED.SetPin(0);
-				lastValue = currentValue;
-				uint16_t adcValue = 0;
-				uint8_t count  = 0;
-				while(count < 50)
-				{
-					userDisplay.WriteStringXY(0, 0, "reading sensor...");
-					yellowLED.TogglePin();
-					adcValue += tensiometer.Read();
-					count++;
-					_delay_ms(10);
-				}
-				currentValue = adcValue / 50;
-
-				userDisplay.WriteStringXY(0, 0, "Tensiometer-Value");
-				userDisplay.WriteStringXY(0, 2, "last: ");
-				userDisplay.WriteInt(lastValue);
-				userDisplay.WriteStringXY(0, 3, "current: ");
-				userDisplay.WriteInt(currentValue);
-				_delay_ms(10000);
-
-				res_open = open_append(&records, "records.txt");
-				if(res_open == FR_OK)
-				{
-					itoa(runningNumber, convertBuffer, 10);
-					f_puts(convertBuffer, &records);
-					f_putc(',', &records);
-					ds1302.update_rtcTime();
-					itoa(ds1302.rtcTime.year, convertBuffer, 10);
-					f_puts(convertBuffer, &records);
-					f_putc('/', &records);
-					itoa(ds1302.rtcTime.month, convertBuffer, 10);
-					f_puts(convertBuffer, &records);
-					f_putc('/', &records);
-					itoa(ds1302.rtcTime.date, convertBuffer, 10);
-					f_puts(convertBuffer, &records);
-					f_putc(',', &records);
-					itoa(ds1302.rtcTime.hours, convertBuffer, 10);
-					f_puts(convertBuffer, &records);
-					f_putc(':', &records);
-					itoa(ds1302.rtcTime.minutes, convertBuffer, 10);
-					f_puts(convertBuffer, &records);
-					f_putc(':', &records);
-					itoa(ds1302.rtcTime.seconds, convertBuffer, 10);
-					f_puts(convertBuffer, &records);
-					f_putc(',', &records);
-					itoa(currentValue, convertBuffer, 10);
-					f_puts(convertBuffer, &records);
-					f_putc('\n', &records);
-				}
-				f_close(&records);
-
-				userDisplay.Clear();
-				greenLED.SetPin(1);
-				sensorReading = false;
-				runningNumber++;
+				userDisplay.WriteStringXY(0, 0, "reading sensor...");
+				yellowLED.TogglePin();
+				adcValue += tensiometer.Read();
+				count++;
+				_delay_ms(10);
 			}
-		}
-		else
-		{
-			if( ( ( ds1302.rtcTime.minutes % 15 ) == 0) &&  sensorReading )
+			currentValue = adcValue / 50;
+
+			userDisplay.WriteStringXY(0, 0, "Tensiometer-Value");
+			userDisplay.WriteStringXY(0, 2, "last: ");
+			userDisplay.WriteInt(lastValue);
+			userDisplay.WriteStringXY(0, 3, "current: ");
+			userDisplay.WriteInt(currentValue);
+			_delay_ms(10000);
+
+			res_open = open_append(&records, "records.txt");
+			if(res_open == FR_OK)
 			{
-				userDisplay.Clear();
-				greenLED.SetPin(0);
-				lastValue = currentValue;
-				uint16_t adcValue = 0;
-				uint8_t count  = 0;
-				while(count < 50)
-				{
-					userDisplay.WriteStringXY(0, 0, "reading sensor...");
-					yellowLED.TogglePin();
-					adcValue += tensiometer.Read();
-					count++;
-					_delay_ms(10);
-				}
-				currentValue = adcValue / 50;
-
-				userDisplay.WriteStringXY(0, 0, "Tensiometer-Value");
-				userDisplay.WriteStringXY(0, 2, "last: ");
-				userDisplay.WriteInt(lastValue);
-				userDisplay.WriteStringXY(0, 3, "current: ");
-				userDisplay.WriteInt(currentValue);
-				_delay_ms(10000);
-
-				res_open = open_append(&records, "records.txt");
-				if(res_open == FR_OK)
-				{
-					itoa(runningNumber, convertBuffer, 10);
-					f_puts(convertBuffer, &records);
-					f_putc(',', &records);
-					ds1302.update_rtcTime();
-					itoa(ds1302.rtcTime.year, convertBuffer, 10);
-					f_puts(convertBuffer, &records);
-					f_putc('/', &records);
-					itoa(ds1302.rtcTime.month, convertBuffer, 10);
-					f_puts(convertBuffer, &records);
-					f_putc('/', &records);
-					itoa(ds1302.rtcTime.date, convertBuffer, 10);
-					f_puts(convertBuffer, &records);
-					f_putc(',', &records);
-					itoa(ds1302.rtcTime.hours, convertBuffer, 10);
-					f_puts(convertBuffer, &records);
-					f_putc(':', &records);
-					itoa(ds1302.rtcTime.minutes, convertBuffer, 10);
-					f_puts(convertBuffer, &records);
-					f_putc(':', &records);
-					itoa(ds1302.rtcTime.seconds, convertBuffer, 10);
-					f_puts(convertBuffer, &records);
-					f_putc(',', &records);
-					itoa(currentValue, convertBuffer, 10);
-					f_puts(convertBuffer, &records);
-					f_putc('\n', &records);
-				}
-				f_close(&records);
-
-				userDisplay.Clear();
-				greenLED.SetPin(1);
-				sensorReading = false;
-				runningNumber++;
+				itoa(runningNumber, convertBuffer, 10);
+				f_puts(convertBuffer, &records);
+				f_putc(',', &records);
+				ds1302.update_rtcTime();
+				itoa(ds1302.rtcTime.year, convertBuffer, 10);
+				f_puts(convertBuffer, &records);
+				f_putc('/', &records);
+				itoa(ds1302.rtcTime.month, convertBuffer, 10);
+				f_puts(convertBuffer, &records);
+				f_putc('/', &records);
+				itoa(ds1302.rtcTime.date, convertBuffer, 10);
+				f_puts(convertBuffer, &records);
+				f_putc(',', &records);
+				itoa(ds1302.rtcTime.hours, convertBuffer, 10);
+				f_puts(convertBuffer, &records);
+				f_putc(':', &records);
+				itoa(ds1302.rtcTime.minutes, convertBuffer, 10);
+				f_puts(convertBuffer, &records);
+				f_putc(':', &records);
+				itoa(ds1302.rtcTime.seconds, convertBuffer, 10);
+				f_puts(convertBuffer, &records);
+				f_putc(',', &records);
+				itoa(currentValue, convertBuffer, 10);
+				f_puts(convertBuffer, &records);
+				f_putc('\n', &records);
 			}
-		}
+			f_close(&records);
 
+			userDisplay.Clear();
+			greenLED.SetPin(1);
+			sensorReading = false;
+			runningNumber++;
+		}
 	}
 }
 
