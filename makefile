@@ -2,7 +2,7 @@
 TARGET = autspir
 OBJECTS = build/main.o build/adc_pin.o build/twi_module.o build/lcd_module.o
 OBJECTS += build/pin_io.o build/rtc_3w.o build/spi_module.o build/uart_module.o
-OBJECTS += build/sdcard_module.o build/diskio.o build/ff.o
+OBJECTS += build/sdcard_module.o build/diskio.o build/ff.o build/atexit.o
 # chip and project specific global definitons
 MCU = atmega328p
 F_CPU = 16000000UL
@@ -13,15 +13,16 @@ OBJCOPY=avr-objcopy
 IDIR=include/
 
 CFLAGS=-Os -DF_CPU=$(F_CPU) -mmcu=atmega328p -std=c++11 -I $(IDIR) -o $@
+CFLAGS += -fno-threadsafe-statics
 PORT=/dev/ttyACM0
 
-build/autspir_hex.hex: build/autspir.elf
-	$(OBJCOPY) -j .text -j .data -O ihex build/autspir.elf build/autspir_hex.hex
+build/autspir_hex.hex: build/dripmatic.elf
+	$(OBJCOPY) -j .text -j .data -O ihex build/dripmatic.elf build/dripmatic_hex.hex
 
-bin/autspir_bin.bin: build/autspir.elf
-	$(OBJCOPY) -O binary -R build/autspir.elf bin/handsOnbin.bin
+bin/autspir_bin.bin: build/dripmatic.elf
+	$(OBJCOPY) -O binary -R build/dripmatic.elf bin/handsOnbin.bin
 
-build/autspir.elf: $(OBJECTS)
+build/dripmatic.elf: $(OBJECTS)
 	$(CC) $(CFLAGS) -g -Wall -o $@ $(OBJECTS)
 
 build/main.o: src/main.cpp
@@ -32,6 +33,9 @@ build/adc_pin.o: src/adc_pin.cpp include/adc_pin.h
 
 build/twi_module.o: src/twi_module.cpp include/twi_module.h
 	$(CC) $(CFLAGS) -g -Wall -c src/twi_module.cpp
+
+build/atexit.o: src/atexit.cpp
+	$(CC) $(CFLAGS) -g -Wall -c src/atexit.cpp
 
 build/rtc_3w.o: src/rtc_3w.cpp include/rtc_3w.h
 	$(CC) $(CFLAGS) -g -Wall -c src/rtc_3w.cpp
@@ -57,8 +61,8 @@ build/diskio.o: src/diskio.cpp include/diskio.h
 build/ff.o: src/ff.c include/ff.h
 	$(CC) $(CFLAGS) -g -Wall -c src/ff.c
 
-install: build/autspir_hex.hex
-	avrdude -F -V -v -v -c arduino -p atmega328p -P $(PORT) -b 115200 -e -U flash:w:build/autspir_hex.hex
+install: build/dripmatic_hex.hex
+	avrdude -F -V -v -v -c arduino -p atmega328p -P $(PORT) -b 115200 -e -U flash:w:build/dripmatic_hex.hex
 
 clean:
-	rm $(OBJECTS) build/autspir.elf build/autspir_hex.hex
+	rm $(OBJECTS) build/dripmatic.elf build/dripmatic_hex.hex
