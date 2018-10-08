@@ -27,12 +27,18 @@ public:
 
 	}rtcTime;
 
-	cDeviceRTC(cIOPin *cePin, cIOPin *ioPin, cIOPin *sclkPin);
-	~cDeviceRTC();
+	static cDeviceRTC& getInstance();
+	void init(cIOPin *cePin, cIOPin *ioPin, cIOPin *sclkPin);
 	void update_rtcTime();
-	void set_RTC(uint16_t year, uint8_t month, uint8_t date, uint8_t hour, uint8_t minute, uint8_t second);
+	void set_RTC(uint16_t year, uint8_t month, uint8_t date, uint8_t hour,
+							uint8_t minute, uint8_t second);
 
 private:
+	cDeviceRTC();
+	cDeviceRTC(cDeviceRTC const&);
+	cDeviceRTC& operator = (cDeviceRTC const&);
+	~cDeviceRTC();
+
 	void write_RTC_Reg(uint8_t value, eRegister _reg);
 	uint8_t read_RTC_Reg(eRegister _reg);
 	void write_CommByte(uint8_t reg);

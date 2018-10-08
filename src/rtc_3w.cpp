@@ -1,15 +1,20 @@
 #include "rtc_3w.h"
 
-cDeviceRTC::cDeviceRTC(cIOPin *cePin, cIOPin *ioPin, cIOPin *sclkPin) :
-											_rtcCE(cePin), _rtcIO(ioPin), _rtcSCLK(sclkPin)
-{
-	write_RTC_Reg(0, cDeviceRTC::write_protect);
-	set_RTC(2018, 9, 4, 20, 50, 0);
-}
+cDeviceRTC::cDeviceRTC()
+{}
 
 cDeviceRTC::~cDeviceRTC()
 {}
 
+void cDeviceRTC::init(cIOPin *cePin, cIOPin *ioPin, cIOPin *sclkPin)
+{
+	_rtcCE = cePin;
+	_rtcIO = ioPin;
+	_rtcSCLK = sclkPin;
+
+	write_RTC_Reg(0, cDeviceRTC::write_protect);
+	set_RTC(2018, 9, 4, 20, 50, 0);
+}
 void cDeviceRTC::update_rtcTime()
 {
 	rtcTime.year = ( read_RTC_Reg(cDeviceRTC::year) + 2000);
