@@ -1,5 +1,3 @@
-// tested and worked at 2017/09/21 15:45
-
 #include "rtc_3w.h"
 
 cDeviceRTC::cDeviceRTC(cIOPin *cePin, cIOPin *ioPin, cIOPin *sclkPin) :
@@ -12,7 +10,16 @@ cDeviceRTC::cDeviceRTC(cIOPin *cePin, cIOPin *ioPin, cIOPin *sclkPin) :
 cDeviceRTC::~cDeviceRTC()
 {}
 
-// implemented and tested
+void cDeviceRTC::update_rtcTime()
+{
+	rtcTime.year = ( read_RTC_Reg(cDeviceRTC::year) + 2000);
+	rtcTime.date = read_RTC_Reg(cDeviceRTC::date);
+	rtcTime.month = read_RTC_Reg(cDeviceRTC::month);
+	rtcTime.hours = read_RTC_Reg(cDeviceRTC::hour);
+	rtcTime.minutes = read_RTC_Reg(cDeviceRTC::min);
+	rtcTime.seconds = read_RTC_Reg(cDeviceRTC::sec);
+	// rest of rtcTime needs to be implemented
+}
 
 void cDeviceRTC::set_RTC(uint16_t year, uint8_t month, uint8_t date,
 												uint8_t hour, uint8_t minute,	uint8_t second)
@@ -31,6 +38,13 @@ void cDeviceRTC::write_RTC_Reg(uint8_t value, eRegister _reg)
 	write_CommByte( 0x80 | ((static_cast<uint8_t>(_reg)) << 1) );
 	value = dec_To_BCD(value);
 	write_Byte(value);
+}
+
+uint8_t cDeviceRTC::read_RTC_Reg(eRegister _reg)
+{
+	write_CommByte( 0x81 | ((static_cast<uint8_t>(_reg)) << 1)  );
+	uint8_t bcdData = read_Byte();
+	return bcd_To_Dec(bcdData);
 }
 
 void cDeviceRTC::write_CommByte(uint8_t reg)
@@ -66,12 +80,6 @@ void cDeviceRTC::write_Byte(uint8_t data)
 	_rtcCE->SetPin(0);
 }
 
-uint8_t cDeviceRTC::read_RTC_Reg(eRegister _reg)
-{
-	write_CommByte( 0x81 | ((static_cast<uint8_t>(_reg)) << 1)  );
-	uint8_t bcdData = read_Byte();
-	return bcd_To_Dec(bcdData);
-}
 
 uint8_t cDeviceRTC::read_Byte()
 {
@@ -98,16 +106,6 @@ uint8_t cDeviceRTC::read_Byte()
 	return byte;
 }
 
-void cDeviceRTC::update_rtcTime()
-{
-	rtcTime.year = ( read_RTC_Reg(cDeviceRTC::year) + 2000);
-	rtcTime.date = read_RTC_Reg(cDeviceRTC::date);
-	rtcTime.month = read_RTC_Reg(cDeviceRTC::month);
-	rtcTime.hours = read_RTC_Reg(cDeviceRTC::hour);
-	rtcTime.minutes = read_RTC_Reg(cDeviceRTC::min);
-	rtcTime.seconds = read_RTC_Reg(cDeviceRTC::sec);
-	// rest of rtcTime needs to be implemented
-}
 
 uint8_t cDeviceRTC::bcd_To_Dec(uint16_t bcdByte)
 {
