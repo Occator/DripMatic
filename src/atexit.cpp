@@ -23,6 +23,9 @@
    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
    POSSIBILITY OF SUCH DAMAGE. */
 
+/*NOTE: follow change needs to be made in avr/stdlib.h
+        line 675 - set value to 1*/
+
 #include <stdlib.h>
 
 struct atexit_s { void (*fun) (void); struct atexit_s *next; } *__atexit_p;
