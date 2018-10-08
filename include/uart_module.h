@@ -9,7 +9,7 @@
 
 class cUART{
 public:
-	static cUART* getInstance();
+	static cUART& getInstance();
 
 	void init();
 	uint8_t read();

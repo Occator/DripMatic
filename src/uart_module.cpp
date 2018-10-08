@@ -6,9 +6,9 @@ cUART::cUART(){}
 
 cUART::~cUART(){}
 
-cUART* cUART::getInstance()
+cUART& cUART::getInstance()
 {
-	static cUART* uartInstance;
+	static cUART uartInstance;
 	return uartInstance;
 }
 
