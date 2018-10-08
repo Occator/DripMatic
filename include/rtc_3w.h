@@ -27,7 +27,7 @@ public:
 
 	}rtcTime;
 
-	static cDeviceRTC& getInstance();
+	static cDeviceRTC& GetInstance();
 	void init(cIOPin *cePin, cIOPin *ioPin, cIOPin *sclkPin);
 	void update_rtcTime();
 	void set_RTC(uint16_t year, uint8_t month, uint8_t date, uint8_t hour,

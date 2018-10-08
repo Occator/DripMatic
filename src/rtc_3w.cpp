@@ -6,6 +6,12 @@ cDeviceRTC::cDeviceRTC()
 cDeviceRTC::~cDeviceRTC()
 {}
 
+cDeviceRTC& cDeviceRTC::GetInstance()
+{
+	static cDeviceRTC rtcModule;
+	return rtcModule;
+}
+
 void cDeviceRTC::init(cIOPin *cePin, cIOPin *ioPin, cIOPin *sclkPin)
 {
 	_rtcCE = cePin;
