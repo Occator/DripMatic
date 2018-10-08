@@ -7,17 +7,6 @@
 #include <util/delay.h>
 #include "pin_io.h"
 
-class cSysTime{
-public:
-	uint8_t seconds;
-	uint8_t minutes;
-	uint8_t hours;
-	uint8_t date;
-	uint8_t month;
-	uint16_t dow;
-	uint16_t year;
-};
-
 class cDeviceRTC{
 public:
 
@@ -53,7 +42,6 @@ private:
 	uint8_t dec_To_BCD(uint16_t decByte);
 
 	eRegister _reg;
-	// ## implement smart pointer, if there is a workaround, because no standard memory.h
 	cIOPin *_rtcCE;
 	cIOPin *_rtcIO;
 	cIOPin *_rtcSCLK;
