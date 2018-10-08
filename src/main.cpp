@@ -14,8 +14,8 @@
 
 
 int main(){
-
-
+	cUART::getInstance().init();
+	cUART::getInstance().write_String("enter main\r\n");
 	void DisplayDate(cLCD *lcd2004, cDeviceRTC *clock);
 	void DisplayTime(cLCD *lcd2004, cDeviceRTC *clock);
 	bool sensorReading = true;
@@ -80,6 +80,7 @@ int main(){
 	uint16_t currentValue { 0 };
 	uint16_t lastValue { 0 };
 
+	cUART::getInstance().write_String("enter infinite loop");
 	for(;;)
 	{
 

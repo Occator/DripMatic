@@ -28,7 +28,7 @@ DSTATUS disk_initialize (
 {
   sdCard_ = &sdCard;
 
-	cUART::getInstance()->write_String("SD-Card successful initialized\r\n");
+	cUART::getInstance().write_String("SD-Card successful initialized\r\n");
   return RES_OK;
 }
 
