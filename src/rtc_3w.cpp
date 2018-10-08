@@ -19,7 +19,7 @@ void cDeviceRTC::init(cIOPin *cePin, cIOPin *ioPin, cIOPin *sclkPin)
 	_rtcSCLK = sclkPin;
 
 	write_RTC_Reg(0, cDeviceRTC::write_protect);
-	set_RTC(2018, 9, 4, 20, 50, 0);
+	set_RTC(2018, 10, 8, 21, 50, 0);
 }
 void cDeviceRTC::update_rtcTime()
 {
