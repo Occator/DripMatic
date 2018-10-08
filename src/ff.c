@@ -25,15 +25,8 @@
 /*--------------------------------------------------------------------------
 own includings
 /----------------------------------------------------------------------------*/
-#include "pin_io.h"
 #include "rtc_3w.h"
 
-static cDeviceRTC *fatRTC_ = 0;
-
-static cIOPin rtcCE(&PORTD, 2, cIOPin::output);
-static cIOPin rtcIO(&PORTD, 3, cIOPin::output);
-static cIOPin rtcSCLK(&PORTD, 4, cIOPin::output);
-static cDeviceRTC fatRTC(&rtcCE, &rtcIO, &rtcSCLK);
 /*--------------------------------------------------------------------------
 
    Module Private Definitions
@@ -580,18 +573,14 @@ static const BYTE DbcTbl[] = MKCVTBL(TBL_DC, FF_CODE_PAGE);
 /*-----------------------------------------------------------------------*/
 DWORD get_fattime()
 {
-	if(fatRTC_ == 0)
-	{
-		fatRTC_ = &fatRTC;
-	}
 
-	fatRTC_->update_rtcTime();
-	return ( (DWORD)(fatRTC_->rtcTime.year - 1980) << 25)
-					| ( (DWORD)fatRTC_->rtcTime.month << 21)
-					| ( (DWORD)fatRTC_->rtcTime.date << 16)
-					| ( (DWORD)(fatRTC_->rtcTime.hours - 2) << 11)
-					| ( (DWORD)fatRTC_->rtcTime.minutes << 5)
-					| ( (DWORD)fatRTC_->rtcTime.seconds >> 1);
+	cDeviceRTC::GetInstance().update_rtcTime();
+	return ( (DWORD)(cDeviceRTC::GetInstance().rtcTime.year - 1980) << 25)
+					| ( (DWORD)cDeviceRTC::GetInstance().rtcTime.month << 21)
+					| ( (DWORD)cDeviceRTC::GetInstance().rtcTime.date << 16)
+					| ( (DWORD)(cDeviceRTC::GetInstance().rtcTime.hours - 2) << 11)
+					| ( (DWORD)cDeviceRTC::GetInstance().rtcTime.minutes << 5)
+					| ( (DWORD)cDeviceRTC::GetInstance().rtcTime.seconds >> 1);
 }
 
 /*-----------------------------------------------------------------------*/

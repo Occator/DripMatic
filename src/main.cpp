@@ -16,8 +16,8 @@
 int main(){
 	cUART::getInstance().init();
 	cUART::getInstance().write_String("enter main\r\n");
-	void DisplayDate(cLCD *lcd2004, cDeviceRTC *clock);
-	void DisplayTime(cLCD *lcd2004, cDeviceRTC *clock);
+	void DisplayDate(cLCD *lcd2004);
+	void DisplayTime(cLCD *lcd2004);
 	bool sensorReading = true;
 	int16_t runningNumber { 0 };
 
@@ -31,6 +31,8 @@ int main(){
 	cIOPin rtcCE(&PORTD, 2, cIOPin::output);
 	cIOPin rtcIO(&PORTD, 3, cIOPin::output);
 	cIOPin rtcSCLK(&PORTD, 4, cIOPin::output);
+	cDeviceRTC::GetInstance().init(&rtcCE, &rtcIO, &rtcSCLK);
+
 
 	FATFS fatFS;
 	FIL records;
@@ -44,10 +46,6 @@ int main(){
 
 	cADCPin tensiometer(0);
 	cLCD userDisplay(&ioExpander);
-
-
-	cDeviceRTC ds1302(&rtcCE, &rtcIO, &rtcSCLK);
-	ds1302.set_RTC(2018, 9, 19, 9, 59, 0);
 
 	res_mount = f_mount(&fatFS, "", 0);
 	if(res_mount == FR_OK)
@@ -85,10 +83,10 @@ int main(){
 	{
 
 		greenLED.SetPin(1);
-		ds1302.update_rtcTime();
+		cDeviceRTC::GetInstance().update_rtcTime();
 
-		DisplayDate(&userDisplay, &ds1302);
-		DisplayTime(&userDisplay, &ds1302);
+		DisplayDate(&userDisplay);
+		DisplayTime(&userDisplay);
 
 		userDisplay.WriteStringXY(0, 2, "last: ");
 		userDisplay.WriteInt(lastValue);
@@ -100,7 +98,7 @@ int main(){
 			sensorReading = true;
 		}
 
-		if( ( (ds1302.rtcTime.minutes % 15 ) == 0) && (sensorReading) )
+		if( ( (cDeviceRTC::GetInstance().rtcTime.minutes % 15 ) == 0) && (sensorReading) )
 		{
 			userDisplay.Clear();
 			greenLED.SetPin(0);
@@ -124,29 +122,29 @@ int main(){
 			userDisplay.WriteInt(currentValue);
 			_delay_ms(10000);
 
-			res_open = open_append(&records, "records.txt");
+			res_open = open_append(&records, "records.csv");
 			if(res_open == FR_OK)
 			{
 				itoa(runningNumber, convertBuffer, 10);
 				f_puts(convertBuffer, &records);
 				f_putc(',', &records);
-				ds1302.update_rtcTime();
-				itoa(ds1302.rtcTime.year, convertBuffer, 10);
+				cDeviceRTC::GetInstance().update_rtcTime();
+				itoa(cDeviceRTC::GetInstance().rtcTime.year, convertBuffer, 10);
 				f_puts(convertBuffer, &records);
 				f_putc('/', &records);
-				itoa(ds1302.rtcTime.month, convertBuffer, 10);
+				itoa(cDeviceRTC::GetInstance().rtcTime.month, convertBuffer, 10);
 				f_puts(convertBuffer, &records);
 				f_putc('/', &records);
-				itoa(ds1302.rtcTime.date, convertBuffer, 10);
+				itoa(cDeviceRTC::GetInstance().rtcTime.date, convertBuffer, 10);
 				f_puts(convertBuffer, &records);
 				f_putc(',', &records);
-				itoa(ds1302.rtcTime.hours, convertBuffer, 10);
+				itoa(cDeviceRTC::GetInstance().rtcTime.hours, convertBuffer, 10);
 				f_puts(convertBuffer, &records);
 				f_putc(':', &records);
-				itoa(ds1302.rtcTime.minutes, convertBuffer, 10);
+				itoa(cDeviceRTC::GetInstance().rtcTime.minutes, convertBuffer, 10);
 				f_puts(convertBuffer, &records);
 				f_putc(':', &records);
-				itoa(ds1302.rtcTime.seconds, convertBuffer, 10);
+				itoa(cDeviceRTC::GetInstance().rtcTime.seconds, convertBuffer, 10);
 				f_puts(convertBuffer, &records);
 				f_putc(',', &records);
 				itoa(currentValue, convertBuffer, 10);
@@ -163,54 +161,54 @@ int main(){
 	}
 }
 
-void DisplayDate(cLCD *lcd, cDeviceRTC *clock)
+void DisplayDate(cLCD *lcd)
 {
 	lcd->SetCursor(0, 0);
 	// frame_date
-	lcd->WriteInt(clock->rtcTime.year);
+	lcd->WriteInt(cDeviceRTC::GetInstance().rtcTime.year);
 	lcd->WriteString("/");
-	if(clock->rtcTime.month < 10)
+	if(cDeviceRTC::GetInstance().rtcTime.month < 10)
 	{
 		 lcd->WriteString("0");
-		 lcd->WriteInt(clock->rtcTime.month);
+		 lcd->WriteInt(cDeviceRTC::GetInstance().rtcTime.month);
 	}
 	else
 	{
-		lcd->WriteInt(clock->rtcTime.month);
+		lcd->WriteInt(cDeviceRTC::GetInstance().rtcTime.month);
 	}
 	lcd->WriteString("/");
-	if(clock->rtcTime.date < 10)
+	if(cDeviceRTC::GetInstance().rtcTime.date < 10)
 	{
 		 lcd->WriteString("0");
-		 lcd->WriteInt(clock->rtcTime.date);
+		 lcd->WriteInt(cDeviceRTC::GetInstance().rtcTime.date);
 	}
 	else
 	{
-		lcd->WriteInt(clock->rtcTime.date);
+		lcd->WriteInt(cDeviceRTC::GetInstance().rtcTime.date);
 	}
 }
 
-void DisplayTime(cLCD *lcd, cDeviceRTC *clock)
+void DisplayTime(cLCD *lcd)
 {
 	lcd->SetCursor(15, 0);
-	if(clock->rtcTime.hours < 10)
+	if(cDeviceRTC::GetInstance().rtcTime.hours < 10)
 	{
 		lcd->WriteString("0");
-		lcd->WriteInt(clock->rtcTime.hours);
+		lcd->WriteInt(cDeviceRTC::GetInstance().rtcTime.hours);
 		lcd->WriteString(":");
 	}
 	else
 	{
-		lcd->WriteInt(clock->rtcTime.hours);
+		lcd->WriteInt(cDeviceRTC::GetInstance().rtcTime.hours);
 		lcd->WriteString(":");
 	}
-	if(clock->rtcTime.minutes < 10)
+	if(cDeviceRTC::GetInstance().rtcTime.minutes < 10)
 	{
 		lcd->WriteString("0");
-		lcd->WriteInt(clock->rtcTime.minutes);
+		lcd->WriteInt(cDeviceRTC::GetInstance().rtcTime.minutes);
 	}
 	else
 	{
-		lcd->WriteInt(clock->rtcTime.minutes);
+		lcd->WriteInt(cDeviceRTC::GetInstance().rtcTime.minutes);
 	}
 }
